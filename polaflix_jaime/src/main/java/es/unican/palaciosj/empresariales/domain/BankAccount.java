@@ -1,5 +1,11 @@
 package es.unican.palaciosj.empresariales.domain;
 
+import jakarta.persistence.Embeddable;
+
+/**
+ * Bank account class
+ */
+@Embeddable
 public class BankAccount {
 
     // Atributes

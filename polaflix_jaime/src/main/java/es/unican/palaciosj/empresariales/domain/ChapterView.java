@@ -2,15 +2,28 @@ package es.unican.palaciosj.empresariales.domain;
 
 import java.sql.Date;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+
+/**
+ * Chapter view class
+ */
+@Entity
 public class ChapterView {
     
     // Attributes
-    private Chapter chapter;
+    @ManyToOne
+    private Serie serie;
+    private int chapterNum;
+    private int seasonNum;
     private Date dateView;
     private double price;
 
     // Constructor
-    public ChapterView(Date dateView, double price) {
+    public ChapterView(Serie serie, int chapterNum, int seasonNum, Date dateView, double price) {
+        this.serie = serie;
+        this.chapterNum = chapterNum;
+        this.seasonNum = seasonNum;
         this.dateView = dateView;
         this.price = price;
     }
@@ -18,12 +31,28 @@ public class ChapterView {
     // Auxiliar methods
 
     // Getters and Setters    
-    public Chapter getChapter() {
-        return this.chapter;
+    public Serie getSerie() {
+        return this.serie;
     }
 
-    public void setChapter(Chapter chapter) {
-        this.chapter = chapter;
+    public void setSerie(Serie serie) {
+        this.serie = serie;
+    } 
+    
+    public int getSeasonNum() {
+        return this.seasonNum;
+    }
+
+    public void setSeasonNum(int seasonNum) {
+        this.seasonNum = seasonNum;
+    }
+    
+    public int getChapter() {
+        return this.chapterNum;
+    }
+
+    public void setChapter(int chapterNum) {
+        this.chapterNum = chapterNum;
     }
 
     public Date getDateView() {

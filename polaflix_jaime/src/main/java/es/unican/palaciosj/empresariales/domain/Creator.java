@@ -1,5 +1,11 @@
 package es.unican.palaciosj.empresariales.domain;
 
+import jakarta.persistence.Embeddable;
+
+/**
+ * Creator class
+ */
+@Embeddable
 public class Creator {
     
     // Atributes

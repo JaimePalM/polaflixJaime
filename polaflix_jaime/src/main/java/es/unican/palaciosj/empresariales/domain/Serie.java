@@ -1,18 +1,24 @@
 package es.unican.palaciosj.empresariales.domain;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
+import jakarta.persistence.Entity;
+
+/**
+ * Serie class
+ */
+@Entity
 public class Serie {
     
     // Atributes
     private String title;
     private String description;
-    private double price;
-    private List<Season> seasons = new LinkedList<Season>();
-    private Collection<Creator> creators = new LinkedList<Creator>();
-    private Collection<Actors> actors = new LinkedList<Actors>();
+    private Category category;
+    private Set<Season> seasons = new TreeSet<Season>();
+    private Set<Creator> creators = new HashSet<Creator>();
+    private Set<Actors> actors = new HashSet<Actors>();
 
     // Constructor
     public Serie(String title, String description) {
@@ -39,39 +45,37 @@ public class Serie {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    public double getPrice() {
-        return this.price;
-    }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public List<Season> getSeasons() {
+    public Set<Season> getSeasons() {
         return this.seasons;
     }
 
-    public void setSeasons(List<Season> seasons) {
+    public void setSeasons(Set<Season> seasons) {
         this.seasons = seasons;
     }
 
-    public Collection<Creator> getCreators() {
+    public Set<Creator> getCreators() {
         return this.creators;
     }
 
-    public void setCreators(Collection<Creator> creators) {
+    public void setCreators(Set<Creator> creators) {
         this.creators = creators;
     }
 
-    public Collection<Actors> getActors() {
+    public Set<Actors> getActors() {
         return this.actors;
     }
 
-    public void setActors(Collection<Actors> actors) {
+    public void setActors(Set<Actors> actors) {
         this.actors = actors;
     }
 
-  
-       
+    public Category getCategory() {
+        return this.category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
 }

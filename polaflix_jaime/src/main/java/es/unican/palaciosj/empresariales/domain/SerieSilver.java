@@ -1,18 +1,18 @@
 package es.unican.palaciosj.empresariales.domain;
 
-public class SerieSilver extends Serie {
+import jakarta.persistence.Embeddable;
+
+/**
+ * Serie silver class
+ */
+@Embeddable
+public class SerieSilver extends Category {
     
     // Atributes
-    private final double PRICE = 0.75;
+    private static double price = 0.75;
 
     // Constructor
-    public SerieSilver(String title, String description) {
-        super(title, description);
-    }
-
-    // Getters and Setters
-    @Override
-    public double getPrice() {
-        return this.PRICE;
+    public SerieSilver(String name) {
+        super(name, price);
     }
 }

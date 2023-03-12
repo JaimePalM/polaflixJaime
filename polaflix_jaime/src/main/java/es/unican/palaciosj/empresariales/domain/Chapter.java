@@ -1,5 +1,8 @@
 package es.unican.palaciosj.empresariales.domain;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Chapter {
 
     // Atributes
@@ -7,8 +10,7 @@ public class Chapter {
     private String title;
     private String description;
     private String url;
-
-
+    private Season season;
 
     // Constructor
     public Chapter(int number, String title, String description, String url) {
@@ -21,6 +23,37 @@ public class Chapter {
     // Auxiliar methods
     public void play() {
         System.out.println("Playing chapter " + this.number + "...");
+    }
+
+    // Override methods
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Chapter)) {
+            return false;
+        }
+        Chapter chapter = (Chapter) o;
+
+        boolean chapterEquals = (number == chapter.number) && (season.equals(chapter.season) && (season.getSerie().equals(chapter.season.getSerie())));
+        
+        return chapterEquals;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        
+        result = 31 * result + number;
+        
+        if (season != null) {
+            result = 31 * result + season.hashCode();
+        }
+        if (season != null && season.getSerie() != null) {
+            result = 31 * result + season.getSerie().hashCode();
+        }
+
+        return result;
     }
 
     // Getters and Setters
@@ -54,6 +87,14 @@ public class Chapter {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Season getSeason() {
+        return this.season;
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
     }
 
 }
