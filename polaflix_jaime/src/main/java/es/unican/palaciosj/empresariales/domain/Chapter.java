@@ -3,7 +3,7 @@ package es.unican.palaciosj.empresariales.domain;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Chapter {
+public class Chapter implements Comparable<Chapter> {
 
     // Atributes
     private int number;
@@ -53,6 +53,19 @@ public class Chapter {
             result = 31 * result + season.getSerie().hashCode();
         }
 
+        return result;
+    }
+
+    
+    @Override
+    public int compareTo(Chapter o) {
+        int result = (int) (this.season.getSerie().getId() - o.season.getSerie().getId());
+        if (result == 0) {
+            result = this.season.getNumber() - o.season.getNumber();
+            if (result == 0) {
+                result = this.number - o.number;
+            }
+        }
         return result;
     }
 

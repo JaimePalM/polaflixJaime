@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
  * Chapter view class
  */
 @Entity
-public class ChapterView {
+public class ChapterView implements Comparable<ChapterView> {
     
     // Attributes
     @ManyToOne
@@ -29,6 +29,44 @@ public class ChapterView {
     }
 
     // Auxiliar methods
+
+
+    // Override methods
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof ChapterView)) {
+            return false;
+        }
+        ChapterView chapterView = (ChapterView) o;
+
+        boolean chapterViewEquals = (chapterNum == chapterView.chapterNum) && (seasonNum == chapterView.seasonNum) &&
+                                    (serie.equals(chapterView.serie)) && (dateView.equals(chapterView.dateView));
+        
+        return chapterViewEquals;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 17;
+        
+        result = prime * result + chapterNum;
+        result = prime * result + seasonNum;
+        result = prime * result + dateView.hashCode();
+        
+        if (serie != null) {
+            result = prime * result + serie.hashCode();
+        }
+
+        return result;
+    }
+
+    @Override
+    public int compareTo(ChapterView o) {
+        return this.dateView.compareTo(o.getDateView());
+    }
 
     // Getters and Setters    
     public Serie getSerie() {

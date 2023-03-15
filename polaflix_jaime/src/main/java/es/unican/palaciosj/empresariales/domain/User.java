@@ -14,7 +14,7 @@ import jakarta.persistence.OneToOne;
  * User class
  */
 @Entity
-public class Usuario {
+public class User {
     
     // Atributes
     @Id
@@ -30,9 +30,10 @@ public class Usuario {
     @OneToMany
     private Set<Serie> finishedSeries = new TreeSet<Serie>();
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
+    private Set<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
-    public Usuario(String username, String password, BankAccount bankAccount) {
+    public User(String username, String password, BankAccount bankAccount) {
         this.username = username;
         this.password = password;
         this.bankAccount = bankAccount;
@@ -54,8 +55,23 @@ public class Usuario {
         this.lastChapterView.put(serie, chapter);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof User)) {
+            return false;
+        }
+        User user = (User) o;
+        return username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode();
+    }
+
     // Getters and Setters
-    
     public String getUsername() {
         return this.username;
     }
@@ -118,6 +134,14 @@ public class Usuario {
 
     public void setLastViewedChapter(Serie serie, Chapter chapter) {
         this.lastChapterView.put(serie, chapter);
+    }
+
+    public Set<Bill> getBills() {
+        return this.bills;
+    }
+
+    public void setBills(Set<Bill> bills) {
+        this.bills = bills;
     }
 
 }

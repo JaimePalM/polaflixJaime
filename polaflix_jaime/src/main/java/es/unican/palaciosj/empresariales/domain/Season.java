@@ -9,7 +9,7 @@ import jakarta.persistence.Embeddable;
  * Season class
  */
 @Embeddable
-public class Season {
+public class Season implements Comparable<Season>{
 
     // Atributes
     private int number;
@@ -23,6 +23,43 @@ public class Season {
 
     // Auxiliar methods
     
+    // Override methods
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Season)) {
+            return false;
+        }
+        Season season = (Season) o;
+
+        boolean seasonEquals = (number == season.number) && (serie.equals(season.serie));
+        
+        return seasonEquals;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 17;
+        
+        result = prime * result + number;
+        
+        if (serie != null) {
+            result = prime * result + serie.hashCode();
+        }
+
+        return result;
+    }
+
+    @Override
+    public int compareTo(Season season) {
+        int result = (int) (this.getSerie().getId() - season.getSerie().getId());
+        if (result == 0) {
+            result = this.getNumber() - season.getNumber();
+        }
+        return result;
+    }
 
     // Getters and Setters
     public int getNumber() {

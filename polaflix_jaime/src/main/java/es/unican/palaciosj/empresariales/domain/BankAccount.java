@@ -1,6 +1,7 @@
 package es.unican.palaciosj.empresariales.domain;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Id;
 
 /**
  * Bank account class
@@ -9,6 +10,7 @@ import jakarta.persistence.Embeddable;
 public class BankAccount {
 
     // Atributes
+    @Id
     private String IBAN;
 
     // Getters and Setters

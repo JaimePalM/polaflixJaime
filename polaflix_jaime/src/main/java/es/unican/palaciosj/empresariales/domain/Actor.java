@@ -5,10 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 /**
- * Creator class
+ * Actors class
  */
 @Embeddable
-public class Creator {
+public class Actor {
     
     // Atributes
     @Id
@@ -17,7 +17,7 @@ public class Creator {
     private String name;
 
     // Constructor
-    public Creator(String name) {
+    public Actor(String name) {
         this.name = name;
     }
 
@@ -28,11 +28,11 @@ public class Creator {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Creator)) {
+        if (!(o instanceof Actor)) {
             return false;
         }
-        Creator creator = (Creator) o;
-        return this.id == creator.id;
+        Actor actor = (Actor) o;
+        return this.id == actor.id;
     }
 
     @Override
