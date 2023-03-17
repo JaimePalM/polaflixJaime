@@ -26,11 +26,15 @@ public class Season implements Comparable<Season>{
     private Serie serie;
 
     // Constructor
-    public Season(int number) {
+    public Season(int number, Serie serie) {
         this.number = number;
+        this.serie = serie;
     }
 
     // Auxiliar methods
+    public void addChapter(Chapter chapter) {
+        this.chapters.add(chapter);
+    }
     
     // Override methods
     @Override

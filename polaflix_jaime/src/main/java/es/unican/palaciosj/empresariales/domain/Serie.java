@@ -39,12 +39,16 @@ public class Serie implements Comparable<Serie> {
     private Set<Actor> actors = new HashSet<Actor>();
 
     // Constructor
-    public Serie(String title, String description) {
+    public Serie(String title, String description, Category category) {
         this.title = title;
         this.description = description;
+        this.category = category;
     }
 
     // Auxiliar methods
+    public void addSeason(Season season) {
+        this.seasons.add(season);
+    }
 
     // Override methods
     @Override

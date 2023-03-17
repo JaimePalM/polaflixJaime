@@ -13,6 +13,6 @@ public class SerieSilver extends Category {
 
     // Constructor
     public SerieSilver(String name) {
-        super(name, price);
+        super(name);
     }
 }

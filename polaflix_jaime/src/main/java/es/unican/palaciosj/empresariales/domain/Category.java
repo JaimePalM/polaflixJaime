@@ -22,9 +22,8 @@ public abstract class Category {
     private double price;
 
     // Constructor
-    public Category(String name, double price) {
+    public Category(String name) {
         this.name = name;
-        this.price = price;
     }
 
     // Getters and Setters

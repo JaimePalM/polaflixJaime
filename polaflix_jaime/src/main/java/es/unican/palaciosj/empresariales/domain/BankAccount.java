@@ -13,6 +13,11 @@ public class BankAccount {
     @Id
     private String IBAN;
 
+    // Constructor
+    public BankAccount(String IBAN) {
+        this.IBAN = IBAN;
+    }
+
     // Getters and Setters
     public String getIBAN() {
         return this.IBAN;
