@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -23,13 +25,15 @@ public class User {
     @OneToOne
     private BankAccount bankAccount;
     private boolean fixedFee;
-    @OneToMany
+    @ManyToMany
     private Set<Serie> pendingSeries = new TreeSet<Serie>();
-    @OneToMany
+    @ManyToMany
     private Set<Serie> startedSeries = new TreeSet<Serie>();
-    @OneToMany
+    @ManyToMany
     private Set<Serie> finishedSeries = new TreeSet<Serie>();
+    @ManyToMany
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Bill> bills = new TreeSet<Bill>();
 
     // Constructor

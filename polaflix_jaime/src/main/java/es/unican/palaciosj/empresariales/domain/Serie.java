@@ -4,11 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 /**
  * Serie class
@@ -22,10 +26,16 @@ public class Serie implements Comparable<Serie> {
     private long id;
     private String title;
     private String description;
-    @OneToOne
+    @ManyToOne
     private Category category;
+    @ElementCollection
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     private Set<Season> seasons = new TreeSet<Season>();
+    @ElementCollection
+    @ManyToMany
     private Set<Creator> creators = new HashSet<Creator>();
+    @ElementCollection
+    @ManyToMany
     private Set<Actor> actors = new HashSet<Actor>();
 
     // Constructor

@@ -1,15 +1,25 @@
 package es.unican.palaciosj.empresariales.domain;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Chapter implements Comparable<Chapter> {
 
     // Atributes
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private int number;
     private String title;
     private String description;
     private String url;
+    @ElementCollection
+    @ManyToOne
     private Season season;
 
     // Constructor
@@ -70,6 +80,14 @@ public class Chapter implements Comparable<Chapter> {
     }
 
     // Getters and Setters
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public int getNumber() {
         return this.number;
     }

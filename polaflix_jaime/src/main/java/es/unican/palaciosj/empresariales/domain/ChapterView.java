@@ -3,6 +3,9 @@ package es.unican.palaciosj.empresariales.domain;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 /**
@@ -12,6 +15,9 @@ import jakarta.persistence.ManyToOne;
 public class ChapterView implements Comparable<ChapterView> {
     
     // Attributes
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     @ManyToOne
     private Serie serie;
     private int chapterNum;
@@ -68,7 +74,15 @@ public class ChapterView implements Comparable<ChapterView> {
         return this.dateView.compareTo(o.getDateView());
     }
 
-    // Getters and Setters    
+    // Getters and Setters   
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+ 
     public Serie getSerie() {
         return this.serie;
     }

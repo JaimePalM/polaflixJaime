@@ -4,11 +4,14 @@ import java.sql.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
-import jakarta.annotation.Generated;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 /**
  * Bill class
@@ -18,11 +21,14 @@ public class Bill implements Comparable<Bill>{
     
     // Atributes
     @Id 
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private double totalAmount;
     private Date month;
-    @ManyToMany
+    @ManyToOne
+    private User user;
+    @ElementCollection
+    @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL)
     private Set<ChapterView> monthViews = new TreeSet<ChapterView>();
 
     // Constructor
@@ -42,6 +48,11 @@ public class Bill implements Comparable<Bill>{
         }
         Bill bill = (Bill) o;
         return this.id == bill.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(this.id);
     }
 
     @Override

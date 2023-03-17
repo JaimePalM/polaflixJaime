@@ -2,6 +2,7 @@ package es.unican.palaciosj.empresariales.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
@@ -12,7 +13,7 @@ public class Actor {
     
     // Atributes
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
 

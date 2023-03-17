@@ -3,7 +3,12 @@ package es.unican.palaciosj.empresariales.domain;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
  * Season class
@@ -12,7 +17,11 @@ import jakarta.persistence.Embeddable;
 public class Season implements Comparable<Season>{
 
     // Atributes
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private int number;
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
     private Set<Chapter> chapters = new TreeSet<Chapter>();
     private Serie serie;
 
@@ -62,6 +71,14 @@ public class Season implements Comparable<Season>{
     }
 
     // Getters and Setters
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public int getNumber() {
         return this.number;
     }
