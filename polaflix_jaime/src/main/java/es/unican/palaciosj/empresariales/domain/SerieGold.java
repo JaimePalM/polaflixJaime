@@ -15,4 +15,9 @@ public class SerieGold extends Category {
     public SerieGold(String name) {
         super(name);
     }
+
+    // Getter
+    public double getPrice() {
+        return price;
+    }
 }

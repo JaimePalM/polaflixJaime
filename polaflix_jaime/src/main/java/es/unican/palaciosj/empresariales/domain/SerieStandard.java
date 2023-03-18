@@ -11,8 +11,13 @@ public class SerieStandard extends Category {
     // Atributes
     private static double price = 0.50;
 
-   // Constructor
+    // Constructor
     public SerieStandard(String name) {
         super(name);
+    }
+
+    // Getter
+    public double getPrice() {
+        return price;
     }
 }

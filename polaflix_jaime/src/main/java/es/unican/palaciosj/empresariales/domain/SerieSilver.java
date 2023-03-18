@@ -15,4 +15,9 @@ public class SerieSilver extends Category {
     public SerieSilver(String name) {
         super(name);
     }
+
+    // Getter
+    public double getPrice() {
+        return price;
+    }
 }
