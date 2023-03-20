@@ -36,8 +36,8 @@ public class AppFeeder implements CommandLineRunner {
 	private void feedUsers() {
         BankAccount b1 = new BankAccount("ES12 3456 7890 1234 5678 9012");
         BankAccount b2 = new BankAccount("ES12 3456 7890 1234 5678 9013");
-	    User u1 = new User("Paco","paco123", b1);
-		User u2 = new User("Lola","lola123", b2);
+	    User u1 = new User("Paco","paco123", b1, false);
+		User u2 = new User("Lola","lola123", b2, false);
 		ur.save(u1);
 		ur.save(u2);
 	}

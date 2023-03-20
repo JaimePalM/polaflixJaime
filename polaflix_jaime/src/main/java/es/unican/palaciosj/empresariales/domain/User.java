@@ -6,21 +6,26 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 /**
  * User class
  */
 @Entity
+@Table(name = "user")
 public class User {
     
     // Atributes
     @Id
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
     @OneToOne
     private BankAccount bankAccount;
@@ -37,10 +42,11 @@ public class User {
     private Set<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
-    public User(String username, String password, BankAccount bankAccount) {
+    public User(String username, String password, BankAccount bankAccount, boolean fixedFee) {
         this.username = username;
         this.password = password;
         this.bankAccount = bankAccount;
+        this.fixedFee = fixedFee;
     }
 
     // Auxiliar methods

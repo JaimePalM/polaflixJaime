@@ -19,17 +19,13 @@ public class ChapterView implements Comparable<ChapterView> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ManyToOne
-    private Serie serie;
-    private int chapterNum;
-    private int seasonNum;
+    private Chapter chapter;
     private Date dateView;
     private double price;
 
     // Constructor
-    public ChapterView(Serie serie, int chapterNum, int seasonNum, Date dateView, double price) {
-        this.serie = serie;
-        this.chapterNum = chapterNum;
-        this.seasonNum = seasonNum;
+    public ChapterView(Chapter chapter, Date dateView, double price) {
+        this.chapter = chapter;
         this.dateView = dateView;
         this.price = price;
     }
@@ -47,8 +43,7 @@ public class ChapterView implements Comparable<ChapterView> {
         }
         ChapterView chapterView = (ChapterView) o;
 
-        boolean chapterViewEquals = (chapterNum == chapterView.chapterNum) && (seasonNum == chapterView.seasonNum) &&
-                                    (serie.equals(chapterView.serie)) && (dateView.equals(chapterView.dateView));
+        boolean chapterViewEquals = (this.chapter == chapterView.chapter) && (dateView.equals(chapterView.dateView));
         
         return chapterViewEquals;
     }
@@ -57,14 +52,13 @@ public class ChapterView implements Comparable<ChapterView> {
     public int hashCode() {
         final int prime = 31;
         int result = 17;
+        Season season = chapter.getSeason();
+        Serie serie = season.getSerie();
         
-        result = prime * result + chapterNum;
-        result = prime * result + seasonNum;
+        result = prime * result + chapter.getNumber();
+        result = prime * result + season.getNumber();
         result = prime * result + dateView.hashCode();
-        
-        if (serie != null) {
-            result = prime * result + serie.hashCode();
-        }
+        result = prime * result + serie.hashCode();
 
         return result;
     }
@@ -83,28 +77,12 @@ public class ChapterView implements Comparable<ChapterView> {
         this.id = id;
     }
  
-    public Serie getSerie() {
-        return this.serie;
+    public Chapter getChapter() {
+        return this.chapter;
     }
 
-    public void setSerie(Serie serie) {
-        this.serie = serie;
-    } 
-    
-    public int getSeasonNum() {
-        return this.seasonNum;
-    }
-
-    public void setSeasonNum(int seasonNum) {
-        this.seasonNum = seasonNum;
-    }
-    
-    public int getChapter() {
-        return this.chapterNum;
-    }
-
-    public void setChapter(int chapterNum) {
-        this.chapterNum = chapterNum;
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
     }
 
     public Date getDateView() {
