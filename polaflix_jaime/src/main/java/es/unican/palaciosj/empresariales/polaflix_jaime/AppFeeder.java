@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import es.unican.palaciosj.empresariales.domain.BankAccount;
-import es.unican.palaciosj.empresariales.domain.Category;
-import es.unican.palaciosj.empresariales.domain.Chapter;
-import es.unican.palaciosj.empresariales.domain.Season;
-import es.unican.palaciosj.empresariales.domain.Serie;
-import es.unican.palaciosj.empresariales.domain.SerieGold;
-import es.unican.palaciosj.empresariales.domain.SerieStandard;
-import es.unican.palaciosj.empresariales.domain.User;
-import es.unican.palaciosj.empresariales.repositories.SerieRepository;
-import es.unican.palaciosj.empresariales.repositories.UserRepository;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Season;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.SerieGold;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.SerieStandard;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
+import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
+import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
 
 @Component
 public class AppFeeder implements CommandLineRunner {

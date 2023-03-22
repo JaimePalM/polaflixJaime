@@ -1,11 +1,11 @@
-package es.unican.palaciosj.empresariales.repositories;
+package es.unican.palaciosj.empresariales.polaflix_jaime.repositories;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.unican.palaciosj.empresariales.domain.Serie;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 
 /**
  * Serie repository with CRUD operations

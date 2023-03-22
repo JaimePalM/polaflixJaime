@@ -1,4 +1,4 @@
-package es.unican.palaciosj.empresariales.domain;
+package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.util.HashSet;
 import java.util.Set;
