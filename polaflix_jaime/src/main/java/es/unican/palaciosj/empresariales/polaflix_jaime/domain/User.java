@@ -1,13 +1,14 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.text.View;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -35,6 +36,8 @@ public class User {
     private Set<Serie> finishedSeries = new TreeSet<Serie>();
     @ManyToMany
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
+    @OneToMany
+    private Map<Serie, Views> serieViews = new HashMap<Serie, Views>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Bill> bills = new TreeSet<Bill>();
 
@@ -60,6 +63,7 @@ public class User {
     // Mark last chapter viewed for a serie
     public void markLastChapterViewed(Serie serie, Chapter chapter) {
         this.lastChapterView.put(serie, chapter);
+        this.serieViews.get(serie).markChapterViewed(chapter);
     }
 
     @Override
@@ -135,12 +139,20 @@ public class User {
         this.pendingSeries = pendingSeries;
     }
 
-    public void getLastViewedChapter(Serie serie) {
-        this.lastChapterView.get(serie);
+    public Chapter getLastViewedChapter(Serie serie) {
+        return this.lastChapterView.get(serie);
     }
 
     public void setLastViewedChapter(Serie serie, Chapter chapter) {
         this.lastChapterView.put(serie, chapter);
+    }
+
+    public Map<Serie, Chapter> getLastChapterView() {
+        return this.lastChapterView;
+    }
+
+    public void setLastChapterView(Map<Serie, Chapter> lastChapterView) {
+        this.lastChapterView = lastChapterView;
     }
 
     public Set<Bill> getBills() {
