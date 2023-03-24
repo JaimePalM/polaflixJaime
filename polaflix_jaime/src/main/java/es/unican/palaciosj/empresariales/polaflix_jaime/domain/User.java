@@ -1,12 +1,10 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.text.View;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -23,6 +21,7 @@ public class User {
     
     // Atributes
     @Id
+    private String email;
     private String username;
     private String password;
     @OneToOne
@@ -42,7 +41,8 @@ public class User {
     private Set<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
-    public User(String username, String password, BankAccount bankAccount, boolean fixedFee) {
+    public User(String email, String username, String password, BankAccount bankAccount, boolean fixedFee) {
+        this.email = email;
         this.username = username;
         this.password = password;
         this.bankAccount = bankAccount;
@@ -50,7 +50,6 @@ public class User {
     }
 
     // Auxiliar methods
-    
     // Add serie to pending list
     public void addSerieToPending(Serie serie) {
         // Check if serie is already in any list
@@ -74,15 +73,23 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return username.equals(user.username);
+        return this.username.equals(user.getUsername()) && this.password.equals(user.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return username.hashCode();
+        return this.email.hashCode();
     }
 
-    // Getters and Setters
+    // Getters and Setters    
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getUsername() {
         return this.username;
     }

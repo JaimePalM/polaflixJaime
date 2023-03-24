@@ -46,23 +46,12 @@ public class Season implements Comparable<Season>{
         }
         Season season = (Season) o;
 
-        boolean seasonEquals = (number == season.number) && (serie.equals(season.serie));
-        
-        return seasonEquals;
+        return (this.serie.getId() == season.getSerie().getId()) && (this.number == season.getNumber());
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 17;
-        
-        result = prime * result + number;
-        
-        if (serie != null) {
-            result = prime * result + serie.hashCode();
-        }
-
-        return result;
+        return serie.hashCode() * this.getNumber();
     }
 
     @Override

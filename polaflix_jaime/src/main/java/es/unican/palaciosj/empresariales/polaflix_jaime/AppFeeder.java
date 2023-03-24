@@ -9,8 +9,6 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Season;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.SerieGold;
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.SerieStandard;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
@@ -36,18 +34,18 @@ public class AppFeeder implements CommandLineRunner {
 	private void feedUsers() {
         BankAccount b1 = new BankAccount("ES12 3456 7890 1234 5678 9012");
         BankAccount b2 = new BankAccount("ES12 3456 7890 1234 5678 9013");
-	    User u1 = new User("Paco","paco123", b1, false);
-		User u2 = new User("Lola","lola123", b2, false);
+	    User u1 = new User("paco23@polafix.com","Paco","paco123", b1, false);
+		User u2 = new User("lola43@polaflix.com","Lola","lola123", b2, false);
 		ur.save(u1);
 		ur.save(u2);
 	}
 	
 	private void feedSeries() {
         // Create categories and series
-        Category c1 = new SerieGold("Gold");
-        Category c2 = new SerieStandard("Standard");
-		Serie s1 = new Serie("The Big Bang Theory", "Comedy", c2);
-        Serie s2 = new Serie("Dark", "Time travel", c1);
+        Category gold = new Category("Gold", 1.5);
+		Category standard = new Category("Standard", 0.5);
+		Serie s1 = new Serie("The Big Bang Theory", "Comedy", standard);
+        Serie s2 = new Serie("Dark", "Time travel", gold);
 
         // Add seasons to series
         Season s1s1 = new Season(1, s1);

@@ -42,25 +42,13 @@ public class ChapterView implements Comparable<ChapterView> {
             return false;
         }
         ChapterView chapterView = (ChapterView) o;
-
-        boolean chapterViewEquals = (this.chapter == chapterView.chapter) && (dateView.equals(chapterView.dateView));
         
-        return chapterViewEquals;
+        return this.id == chapterView.getId();
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 17;
-        Season season = chapter.getSeason();
-        Serie serie = season.getSerie();
-        
-        result = prime * result + chapter.getNumber();
-        result = prime * result + season.getNumber();
-        result = prime * result + dateView.hashCode();
-        result = prime * result + serie.hashCode();
-
-        return result;
+        return Long.hashCode(id);
     }
 
     @Override

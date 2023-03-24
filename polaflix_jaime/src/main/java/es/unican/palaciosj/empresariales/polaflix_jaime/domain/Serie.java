@@ -53,16 +53,19 @@ public class Serie implements Comparable<Serie> {
     // Override methods
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Serie) {
-            Serie s = (Serie) o;
-            return this.id == s.getId();
+        if (o == this) {
+            return true;
         }
-        return false;
+        if (!(o instanceof Serie)) {
+            return false;
+        }
+        Serie s = (Serie) o;
+        return this.title.equals(s.getDescription()) && this.description.equals(s.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Long.hashCode(id);
+        return this.title.hashCode() + this.description.hashCode();
     }
 
     @Override

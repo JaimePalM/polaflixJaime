@@ -4,15 +4,12 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 
 /**
  * Category class
  */
 @Embeddable
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Category {
+public class Category {
 
     // Atributes
     @Id
@@ -22,8 +19,9 @@ public abstract class Category {
     private double price;
 
     // Constructor
-    public Category(String name) {
+    public Category(String name, double price) {
         this.name = name;
+        this.price = price;
     }
 
     // Getters and Setters

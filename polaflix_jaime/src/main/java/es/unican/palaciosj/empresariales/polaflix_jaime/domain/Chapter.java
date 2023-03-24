@@ -45,9 +45,7 @@ public class Chapter implements Comparable<Chapter> {
         }
         Chapter chapter = (Chapter) o;
 
-        boolean chapterEquals = (number == chapter.number) && (season.equals(chapter.season) && (season.getSerie().equals(chapter.season.getSerie())));
-        
-        return chapterEquals;
+        return this.id == chapter.getId();
     }
 
     @Override
