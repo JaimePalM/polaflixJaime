@@ -1,21 +1,24 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.util.Iterator;
+import java.util.List;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
-@Embeddable
+@Entity
 public class Views implements Comparable<Views> {
     
     // Atributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private boolean[][] serieChapterViews;
+    @OneToMany
+    private List<SeasonViews> serieChapterViews;
     @OneToOne
     private Serie serie;
 
@@ -29,12 +32,12 @@ public class Views implements Comparable<Views> {
         while (it.hasNext()) {
             chapters = Math.max(chapters, it.next().getChapters().size());
         }
-        this.serieChapterViews = new boolean[seasons][chapters];
+        //this.serieChapterViews = new boolean[seasons][chapters];
     }
 
     // Auxiliar methods
     public void markChapterViewed(Chapter chapter) {
-        this.serieChapterViews[chapter.getSeason().getNumber()][chapter.getNumber()] = true;
+        //this.serieChapterViews[chapter.getSeason().getNumber()][chapter.getNumber()] = true;
     }
 
     // Override methods
@@ -60,6 +63,7 @@ public class Views implements Comparable<Views> {
     }
 
     // Getters and setters
+    /* 
     public boolean[][] getSerieChapterViews() {
         return serieChapterViews;
     }
@@ -67,6 +71,7 @@ public class Views implements Comparable<Views> {
     public void setSerieChapterViews(boolean[][] serieChapterViews) {
         this.serieChapterViews = serieChapterViews;
     }
+    */
 
     public Serie getSerie() {
         return serie;

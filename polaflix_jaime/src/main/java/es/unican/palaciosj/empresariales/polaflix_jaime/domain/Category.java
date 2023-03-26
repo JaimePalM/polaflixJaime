@@ -1,6 +1,6 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -8,17 +8,16 @@ import jakarta.persistence.Id;
 /**
  * Category class
  */
-@Embeddable
+@Entity
 public class Category {
 
     // Atributes
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
     private String name;
     private double price;
 
     // Constructor
+    public Category() { }
     public Category(String name, double price) {
         this.name = name;
         this.price = price;

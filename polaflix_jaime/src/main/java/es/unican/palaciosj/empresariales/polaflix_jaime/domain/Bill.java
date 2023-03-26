@@ -5,11 +5,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -24,16 +26,17 @@ public class Bill implements Comparable<Bill>{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private double totalAmount;
-    private Date month;
+    private Date monthBilled;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     @ElementCollection
-    @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<ChapterView> monthViews = new TreeSet<ChapterView>();
 
     // Constructor
     public Bill(Date month) {
-        this.month = month;
+        this.monthBilled = month;
     }
 
     // Auxiliar methods
@@ -77,12 +80,12 @@ public class Bill implements Comparable<Bill>{
         this.totalAmount = totalAmount;
     }
 
-    public Date getMonth() {
-        return this.month;
+    public Date getMonthBilled() {
+        return this.monthBilled;
     }
 
-    public void setMonth(Date month) {
-        this.month = month;
+    public void setMonthBilled(Date month) {
+        this.monthBilled = month;
     }
 
     public Set<ChapterView> getMonthViews() {

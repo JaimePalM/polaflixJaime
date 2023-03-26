@@ -10,9 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 /**
  * Serie class
@@ -26,28 +25,46 @@ public class Serie implements Comparable<Serie> {
     private long id;
     private String title;
     private String description;
-    @ManyToOne
+    private char initial;
+    @OneToOne
     private Category category;
-    @ElementCollection
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     private Set<Season> seasons = new TreeSet<Season>();
     @ElementCollection
-    @ManyToMany
     private Set<Creator> creators = new HashSet<Creator>();
     @ElementCollection
-    @ManyToMany
     private Set<Actor> actors = new HashSet<Actor>();
 
     // Constructor
+    public Serie() { }
     public Serie(String title, String description, Category category) {
         this.title = title;
         this.description = description;
         this.category = category;
+        this.initial = title.charAt(0);
     }
 
     // Auxiliar methods
     public void addSeason(Season season) {
         this.seasons.add(season);
+    }
+
+    public void addCreator(Creator creator) {
+        this.creators.add(creator);
+    }
+
+    public void addActor(Actor actor) {
+        this.actors.add(actor);
+    }
+
+    public Season getSeason(int number) {
+        Season season = null;
+        for (Season s : this.seasons) {
+            if (s.getNumber() == number) {
+                season = s;
+            }
+        }
+        return season;
     }
 
     // Override methods
@@ -92,6 +109,14 @@ public class Serie implements Comparable<Serie> {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public char getInitial() {
+        return this.initial;
+    }
+
+    public void setInitial(char initial) {
+        this.initial = initial;
     }
 
     public void setDescription(String description) {

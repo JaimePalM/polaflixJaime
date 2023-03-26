@@ -1,9 +1,6 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 /**
  * Actors class
@@ -12,14 +9,14 @@ import jakarta.persistence.Id;
 public class Actor {
     
     // Atributes
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
     private String name;
+    private String surname;
 
     // Constructor
-    public Actor(String name) {
+    public Actor() { }
+    public Actor(String name, String surname) {
         this.name = name;
+        this.surname = surname;
     }
 
     // Auxiliar methods
@@ -33,23 +30,15 @@ public class Actor {
             return false;
         }
         Actor actor = (Actor) o;
-        return this.id == actor.id;
+        return this.name == actor.name;
     }
 
     @Override
     public int hashCode() {
-        return Long.hashCode(id);
+        return this.name.hashCode();
     }
 
     // Getters and Setters
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return this.name;
     }
@@ -57,4 +46,13 @@ public class Actor {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getSurname() {
+        return this.surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
 }

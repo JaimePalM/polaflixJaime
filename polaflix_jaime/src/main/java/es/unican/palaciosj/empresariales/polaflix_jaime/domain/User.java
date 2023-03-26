@@ -7,16 +7,19 @@ import java.util.TreeSet;
 
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 /**
  * User class
  */
 @Entity
+@Table(name = "users")
 public class User {
     
     // Atributes
@@ -24,7 +27,7 @@ public class User {
     private String email;
     private String username;
     private String password;
-    @OneToOne
+    @Embedded
     private BankAccount bankAccount;
     private boolean fixedFee;
     @ManyToMany
@@ -41,6 +44,9 @@ public class User {
     private Set<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
+    public User() {
+    }
+
     public User(String email, String username, String password, BankAccount bankAccount, boolean fixedFee) {
         this.email = email;
         this.username = username;
@@ -59,11 +65,12 @@ public class User {
         this.pendingSeries.add(serie);
     }
 
-    // Mark last chapter viewed for a serie
-    public void markLastChapterViewed(Serie serie, Chapter chapter) {
+    // Mark chapter as viewed for a serie
+    public void markChapterViewed(Serie serie, Chapter chapter) {
         this.lastChapterView.put(serie, chapter);
         this.serieViews.get(serie).markChapterViewed(chapter);
     }
+
 
     @Override
     public boolean equals(Object o) {

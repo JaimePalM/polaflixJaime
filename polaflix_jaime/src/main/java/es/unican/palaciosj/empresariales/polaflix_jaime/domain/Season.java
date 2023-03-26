@@ -4,16 +4,17 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 /**
  * Season class
  */
-@Embeddable
+@Entity
 public class Season implements Comparable<Season>{
 
     // Atributes
@@ -23,9 +24,11 @@ public class Season implements Comparable<Season>{
     private int number;
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
     private Set<Chapter> chapters = new TreeSet<Chapter>();
+    @ManyToOne
     private Serie serie;
 
     // Constructor
+    public Season() { }
     public Season(int number, Serie serie) {
         this.number = number;
         this.serie = serie;
@@ -34,6 +37,15 @@ public class Season implements Comparable<Season>{
     // Auxiliar methods
     public void addChapter(Chapter chapter) {
         this.chapters.add(chapter);
+    }
+
+    public Chapter getChapter(int number) {
+        for (Chapter chapter : this.chapters) {
+            if (chapter.getNumber() == number) {
+                return chapter;
+            }
+        }
+        return null;
     }
     
     // Override methods

@@ -1,5 +1,7 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -7,9 +9,11 @@ import org.springframework.stereotype.Component;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Creator;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Season;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
+import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.CategoryRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
 
@@ -20,12 +24,24 @@ public class AppFeeder implements CommandLineRunner {
 	protected UserRepository ur;
 	@Autowired
 	protected SerieRepository sr;
+	@Autowired
+	protected CategoryRepository cr;
 	
 	@Override
 	public void run(String... args) throws Exception {
 		feedUsers();
+		feedCategories();
 		feedSeries();
 		
+		// Test mark chapter as viewed
+		/*/
+		User paco = ur.findByEmail("paco23@polaflix.com");
+		List<Serie> dList = sr.findByInitial('D');
+		Serie dark = dList.get(0);
+
+		paco.markChapterViewed(dark, dark.getSeason(1).getChapter(1));
+		*/
+
 		//testViajeRepository();
 		
 		System.out.println("Application feeded");
@@ -39,12 +55,23 @@ public class AppFeeder implements CommandLineRunner {
 		ur.save(u1);
 		ur.save(u2);
 	}
+
+	private void feedCategories() {
+		Category gold = new Category("Gold", 1.5);
+		Category silver = new Category("Silver", 1.0);
+		Category standard = new Category("Standard", 0.5);
+		cr.save(gold);
+		cr.save(silver);
+		cr.save(standard);
+	}
 	
 	private void feedSeries() {
-        // Create categories and series
-        Category gold = new Category("Gold", 1.5);
-		Category standard = new Category("Standard", 0.5);
-		Serie s1 = new Serie("The Big Bang Theory", "Comedy", standard);
+        // Get categories
+		Category gold = cr.findByName("Gold");
+		Category standard = cr.findByName("Standard");
+
+		// Create series
+		Serie s1 = new Serie("Breaking Bad", "Drug dealer", standard);
         Serie s2 = new Serie("Dark", "Time travel", gold);
 
         // Add seasons to series
@@ -52,19 +79,26 @@ public class AppFeeder implements CommandLineRunner {
         Season s2s1 = new Season(1, s2);
         s1.addSeason(s1s1);
         s2.addSeason(s2s1);
-
+		
         // Add chapters to seasons
-        Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter", "http://www.polaflix.com/watch?v=1");
-        Chapter s1s1c2 = new Chapter(2, "The Big Bran Hypothesis", "Second chapter", "http://www.polaflix.com/watch?v=2");
-        Chapter s2s1c1 = new Chapter(1, "Secrets", "First chapter", "http://www.polaflix.com/watch?v=3");
-        Chapter s2s1c2 = new Chapter(2, "Lies", "Second chapter", "http://www.polaflix.com/watch?v=4");
+        Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter", "http://www.polaflix.com/watch?v=1", s1s1);
+        Chapter s1s1c2 = new Chapter(2, "Cat's in the bag", "Second chapter", "http://www.polaflix.com/watch?v=2", s1s1);	
+        Chapter s2s1c1 = new Chapter(1, "Secrets", "First chapter", "http://www.polaflix.com/watch?v=3", s2s1);
+        Chapter s2s1c2 = new Chapter(2, "Lies", "Second chapter", "http://www.polaflix.com/watch?v=4", s2s1);
         s1s1.addChapter(s1s1c1);
         s1s1.addChapter(s1s1c2);
         s2s1.addChapter(s2s1c1);
-        s2s1.addChapter(s2s1c2);
+        s2s1.addChapter(s2s1c2);		
+
+		// Add creators to series
+		Creator c1s1 = new Creator("Vince", "Gilligan");
+		Creator c1s2 = new Creator("Baran", "Bo Odar");
+		s1.addCreator(c1s1);
+		s2.addCreator(c1s2);
 
 		sr.save(s1);
-        sr.save(s2);
+		sr.save(s2);
+		
 	}
 
 	private void testViajeRepository() {

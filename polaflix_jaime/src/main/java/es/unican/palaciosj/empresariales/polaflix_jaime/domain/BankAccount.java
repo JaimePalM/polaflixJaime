@@ -1,8 +1,6 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Id;
-
 /**
  * Bank account class
  */
@@ -10,10 +8,11 @@ import jakarta.persistence.Id;
 public class BankAccount {
 
     // Atributes
-    @Id
     private String IBAN;
 
     // Constructor
+    public BankAccount() { }
+    
     public BankAccount(String IBAN) {
         this.IBAN = IBAN;
     }

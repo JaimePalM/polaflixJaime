@@ -1,6 +1,5 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,22 +17,21 @@ public class Chapter implements Comparable<Chapter> {
     private String title;
     private String description;
     private String url;
-    @ElementCollection
     @ManyToOne
     private Season season;
 
     // Constructor
-    public Chapter(int number, String title, String description, String url) {
+    public Chapter() { }
+    public Chapter(int number, String title, String description, String url, Season season) {
         this.number = number;
         this.title = title;
         this.description = description;
         this.url = url;
+        this.season = season;
     }
 
     // Auxiliar methods
-    public void play() {
-        System.out.println("Playing chapter " + this.number + "...");
-    }
+
 
     // Override methods
     @Override
@@ -66,15 +64,12 @@ public class Chapter implements Comparable<Chapter> {
 
     
     @Override
-    public int compareTo(Chapter o) {
-        int result = (int) (this.season.getSerie().getId() - o.season.getSerie().getId());
-        if (result == 0) {
-            result = this.season.getNumber() - o.season.getNumber();
-            if (result == 0) {
-                result = this.number - o.number;
-            }
+    public int compareTo(Chapter c) {
+        if (this.season.getNumber() == c.getSeason().getNumber()) {
+            return this.number - c.getNumber();
+        } else {
+            return this.season.getNumber() - c.getSeason().getNumber();
         }
-        return result;
     }
 
     // Getters and Setters
