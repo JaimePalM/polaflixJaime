@@ -1,6 +1,5 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -81,10 +80,10 @@ public class AppFeeder implements CommandLineRunner {
         s2.addSeason(s2s1);
 		
         // Add chapters to seasons
-        Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter", "http://www.polaflix.com/watch?v=1", s1s1);
-        Chapter s1s1c2 = new Chapter(2, "Cat's in the bag", "Second chapter", "http://www.polaflix.com/watch?v=2", s1s1);	
-        Chapter s2s1c1 = new Chapter(1, "Secrets", "First chapter", "http://www.polaflix.com/watch?v=3", s2s1);
-        Chapter s2s1c2 = new Chapter(2, "Lies", "Second chapter", "http://www.polaflix.com/watch?v=4", s2s1);
+        Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter", "http://www.polaflix.com/breaking-bad/season-1/chapter-1", s1s1);
+        Chapter s1s1c2 = new Chapter(2, "Cat's in the bag", "Second chapter", "http://www.polaflix.com/breaking-bad/season-1/chapter-2", s1s1);
+        Chapter s2s1c1 = new Chapter(1, "Secrets", "First chapter", "http://www.polaflix.com/dark/season-1/chapter-1", s2s1);
+        Chapter s2s1c2 = new Chapter(2, "Lies", "Second chapter", "http://www.polaflix.com/dark/season-1/chapter-2", s2s1);
         s1s1.addChapter(s1s1c1);
         s1s1.addChapter(s1s1c2);
         s2s1.addChapter(s2s1c1);

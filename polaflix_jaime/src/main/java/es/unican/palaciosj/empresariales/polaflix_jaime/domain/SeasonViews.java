@@ -1,5 +1,6 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -15,5 +16,10 @@ public class SeasonViews {
     private long id;
     @ManyToOne
     private Views views;
-    private List<Boolean> chapter;
+    private List<Boolean> chapters;
+
+    // Constructor
+    public SeasonViews(int numChapters) {
+        this.chapters = new ArrayList<Boolean>(numChapters);
+    }
 }

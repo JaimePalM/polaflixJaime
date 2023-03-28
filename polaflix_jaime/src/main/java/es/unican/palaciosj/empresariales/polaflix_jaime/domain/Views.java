@@ -1,5 +1,6 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,13 +27,13 @@ public class Views implements Comparable<Views> {
     public Views(Serie serie) {
         this.serie = serie;
         // Inicialice array with seasons as rows and chapters as columns
+        this.serieChapterViews = new ArrayList<SeasonViews>();
         Iterator<Season> it = serie.getSeasons().iterator();
-        int seasons = serie.getSeasons().size();
         int chapters = 0;
         while (it.hasNext()) {
-            chapters = Math.max(chapters, it.next().getChapters().size());
+            chapters = it.next().getChapters().size();
+            this.serieChapterViews.add(new SeasonViews(chapters));
         }
-        //this.serieChapterViews = new boolean[seasons][chapters];
     }
 
     // Auxiliar methods
