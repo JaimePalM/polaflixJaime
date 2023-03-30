@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ public class Views implements Comparable<Views> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @OneToMany
+    @ElementCollection
     private List<SeasonViews> serieChapterViews;
     @OneToOne
     private Serie serie;
@@ -26,7 +27,7 @@ public class Views implements Comparable<Views> {
     // Constructor
     public Views(Serie serie) {
         this.serie = serie;
-        // Inicialice array with seasons as rows and chapters as columns
+        // Initialize array with seasons as rows and chapters as columns
         this.serieChapterViews = new ArrayList<SeasonViews>();
         Iterator<Season> it = serie.getSeasons().iterator();
         int chapters = 0;

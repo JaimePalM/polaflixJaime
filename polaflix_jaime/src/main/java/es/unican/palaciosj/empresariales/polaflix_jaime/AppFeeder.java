@@ -1,6 +1,8 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -31,16 +33,28 @@ public class AppFeeder implements CommandLineRunner {
 		feedUsers();
 		feedCategories();
 		feedSeries();
-		
-		// Test mark chapter as viewed
-		/*/
-		User paco = ur.findByEmail("paco23@polaflix.com");
+
+		// Test add serie to pending list
+		User paco = ur.findByUsername("Paco");
 		List<Serie> dList = sr.findByInitial('D');
-		Serie dark = dList.get(0);
+		Serie dark = dList.get(0);	
+		paco.addSerieToPending(dark);
+		ur.save(paco);
 
-		paco.markChapterViewed(dark, dark.getSeason(1).getChapter(1));
-		*/
+		paco = ur.findByEmail("paco23@polaflix.com");
+		if (paco == null){
+			System.out.println("Paco es nulo\n");
+		}
+		 
+		// Test mark chapter as viewed
+		
+		User lola = ur.findByUsername("Lola");
+		List<Serie> bList = sr.findByInitial('B');
+		Serie breakingBad = bList.get(0);
 
+		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
+		ur.save(lola);
+		
 		//testViajeRepository();
 		
 		System.out.println("Application feeded");

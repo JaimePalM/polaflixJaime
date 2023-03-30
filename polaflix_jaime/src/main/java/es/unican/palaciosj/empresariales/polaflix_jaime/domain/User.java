@@ -5,10 +5,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-
+import jakarta.annotation.Generated;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
@@ -24,17 +28,20 @@ public class User {
     
     // Atributes
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @Column(unique = true)
     private String email;
     private String username;
     private String password;
     @Embedded
     private BankAccount bankAccount;
     private boolean fixedFee;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Serie> pendingSeries = new TreeSet<Serie>();
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Serie> startedSeries = new TreeSet<Serie>();
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Serie> finishedSeries = new TreeSet<Serie>();
     @ManyToMany
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
@@ -44,9 +51,7 @@ public class User {
     private Set<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
-    public User() {
-    }
-
+    public User() { }
     public User(String email, String username, String password, BankAccount bankAccount, boolean fixedFee) {
         this.email = email;
         this.username = username;
@@ -69,6 +74,16 @@ public class User {
     public void markChapterViewed(Serie serie, Chapter chapter) {
         this.lastChapterView.put(serie, chapter);
         this.serieViews.get(serie).markChapterViewed(chapter);
+        // If serie is not in any list, add it to started list
+        if (!this.pendingSeries.contains(serie) && !this.finishedSeries.contains(serie)) {
+            this.startedSeries.add(serie);
+        }
+        // If serie is in pending list, move it to started list
+        if (this.pendingSeries.contains(serie)) {
+            this.pendingSeries.remove(serie);
+            this.startedSeries.add(serie);
+        }
+
     }
 
 
