@@ -39,7 +39,7 @@ public class Views implements Comparable<Views> {
 
     // Auxiliar methods
     public void markChapterViewed(Chapter chapter) {
-        //this.serieChapterViews[chapter.getSeason().getNumber()][chapter.getNumber()] = true;
+        this.serieChapterViews.get(chapter.getSeason().getNumber()).markChapterViewed(chapter.getNumber());
     }
 
     // Override methods

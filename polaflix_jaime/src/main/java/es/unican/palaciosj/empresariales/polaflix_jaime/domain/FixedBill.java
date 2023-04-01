@@ -11,8 +11,9 @@ public class FixedBill extends Bill {
     private static double totalAmount = 20;
 
     // Constructor
-    public FixedBill(Date month) {
-        super(month);
+    public FixedBill() { }
+    public FixedBill(User user, Date month) {
+        super(user, month);
     }
 
     // Getters and Setters

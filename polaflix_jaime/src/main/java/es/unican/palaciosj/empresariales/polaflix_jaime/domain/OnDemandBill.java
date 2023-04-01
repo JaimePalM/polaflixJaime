@@ -10,8 +10,9 @@ public class OnDemandBill extends Bill {
     // Atributes
 
     // Constructor
-    public OnDemandBill(Date month) {
-        super(month);
+    public OnDemandBill() { }
+    public OnDemandBill(User user, Date month) {
+        super(user, month);
     }
 
     // Auxiliar methods

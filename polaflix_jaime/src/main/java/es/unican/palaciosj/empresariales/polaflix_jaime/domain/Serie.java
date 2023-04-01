@@ -78,7 +78,7 @@ public class Serie implements Comparable<Serie> {
             return false;
         }
         Serie s = (Serie) o;
-        return this.title.equals(s.getDescription()) && this.description.equals(s.getDescription());
+        return this.id == s.getId();
     }
 
     @Override

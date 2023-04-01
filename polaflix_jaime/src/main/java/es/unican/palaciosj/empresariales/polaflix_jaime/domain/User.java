@@ -1,5 +1,7 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -47,7 +49,7 @@ public class User {
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
     @OneToMany
     private Map<Serie, Views> serieViews = new HashMap<Serie, Views>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
@@ -83,7 +85,24 @@ public class User {
             this.pendingSeries.remove(serie);
             this.startedSeries.add(serie);
         }
+        // If user has not fixed fee, bill the chapter
+        if (!this.fixedFee) {
+            // Get last bill
+            Bill lastBill = null;
+            for (Bill bill : this.bills) {
+                lastBill = bill;
+            }
+            LocalDate date = LocalDate.now();
+            Date today = Date.valueOf(date);
+            ChapterView chapterView = new ChapterView(chapter, today, serie.getCategory().getPrice());
+            lastBill.addChapterView(chapterView);
+        }
 
+    }
+
+    // Add bill to user
+    public void addBill(Bill bill) {
+        this.bills.add(bill);
     }
 
 
@@ -95,7 +114,7 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return this.username.equals(user.getUsername()) && this.password.equals(user.getPassword());
+        return this.email.equals(user.email);
     }
 
     @Override

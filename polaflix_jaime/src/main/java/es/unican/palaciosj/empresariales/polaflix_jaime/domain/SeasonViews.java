@@ -14,4 +14,18 @@ public class SeasonViews {
     public SeasonViews(int numChapters) {
         this.chapters = new ArrayList<Boolean>(numChapters);
     }
+
+    // Auxiliar methods
+    public void markChapterViewed(int chapter) {
+        this.chapters.set(chapter, true);
+    }
+
+    // Getters and setters
+    public List<Boolean> getChapters() {
+        return this.chapters;
+    }
+
+    public void setChapters(List<Boolean> chapters) {
+        this.chapters = chapters;
+    }
 }

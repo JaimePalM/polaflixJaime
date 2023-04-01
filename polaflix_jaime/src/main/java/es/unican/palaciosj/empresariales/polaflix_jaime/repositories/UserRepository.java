@@ -10,7 +10,7 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
  * User repository with CRUD operations
  */
 @Repository("userRepo")
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
         
     User findByUsername(String username);
 

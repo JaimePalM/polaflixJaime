@@ -38,11 +38,16 @@ public class Bill implements Comparable<Bill>{
     private Set<ChapterView> monthViews = new TreeSet<ChapterView>();
 
     // Constructor
-    public Bill(Date month) {
+    public Bill() { }
+    public Bill(User user, Date month) {
+        this.user = user;
         this.monthBilled = month;
     }
 
     // Auxiliar methods
+    public void addChapterView(ChapterView chapterView) {
+        this.monthViews.add(chapterView);
+    }
 
     // Override methods
     @Override

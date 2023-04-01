@@ -1,6 +1,7 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime;
 
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Creator;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.OnDemandBill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Season;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
@@ -33,6 +36,7 @@ public class AppFeeder implements CommandLineRunner {
 		feedUsers();
 		feedCategories();
 		feedSeries();
+		feedBills();
 
 		// Test add serie to pending list
 		User paco = ur.findByUsername("Paco");
@@ -44,17 +48,18 @@ public class AppFeeder implements CommandLineRunner {
 		paco = ur.findByEmail("paco23@polaflix.com");
 		if (paco == null){
 			System.out.println("Paco es nulo\n");
+		} else {
+			System.out.println("Paco no es nulo\n");
 		}
 		 
 		// Test mark chapter as viewed
-		
+		/*
 		User lola = ur.findByUsername("Lola");
 		List<Serie> bList = sr.findByInitial('B');
-		Serie breakingBad = bList.get(0);
-
+		Serie breakingBad = bList.get(0); 
 		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
 		ur.save(lola);
-		
+ 		*/
 		//testViajeRepository();
 		
 		System.out.println("Application feeded");
@@ -112,6 +117,22 @@ public class AppFeeder implements CommandLineRunner {
 		sr.save(s1);
 		sr.save(s2);
 		
+	}
+
+	private void feedBills() {
+		// Get users
+		User paco = ur.findByUsername("Paco");
+		User lola = ur.findByUsername("Lola");
+
+		// Create bills for april
+		long april = 1680300000000L;
+		Bill b4Paco = new OnDemandBill(paco, new Date(april));
+		Bill b4Lola = new OnDemandBill(lola, new Date(april));
+		paco.addBill(b4Paco);
+		lola.addBill(b4Lola);
+
+		ur.save(paco);
+		ur.save(lola);
 	}
 
 	private void testViajeRepository() {
