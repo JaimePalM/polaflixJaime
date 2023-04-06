@@ -24,6 +24,7 @@ public class ChapterView implements Comparable<ChapterView> {
     private double price;
 
     // Constructor
+    public ChapterView() { }
     public ChapterView(Chapter chapter, Date dateView, double price) {
         this.chapter = chapter;
         this.dateView = dateView;

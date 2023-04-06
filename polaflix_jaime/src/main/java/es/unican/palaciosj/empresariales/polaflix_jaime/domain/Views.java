@@ -9,10 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.transaction.Transactional;
 
 @Entity
+@Transactional
 public class Views implements Comparable<Views> {
     
     // Atributes
@@ -25,6 +26,7 @@ public class Views implements Comparable<Views> {
     private Serie serie;
 
     // Constructor
+    public Views() { }
     public Views(Serie serie) {
         this.serie = serie;
         // Initialize array with seasons as rows and chapters as columns
@@ -33,13 +35,18 @@ public class Views implements Comparable<Views> {
         int chapters = 0;
         while (it.hasNext()) {
             chapters = it.next().getChapters().size();
-            this.serieChapterViews.add(new SeasonViews(chapters));
+            SeasonViews seasonViews = new SeasonViews(chapters);
+            this.serieChapterViews.add(seasonViews);
+            System.out.println("seasonViews size: " + seasonViews.getChapters().size());
         }
+        System.out.println("Seasons: " + this.serieChapterViews.size() + " Chapters: " + chapters);
     }
 
     // Auxiliar methods
     public void markChapterViewed(Chapter chapter) {
-        this.serieChapterViews.get(chapter.getSeason().getNumber()).markChapterViewed(chapter.getNumber());
+        int seasonIndex = chapter.getSeason().getNumber() - 1;
+        int chapterIndex = chapter.getNumber() - 1;
+        this.serieChapterViews.get(seasonIndex).markChapterViewed(chapterIndex);
     }
 
     // Override methods

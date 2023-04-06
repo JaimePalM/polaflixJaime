@@ -5,9 +5,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +34,7 @@ public class Bill implements Comparable<Bill>{
     @JoinColumn(name = "user_id")
     private User user;
     @ElementCollection
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ChapterView> monthViews = new TreeSet<ChapterView>();
 
     // Constructor
@@ -42,11 +42,13 @@ public class Bill implements Comparable<Bill>{
     public Bill(User user, Date month) {
         this.user = user;
         this.monthBilled = month;
+        this.totalAmount = 0;
     }
 
     // Auxiliar methods
     public void addChapterView(ChapterView chapterView) {
         this.monthViews.add(chapterView);
+        this.totalAmount += chapterView.getPrice();
     }
 
     // Override methods

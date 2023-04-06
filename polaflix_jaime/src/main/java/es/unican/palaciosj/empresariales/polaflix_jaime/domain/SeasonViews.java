@@ -11,13 +11,23 @@ public class SeasonViews {
     private List<Boolean> chapters;
 
     // Constructor
+    public SeasonViews() { }
     public SeasonViews(int numChapters) {
         this.chapters = new ArrayList<Boolean>(numChapters);
+        for (int i = 0; i < numChapters; i++) {
+            this.chapters.add(false);
+        }
     }
 
     // Auxiliar methods
     public void markChapterViewed(int chapter) {
-        this.chapters.set(chapter, true);
+        // Try to mark chapter as viewed if is out of bounds, increase array size
+        try {
+            this.chapters.set(chapter, true);
+        } catch (IndexOutOfBoundsException e) {
+            ((ArrayList<Boolean>) this.chapters).ensureCapacity(chapter + 1);
+            this.chapters.set(chapter, true);
+        }
     }
 
     // Getters and setters

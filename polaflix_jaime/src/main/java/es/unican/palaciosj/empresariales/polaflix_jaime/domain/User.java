@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -18,7 +17,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -45,9 +43,9 @@ public class User {
     private Set<Serie> startedSeries = new TreeSet<Serie>();
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Serie> finishedSeries = new TreeSet<Serie>();
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Map<Serie, Views> serieViews = new HashMap<Serie, Views>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Bill> bills = new TreeSet<Bill>();
@@ -74,8 +72,15 @@ public class User {
 
     // Mark chapter as viewed for a serie
     public void markChapterViewed(Serie serie, Chapter chapter) {
+        // Save last chapter viewed for serie
         this.lastChapterView.put(serie, chapter);
-        this.serieViews.get(serie).markChapterViewed(chapter);
+        // Mark chapter as viewed
+        Views view = this.serieViews.get(serie);
+        if (view == null) {
+            view = new Views(serie);
+            this.serieViews.put(serie, view);
+        }
+        view.markChapterViewed(chapter);
         // If serie is not in any list, add it to started list
         if (!this.pendingSeries.contains(serie) && !this.finishedSeries.contains(serie)) {
             this.startedSeries.add(serie);
@@ -85,19 +90,16 @@ public class User {
             this.pendingSeries.remove(serie);
             this.startedSeries.add(serie);
         }
-        // If user has not fixed fee, bill the chapter
-        if (!this.fixedFee) {
-            // Get last bill
-            Bill lastBill = null;
-            for (Bill bill : this.bills) {
-                lastBill = bill;
-            }
-            LocalDate date = LocalDate.now();
-            Date today = Date.valueOf(date);
-            ChapterView chapterView = new ChapterView(chapter, today, serie.getCategory().getPrice());
-            lastBill.addChapterView(chapterView);
+        // Bill the chapter
+        // Get last bill
+        Bill lastBill = null;
+        for (Bill bill : this.bills) {
+            lastBill = bill;
         }
-
+        LocalDate date = LocalDate.now();
+        Date today = Date.valueOf(date);
+        ChapterView chapterView = new ChapterView(chapter, today, serie.getCategory().getPrice());
+        lastBill.addChapterView(chapterView);
     }
 
     // Add bill to user

@@ -34,9 +34,9 @@ public class AppFeeder implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		feedUsers();
+		feedBills();
 		feedCategories();
 		feedSeries();
-		feedBills();
 
 		// Test add serie to pending list
 		User paco = ur.findByUsername("Paco");
@@ -59,9 +59,8 @@ public class AppFeeder implements CommandLineRunner {
 		Serie breakingBad = bList.get(0); 
 		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
 		ur.save(lola);
- 		*/
-		//testViajeRepository();
-		
+		 */
+
 		System.out.println("Application feeded");
 	}
 
@@ -116,7 +115,11 @@ public class AppFeeder implements CommandLineRunner {
 
 		sr.save(s1);
 		sr.save(s2);
-		
+
+		User lola = ur.findByUsername("Lola");
+		lola.markChapterViewed(s1, s1.getSeason(1).getChapter(1));
+		ur.save(lola);
+		sr.save(s1);
 	}
 
 	private void feedBills() {
