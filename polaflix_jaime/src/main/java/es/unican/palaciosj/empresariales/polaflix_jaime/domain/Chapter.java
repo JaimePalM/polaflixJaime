@@ -1,5 +1,7 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +20,7 @@ public class Chapter implements Comparable<Chapter> {
     private String description;
     private String url;
     @ManyToOne
+    @JsonBackReference
     private Season season;
 
     // Constructor

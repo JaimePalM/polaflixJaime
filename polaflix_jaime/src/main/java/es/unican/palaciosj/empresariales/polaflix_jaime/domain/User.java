@@ -5,7 +5,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,6 +36,7 @@ public class User {
     @Column(unique = true)
     private String email;
     private String username;
+    @JsonIgnore
     private String password;
     @Embedded
     private BankAccount bankAccount;
@@ -48,7 +52,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Map<Serie, Views> serieViews = new HashMap<Serie, Views>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Bill> bills = new TreeSet<Bill>();
+    private SortedSet<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
     public User() { }
@@ -93,8 +97,19 @@ public class User {
         // Bill the chapter
         // Get last bill
         Bill lastBill = null;
-        for (Bill bill : this.bills) {
-            lastBill = bill;
+        if (this.bills.isEmpty()) {
+            // Get first day of current month
+            LocalDate date = LocalDate.now();
+            date = date.withDayOfMonth(1);
+            Date firstDay = Date.valueOf(date);
+            if (this.fixedFee) {
+                lastBill = new FixedBill(this, firstDay);
+            } else {
+                lastBill = new OnDemandBill(this, firstDay);
+            }
+            this.bills.add(lastBill);
+        } else { 
+            lastBill = this.bills.last();
         }
         LocalDate date = LocalDate.now();
         Date today = Date.valueOf(date);
@@ -209,7 +224,7 @@ public class User {
         return this.bills;
     }
 
-    public void setBills(Set<Bill> bills) {
+    public void setBills(SortedSet<Bill> bills) {
         this.bills = bills;
     }
 

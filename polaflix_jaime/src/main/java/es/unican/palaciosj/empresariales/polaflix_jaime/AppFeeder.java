@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Actor;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
@@ -34,7 +35,7 @@ public class AppFeeder implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		feedUsers();
-		feedBills();
+		//feedBills();
 		feedCategories();
 		feedSeries();
 
@@ -113,6 +114,16 @@ public class AppFeeder implements CommandLineRunner {
 		s1.addCreator(c1s1);
 		s2.addCreator(c1s2);
 
+		// Add actors to series
+		Actor a1s1 = new Actor("Bryan", "Cranston");
+		Actor a2s1 = new Actor("Aaron", "Paul");
+		Actor a1s2 = new Actor("Louis", "Hofmann");
+		Actor a2s2 = new Actor("Lisa", "Vicari");
+		s1.addActor(a1s1);
+		s1.addActor(a2s1);
+		s2.addActor(a1s2);
+		s2.addActor(a2s2);
+
 		sr.save(s1);
 		sr.save(s2);
 
@@ -121,7 +132,7 @@ public class AppFeeder implements CommandLineRunner {
 		ur.save(lola);
 		sr.save(s1);
 	}
-
+	/*
 	private void feedBills() {
 		// Get users
 		User paco = ur.findByUsername("Paco");
@@ -137,9 +148,10 @@ public class AppFeeder implements CommandLineRunner {
 		ur.save(paco);
 		ur.save(lola);
 	}
-
+	*/
+	
+	/*
 	private void testViajeRepository() {
-		/*
 		SimpleDateFormat dateParser = new SimpleDateFormat("dd-MM-yyyy");
 		Date sample = null;
 		try {
@@ -173,8 +185,8 @@ public class AppFeeder implements CommandLineRunner {
 //		for(Usuario u : usuarios) {
 //			System.out.println("Usuario " + u.getNombre() + ":" + u.getEmail());
 //		}
-*/
 		
 	}
+	*/
 
 }

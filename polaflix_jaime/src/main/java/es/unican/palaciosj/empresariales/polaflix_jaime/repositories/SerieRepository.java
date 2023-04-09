@@ -12,8 +12,6 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
  */
 @Repository("serieRepo")
 public interface SerieRepository extends JpaRepository<Serie, Long>{
-
-    Serie findById(long id);
     
     List<Serie> findByInitial(char initial);
 

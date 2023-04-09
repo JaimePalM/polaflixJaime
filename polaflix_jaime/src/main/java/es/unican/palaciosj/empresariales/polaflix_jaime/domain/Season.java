@@ -3,6 +3,9 @@ package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,8 +26,10 @@ public class Season implements Comparable<Season>{
     private long id;
     private int number;
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Chapter> chapters = new TreeSet<Chapter>();
     @ManyToOne
+    @JsonBackReference
     private Serie serie;
 
     // Constructor

@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -29,6 +31,7 @@ public class Serie implements Comparable<Serie> {
     @OneToOne
     private Category category;
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Season> seasons = new TreeSet<Season>();
     @ElementCollection
     private Set<Creator> creators = new HashSet<Creator>();
