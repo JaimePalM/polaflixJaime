@@ -2,6 +2,7 @@ package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.sql.Date;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,12 +12,12 @@ import jakarta.persistence.ManyToOne;
 /**
  * Chapter view class
  */
-@Entity
+@Embeddable
 public class ChapterView implements Comparable<ChapterView> {
     
     // Attributes
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ManyToOne
     private Chapter chapter;

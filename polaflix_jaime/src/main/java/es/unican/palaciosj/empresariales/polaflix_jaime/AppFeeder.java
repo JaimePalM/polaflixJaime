@@ -64,12 +64,12 @@ public class AppFeeder implements CommandLineRunner {
 
 		System.out.println("Application feeded");
 	}
-
+	
 	private void feedUsers() {
         BankAccount b1 = new BankAccount("ES12 3456 7890 1234 5678 9012");
         BankAccount b2 = new BankAccount("ES12 3456 7890 1234 5678 9013");
 	    User u1 = new User("paco23@polafix.com","Paco","paco123", b1, false);
-		User u2 = new User("lola43@polaflix.com","Lola","lola123", b2, false);
+		User u2 = new User("lola43@polaflix.com","Lola","lola123", b2, true);
 		ur.save(u1);
 		ur.save(u2);
 	}
@@ -130,6 +130,9 @@ public class AppFeeder implements CommandLineRunner {
 		User lola = ur.findByUsername("Lola");
 		lola.markChapterViewed(s1, s1.getSeason(1).getChapter(1));
 		ur.save(lola);
+		User paco = ur.findByUsername("Paco");
+		paco.markChapterViewed(s2, s2.getSeason(1).getChapter(1));
+		ur.save(paco);
 		sr.save(s1);
 	}
 	/*

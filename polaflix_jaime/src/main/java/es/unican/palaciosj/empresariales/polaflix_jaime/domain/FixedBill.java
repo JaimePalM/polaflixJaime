@@ -8,16 +8,13 @@ import jakarta.persistence.Entity;
 public class FixedBill extends Bill {
     
     // Atributes
-    private static double totalAmount = 20;
+    private final double FIXED_PRICE = 20;
 
     // Constructor
     public FixedBill() { }
     public FixedBill(User user, Date month) {
         super(user, month);
+        setTotalAmount(FIXED_PRICE);
     }
 
-    // Getters and Setters
-    public double getTotalAmount() {
-        return FixedBill.totalAmount;
-    }
 }

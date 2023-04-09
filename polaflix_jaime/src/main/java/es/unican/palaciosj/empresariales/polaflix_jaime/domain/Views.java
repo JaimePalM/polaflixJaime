@@ -10,10 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import jakarta.transaction.Transactional;
 
 @Entity
-@Transactional
 public class Views implements Comparable<Views> {
     
     // Atributes
@@ -37,9 +35,7 @@ public class Views implements Comparable<Views> {
             chapters = it.next().getChapters().size();
             SeasonViews seasonViews = new SeasonViews(chapters);
             this.serieChapterViews.add(seasonViews);
-            System.out.println("seasonViews size: " + seasonViews.getChapters().size());
         }
-        System.out.println("Seasons: " + this.serieChapterViews.size() + " Chapters: " + chapters);
     }
 
     // Auxiliar methods

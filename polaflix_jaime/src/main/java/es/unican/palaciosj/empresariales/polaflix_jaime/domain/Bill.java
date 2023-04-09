@@ -34,7 +34,7 @@ public class Bill implements Comparable<Bill>{
     @JoinColumn(name = "user_id")
     private User user;
     @ElementCollection
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ChapterView> monthViews = new TreeSet<ChapterView>();
 
     // Constructor
@@ -48,7 +48,9 @@ public class Bill implements Comparable<Bill>{
     // Auxiliar methods
     public void addChapterView(ChapterView chapterView) {
         this.monthViews.add(chapterView);
-        this.totalAmount += chapterView.getPrice();
+        if (this instanceof OnDemandBill) {
+            this.totalAmount += chapterView.getPrice();
+        }
     }
 
     // Override methods
