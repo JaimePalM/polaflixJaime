@@ -1,7 +1,9 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,12 +17,15 @@ public class Chapter implements Comparable<Chapter> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @JsonView({JsonViews.SerieView.class, JsonViews.BillView.class})
     private int number;
+    @JsonView(JsonViews.SerieView.class)
     private String title;
     private String description;
     private String url;
     @ManyToOne
     @JsonBackReference
+    @JsonView(JsonViews.BillView.class)
     private Season season;
 
     // Constructor

@@ -5,15 +5,17 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 /**
  * Serie class
@@ -25,13 +27,15 @@ public class Serie implements Comparable<Serie> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @JsonView({JsonViews.UserView.class, JsonViews.SerieView.class, JsonViews.BillView.class})
     private String title;
     private String description;
     private char initial;
-    @OneToOne
+    @ManyToOne
     private Category category;
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonView(JsonViews.SerieView.class)
     private Set<Season> seasons = new TreeSet<Season>();
     @ElementCollection
     private Set<Creator> creators = new HashSet<Creator>();

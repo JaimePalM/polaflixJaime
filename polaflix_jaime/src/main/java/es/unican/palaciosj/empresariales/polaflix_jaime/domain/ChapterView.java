@@ -2,11 +2,10 @@ package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 /**
@@ -20,8 +19,11 @@ public class ChapterView implements Comparable<ChapterView> {
     //@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ManyToOne
+    @JsonView(JsonViews.BillView.class)
     private Chapter chapter;
+    @JsonView(JsonViews.BillView.class)
     private Date dateView;
+    @JsonView(JsonViews.BillView.class)
     private double price;
 
     // Constructor

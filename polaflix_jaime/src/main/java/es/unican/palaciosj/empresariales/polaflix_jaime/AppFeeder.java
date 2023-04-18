@@ -131,7 +131,7 @@ public class AppFeeder implements CommandLineRunner {
 		lola.markChapterViewed(s1, s1.getSeason(1).getChapter(1));
 		ur.save(lola);
 		User paco = ur.findByUsername("Paco");
-		paco.markChapterViewed(s2, s2.getSeason(1).getChapter(1));
+		paco.markChapterViewed(s2, s2.getSeason(1).getChapter(2));
 		ur.save(paco);
 		sr.save(s1);
 	}

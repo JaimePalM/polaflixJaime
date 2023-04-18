@@ -8,14 +8,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
+@RequestMapping(value = "users")
 public class UserRestController {
     
     private UserRepository ur;
@@ -28,13 +34,14 @@ public class UserRestController {
     }
 
     // Get all users
-    @GetMapping(value = "users")
+    @GetMapping()
     public Iterable<User> getUsers() {
         return ur.findAll();
     }
 
     // Get user by id
-    @GetMapping(value = "users/{id}")
+    @GetMapping(value = "/{id}")
+    @JsonView(JsonViews.UserView.class)
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         Optional<User> u = ur.findById(id);
         ResponseEntity<User> result;
@@ -49,7 +56,7 @@ public class UserRestController {
     }
 
     // Add user to database by atributtes
-    @PostMapping(value = "users/new/{email}/{username}/{password}/{IBAN}/{fixedFee}")
+    @PostMapping(value = "/new/{email}/{username}/{password}/{IBAN}/{fixedFee}")
     public ResponseEntity<User> addUser(@PathVariable("email") String email, @PathVariable("username") String username, 
                                         @PathVariable("password") String password, @PathVariable("IBAN") String IBAN, 
                                         @PathVariable("fixedFee") boolean fixedFee) {
@@ -68,7 +75,7 @@ public class UserRestController {
     }
 
     // Add serie to user pending list
-    @PostMapping(value = "users/{id}/add-serie-pending/{idSerie}")
+    @PostMapping(value = "/{id}/add-serie-pending/{idSerie}")
     public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
         ResponseEntity<User> result;
         Optional<User> u = ur.findById(id);
@@ -85,4 +92,56 @@ public class UserRestController {
         return result;
     }
     
+
+    // Mark chapter as viewed
+    @PostMapping(value = "/{id}/mark-chapter-viewed/{idSerie}/{numSeason}/{numChapter}")
+    public ResponseEntity<User> markChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie, 
+                                                  @PathVariable("numSeason") int numSeason, @PathVariable("numChapter") int numChapter) {
+        ResponseEntity<User> result;
+        Optional<User> u = ur.findById(id);
+        Optional<Serie> s = sr.findById(idSerie);
+
+        if (u.isPresent() && s.isPresent()) {
+            Chapter c = s.orElseThrow().getSeason(numSeason).getChapter(numChapter);
+            u.get().markChapterViewed(s.orElseThrow(), c);
+            ur.save(u.get());
+            result = ResponseEntity.ok(u.get());
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+    }
+
+    // Get last chapter viewed for a given serie
+    @GetMapping(value = "/{id}/last-chapter-viewed/{idSerie}")
+    public ResponseEntity<Chapter> getLastChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
+        ResponseEntity<Chapter> result;
+        Optional<User> u = ur.findById(id);
+        Optional<Serie> s = sr.findById(idSerie);
+
+        if (u.isPresent() && s.isPresent()) {
+            result = ResponseEntity.ok(u.get().getLastViewedChapter(s.orElseThrow()));
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+    }
+
+    // Get bills
+    @GetMapping(value = "/{id}/bills")
+    @JsonView(JsonViews.BillView.class)
+    public ResponseEntity<Iterable<Bill>> getBills(@PathVariable("id") long id) {
+        ResponseEntity<Iterable<Bill>> result;
+        Optional<User> u = ur.findById(id);
+
+        if (u.isPresent()) {
+            result = ResponseEntity.ok(u.get().getBills());
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+    }
 }

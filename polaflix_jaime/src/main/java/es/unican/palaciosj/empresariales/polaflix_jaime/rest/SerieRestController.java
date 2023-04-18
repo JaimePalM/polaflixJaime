@@ -8,14 +8,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.CategoryRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
+@RequestMapping(value = "series")
 public class SerieRestController {
 
     SerieRepository sr;
@@ -28,19 +32,20 @@ public class SerieRestController {
     }
 
     // Get all series
-    @GetMapping(value = "series")
+    @GetMapping()
     public Iterable<Serie> getSeries() {
         return sr.findAll();
     }
 
     // Get series by initial letter
-    @GetMapping(value = "series/search/{initialLetter}")
+    @GetMapping(value = "/search/{initialLetter}")
     public Iterable<Serie> getSeriesByInitialLetter(@PathVariable("initialLetter") char initialLetter) {
         return sr.findByInitial(initialLetter);
     }
 
     // Get series by id
-    @GetMapping(value = "series/{id}")
+    @GetMapping(value = "/{id}")
+    @JsonView(JsonViews.SerieView.class)
     public ResponseEntity<Serie> getSerie(@PathVariable("id") long id) {
         Optional<Serie> s = sr.findById(id);
         ResponseEntity<Serie> result;
@@ -55,7 +60,7 @@ public class SerieRestController {
     }
 
     // Add serie to database by atributtes
-    @PostMapping(value = "series/new/{title}/{description}/{category}")
+    @PostMapping(value = "/new/{title}/{description}/{category}")
     public ResponseEntity<?> addSerie(@PathVariable("title") String title, @PathVariable("description") String description, 
                                         @PathVariable("category") String category) {
         ResponseEntity<?> result;
@@ -76,7 +81,7 @@ public class SerieRestController {
     }
 
     // Change serie category
-    @PostMapping(value = "series/{id}/changeCategory/{category}")
+    @PostMapping(value = "/{id}/changeCategory/{category}")
     public ResponseEntity<Serie> changeCategory(@PathVariable("id") long id, @PathVariable("category") String category) {
         ResponseEntity<Serie> result;
 
@@ -84,7 +89,7 @@ public class SerieRestController {
         if (s.isPresent()) {
             Category c = cr.findByName(category);
             if (c == null) {
-                result = ResponseEntity.badRequest().build();
+                result = ResponseEntity.notFound().build();
             }
             s.get().setCategory(c);
             sr.save(s.get());

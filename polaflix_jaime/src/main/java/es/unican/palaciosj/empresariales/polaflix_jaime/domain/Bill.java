@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -28,13 +31,16 @@ public class Bill implements Comparable<Bill>{
     @Id 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @JsonView(JsonViews.BillView.class)
     private double totalAmount;
+    @JsonView(JsonViews.BillView.class)
     private Date monthBilled;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
     @ElementCollection
     //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonView(JsonViews.BillView.class)
     private Set<ChapterView> monthViews = new TreeSet<ChapterView>();
 
     // Constructor

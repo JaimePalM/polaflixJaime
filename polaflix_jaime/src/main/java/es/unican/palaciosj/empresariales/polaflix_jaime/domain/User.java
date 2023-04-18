@@ -9,7 +9,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -23,7 +25,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 /**
- * User class
+ * User class. Anotacion @Table debido a que el nombre de tabla "user" esta reservada en Spring
  */
 @Entity
 @Table(name = "users")
@@ -34,7 +36,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(unique = true)
+    @JsonView(JsonViews.UserView.class)
     private String email;
+    @JsonView(JsonViews.UserView.class)
     private String username;
     @JsonIgnore
     private String password;
@@ -42,14 +46,18 @@ public class User {
     private BankAccount bankAccount;
     private boolean fixedFee;
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonView(JsonViews.UserView.class)
     private Set<Serie> pendingSeries = new TreeSet<Serie>();
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonView(JsonViews.UserView.class)
     private Set<Serie> startedSeries = new TreeSet<Serie>();
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonView(JsonViews.UserView.class)
     private Set<Serie> finishedSeries = new TreeSet<Serie>();
     @ManyToMany(fetch = FetchType.EAGER)
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonView(JsonViews.SerieView.class)
     private Map<Serie, Views> serieViews = new HashMap<Serie, Views>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private SortedSet<Bill> bills = new TreeSet<Bill>();
@@ -76,8 +84,15 @@ public class User {
 
     // Mark chapter as viewed for a serie
     public void markChapterViewed(Serie serie, Chapter chapter) {
-        // Save last chapter viewed for serie
-        this.lastChapterView.put(serie, chapter);
+        // Check if the chapter is later than the last chapter viewed
+        Chapter lastChapter = this.lastChapterView.get(serie);
+        if (lastChapter == null) {
+            // Save last chapter viewed for serie if there is no last chapter viewed
+            this.lastChapterView.put(serie, chapter);
+        } else if (lastChapter.compareTo(chapter) < 0) {
+            // Save last chapter viewed for serie if the new chapter is later than the last chapter viewed
+            this.lastChapterView.put(serie, chapter);
+        }
         // Mark chapter as viewed
         Views view = this.serieViews.get(serie);
         if (view == null) {
@@ -89,11 +104,11 @@ public class User {
         if (!this.pendingSeries.contains(serie) && !this.finishedSeries.contains(serie)) {
             this.startedSeries.add(serie);
         }
-        // If serie is in pending list, move it to started list
+        /* If serie is in pending list, move it to started list
         if (this.pendingSeries.contains(serie)) {
             this.pendingSeries.remove(serie);
             this.startedSeries.add(serie);
-        }
+        } */
         // Bill the chapter
         // Get last bill
         Bill lastBill = null;

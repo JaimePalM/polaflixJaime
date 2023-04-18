@@ -5,7 +5,9 @@ import java.util.TreeSet;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,12 +26,15 @@ public class Season implements Comparable<Season>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @JsonView(JsonViews.SerieView.class)
     private int number;
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonView(JsonViews.SerieView.class)
     private Set<Chapter> chapters = new TreeSet<Chapter>();
     @ManyToOne
     @JsonBackReference
+    @JsonView(JsonViews.BillView.class)
     private Serie serie;
 
     // Constructor
