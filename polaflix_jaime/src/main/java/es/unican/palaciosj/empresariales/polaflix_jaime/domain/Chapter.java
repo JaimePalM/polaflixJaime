@@ -17,15 +17,15 @@ public class Chapter implements Comparable<Chapter> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @JsonView({JsonViews.SerieView.class, JsonViews.BillView.class})
+    @JsonView({JsonViews.SerieView.class, JsonViews.BillView.class, JsonViews.ChapterView.class})
     private int number;
-    @JsonView(JsonViews.SerieView.class)
+    @JsonView({JsonViews.SerieView.class, JsonViews.ChapterView.class})
     private String title;
     private String description;
     private String url;
     @ManyToOne
-    @JsonBackReference
-    @JsonView(JsonViews.BillView.class)
+    //@JsonBackReference
+    @JsonView({JsonViews.BillView.class, JsonViews.ChapterView.class})
     private Season season;
 
     // Constructor

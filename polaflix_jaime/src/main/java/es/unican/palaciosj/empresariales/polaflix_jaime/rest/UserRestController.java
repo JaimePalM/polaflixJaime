@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +16,10 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Views;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -76,6 +79,7 @@ public class UserRestController {
 
     // Add serie to user pending list
     @PostMapping(value = "/{id}/add-serie-pending/{idSerie}")
+    @JsonView(JsonViews.UserView.class)
     public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
         ResponseEntity<User> result;
         Optional<User> u = ur.findById(id);
@@ -95,6 +99,8 @@ public class UserRestController {
 
     // Mark chapter as viewed
     @PostMapping(value = "/{id}/mark-chapter-viewed/{idSerie}/{numSeason}/{numChapter}")
+    @JsonView(JsonViews.UserView.class)
+    @Transactional
     public ResponseEntity<User> markChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie, 
                                                   @PathVariable("numSeason") int numSeason, @PathVariable("numChapter") int numChapter) {
         ResponseEntity<User> result;
@@ -113,8 +119,26 @@ public class UserRestController {
         return result;
     }
 
+    // Get user pending series
+    @GetMapping(value ="/{id}/pending-series")
+    @JsonView(JsonViews.SerieListView.class)
+    public ResponseEntity<Iterable<Serie>> getPendingSeries(@PathVariable("id") long id) {
+        ResponseEntity<Iterable<Serie>> result;
+        Optional<User> u = ur.findById(id);
+
+        if (u.isPresent()) {
+            result = ResponseEntity.ok(u.get().getPendingSeries());
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+
+    }
+
     // Get last chapter viewed for a given serie
     @GetMapping(value = "/{id}/last-chapter-viewed/{idSerie}")
+    @JsonView(JsonViews.ChapterView.class)
     public ResponseEntity<Chapter> getLastChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
         ResponseEntity<Chapter> result;
         Optional<User> u = ur.findById(id);
@@ -122,6 +146,23 @@ public class UserRestController {
 
         if (u.isPresent() && s.isPresent()) {
             result = ResponseEntity.ok(u.get().getLastViewedChapter(s.orElseThrow()));
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+    }
+
+    // Get all chapters viewed for a given serie
+    @GetMapping(value = "/{id}/views/{idSerie}")
+    @JsonView(JsonViews.SerieViewsView.class)
+    public ResponseEntity<Views> getViews(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
+        ResponseEntity<Views> result;
+        Optional<User> u = ur.findById(id);
+        Optional<Serie> s = sr.findById(idSerie);
+
+        if (u.isPresent() && s.isPresent()) {
+            result = ResponseEntity.ok(u.get().getSerieViews(s.orElseThrow()));
         } else {
             result = ResponseEntity.notFound().build();
         }

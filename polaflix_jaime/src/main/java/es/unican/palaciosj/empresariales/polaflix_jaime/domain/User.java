@@ -23,6 +23,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
 
 /**
  * User class. Anotacion @Table debido a que el nombre de tabla "user" esta reservada en Spring
@@ -45,7 +46,7 @@ public class User {
     @Embedded
     private BankAccount bankAccount;
     private boolean fixedFee;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JsonView(JsonViews.UserView.class)
     private Set<Serie> pendingSeries = new TreeSet<Serie>();
     @ManyToMany(fetch = FetchType.EAGER)
@@ -82,7 +83,7 @@ public class User {
         this.pendingSeries.add(serie);
     }
 
-    // Mark chapter as viewed for a serie
+    // Mark chapter as viewed for a serie (precondicion: la serie esta en alguna lista)
     public void markChapterViewed(Serie serie, Chapter chapter) {
         // Check if the chapter is later than the last chapter viewed
         Chapter lastChapter = this.lastChapterView.get(serie);
@@ -100,15 +101,6 @@ public class User {
             this.serieViews.put(serie, view);
         }
         view.markChapterViewed(chapter);
-        // If serie is not in any list, add it to started list
-        if (!this.pendingSeries.contains(serie) && !this.finishedSeries.contains(serie)) {
-            this.startedSeries.add(serie);
-        }
-        /* If serie is in pending list, move it to started list
-        if (this.pendingSeries.contains(serie)) {
-            this.pendingSeries.remove(serie);
-            this.startedSeries.add(serie);
-        } */
         // Bill the chapter
         // Get last bill
         Bill lastBill = null;
@@ -126,15 +118,17 @@ public class User {
         } else { 
             lastBill = this.bills.last();
         }
-        LocalDate date = LocalDate.now();
-        Date today = Date.valueOf(date);
-        ChapterView chapterView = new ChapterView(chapter, today, serie.getCategory().getPrice());
-        lastBill.addChapterView(chapterView);
+        lastBill.addChapterView(chapter);
     }
 
     // Add bill to user
     public void addBill(Bill bill) {
         this.bills.add(bill);
+    }
+
+    // Get views for a serie
+    public Views getSerieViews(Serie serie) {
+        return this.serieViews.get(serie);
     }
 
 

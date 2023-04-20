@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +22,7 @@ public class Views implements Comparable<Views> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ElementCollection
+    @JsonView(JsonViews.SerieViewsView.class)
     private List<SeasonViews> serieChapterViews;
     @OneToOne
     private Serie serie;

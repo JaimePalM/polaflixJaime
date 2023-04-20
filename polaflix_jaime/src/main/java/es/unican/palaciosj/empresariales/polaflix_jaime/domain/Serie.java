@@ -27,14 +27,14 @@ public class Serie implements Comparable<Serie> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @JsonView({JsonViews.UserView.class, JsonViews.SerieView.class, JsonViews.BillView.class})
+    @JsonView({JsonViews.UserView.class, JsonViews.SerieView.class, JsonViews.BillView.class, 
+        JsonViews.ChapterView.class, JsonViews.SerieListView.class})
     private String title;
     private String description;
     private char initial;
     @ManyToOne
     private Category category;
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
-    @JsonManagedReference
     @JsonView(JsonViews.SerieView.class)
     private Set<Season> seasons = new TreeSet<Season>();
     @ElementCollection

@@ -3,11 +3,16 @@ package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class SeasonViews {
 
+    // Atributes
+    @JsonView(JsonViews.SerieViewsView.class)
     private List<Boolean> chapters;
 
     // Constructor

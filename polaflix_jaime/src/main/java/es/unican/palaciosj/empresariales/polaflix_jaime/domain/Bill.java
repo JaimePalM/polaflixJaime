@@ -1,16 +1,15 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +17,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.transaction.Transactional;
 
 /**
  * Bill class
@@ -39,7 +38,6 @@ public class Bill implements Comparable<Bill>{
     @JoinColumn(name = "user_id")
     private User user;
     @ElementCollection
-    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(JsonViews.BillView.class)
     private Set<ChapterView> monthViews = new TreeSet<ChapterView>();
 
@@ -52,7 +50,10 @@ public class Bill implements Comparable<Bill>{
     }
 
     // Auxiliar methods
-    public void addChapterView(ChapterView chapterView) {
+    public void addChapterView(Chapter chapter) {
+        LocalDate date = LocalDate.now();
+        Date today = Date.valueOf(date);
+        ChapterView chapterView = new ChapterView(chapter, today, chapter.getSeason().getSerie().getCategory().getPrice());
         this.monthViews.add(chapterView);
         if (this instanceof OnDemandBill) {
             this.totalAmount += chapterView.getPrice();

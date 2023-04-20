@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Actor;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
@@ -33,6 +34,7 @@ public class AppFeeder implements CommandLineRunner {
 	protected CategoryRepository cr;
 	
 	@Override
+	@Transactional
 	public void run(String... args) throws Exception {
 		feedUsers();
 		//feedBills();
@@ -54,13 +56,17 @@ public class AppFeeder implements CommandLineRunner {
 		}
 		 
 		// Test mark chapter as viewed
-		/*
+		
 		User lola = ur.findByUsername("Lola");
 		List<Serie> bList = sr.findByInitial('B');
 		Serie breakingBad = bList.get(0); 
 		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
 		ur.save(lola);
-		 */
+
+		paco = ur.findByUsername("Paco");
+		paco.markChapterViewed(dark, dark.getSeason(1).getChapter(2));
+		ur.save(paco);
+		 
 
 		System.out.println("Application feeded");
 	}
@@ -127,69 +133,13 @@ public class AppFeeder implements CommandLineRunner {
 		sr.save(s1);
 		sr.save(s2);
 
-		User lola = ur.findByUsername("Lola");
-		lola.markChapterViewed(s1, s1.getSeason(1).getChapter(1));
-		ur.save(lola);
-		User paco = ur.findByUsername("Paco");
-		paco.markChapterViewed(s2, s2.getSeason(1).getChapter(2));
-		ur.save(paco);
-		sr.save(s1);
+		// User lola = ur.findByUsername("Lola");
+		// lola.markChapterViewed(s1, s1.getSeason(1).getChapter(1));
+		// ur.save(lola);
+		// User paco = ur.findByUsername("Paco");
+		// paco.markChapterViewed(s2, s2.getSeason(1).getChapter(2));
+		// ur.save(paco);
+		// sr.save(s1);
 	}
-	/*
-	private void feedBills() {
-		// Get users
-		User paco = ur.findByUsername("Paco");
-		User lola = ur.findByUsername("Lola");
-
-		// Create bills for april
-		long april = 1680300000000L;
-		Bill b4Paco = new OnDemandBill(paco, new Date(april));
-		Bill b4Lola = new OnDemandBill(lola, new Date(april));
-		paco.addBill(b4Paco);
-		lola.addBill(b4Lola);
-
-		ur.save(paco);
-		ur.save(lola);
-	}
-	*/
-	
-	/*
-	private void testViajeRepository() {
-		SimpleDateFormat dateParser = new SimpleDateFormat("dd-MM-yyyy");
-		Date sample = null;
-		try {
-			sample = dateParser.parse("01-01-2020");
-		} catch (ParseException e) {
-			System.out.println("Crujo parseando fecha");
-			e.printStackTrace();
-		}
-		
-		// Set<Viaje> viajes = vr.findByOrigenCiudadAndDestinoCiudad("Santander","Cadiz");
-		Set<Viaje> viajes = vr.findByOrigenAndDestino("Santander","Cadiz");
-		
-		System.out.println("Viajes recuperados = " + viajes.size());
-	
-		for(Viaje v : viajes) {
-			System.out.println("Viaje in " + v.getFecha());
-		}
-		
-		viajes = vr.findByOrigen_CiudadAndFechaBeforeOrderByPrecio("Santander", sample);
-
-		System.out.println("================================");
-		
-		System.out.println("Viajes recuperados = " + viajes.size());
-		
-		
-//		Usuario paco = ur.findByEmail("paco@carSharing.es"); 
-//		
-//		System.out.println("Paco = " + paco.getNombre() + ":" + paco.getEmail());
-//		
-//		Set<Usuario> usuarios = ur.findByFechaAltaAfter(sample);
-//		for(Usuario u : usuarios) {
-//			System.out.println("Usuario " + u.getNombre() + ":" + u.getEmail());
-//		}
-		
-	}
-	*/
 
 }
