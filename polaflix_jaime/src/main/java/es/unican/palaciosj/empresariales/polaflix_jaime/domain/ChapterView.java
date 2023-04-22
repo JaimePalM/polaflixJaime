@@ -1,6 +1,7 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -15,20 +16,17 @@ import jakarta.persistence.ManyToOne;
 public class ChapterView implements Comparable<ChapterView> {
     
     // Attributes
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
     @ManyToOne
     @JsonView(JsonViews.BillView.class)
     private Chapter chapter;
     @JsonView(JsonViews.BillView.class)
-    private Date dateView;
+    private Timestamp dateView;
     @JsonView(JsonViews.BillView.class)
     private double price;
 
     // Constructor
     public ChapterView() { }
-    public ChapterView(Chapter chapter, Date dateView, double price) {
+    public ChapterView(Chapter chapter, Timestamp dateView, double price) {
         this.chapter = chapter;
         this.dateView = dateView;
         this.price = price;
@@ -47,12 +45,12 @@ public class ChapterView implements Comparable<ChapterView> {
         }
         ChapterView chapterView = (ChapterView) o;
         
-        return this.id == chapterView.getId();
+        return this.dateView == chapterView.getDateView();
     }
 
     @Override
     public int hashCode() {
-        return Long.hashCode(id);
+        return Integer.hashCode((int) this.dateView.getTime());
     }
 
     @Override
@@ -61,14 +59,6 @@ public class ChapterView implements Comparable<ChapterView> {
     }
 
     // Getters and Setters   
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
- 
     public Chapter getChapter() {
         return this.chapter;
     }
@@ -77,11 +67,11 @@ public class ChapterView implements Comparable<ChapterView> {
         this.chapter = chapter;
     }
 
-    public Date getDateView() {
+    public Timestamp getDateView() {
         return this.dateView;
     }
 
-    public void setDateView(Date dateView) {
+    public void setDateView(Timestamp dateView) {
         this.dateView = dateView;
     }
 

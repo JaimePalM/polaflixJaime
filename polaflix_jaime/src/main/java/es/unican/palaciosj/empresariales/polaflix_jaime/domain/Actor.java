@@ -1,5 +1,8 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.Embeddable;
 
 /**
@@ -9,7 +12,9 @@ import jakarta.persistence.Embeddable;
 public class Actor {
     
     // Atributes
+    @JsonView(JsonViews.SerieView.class)
     private String name;
+    @JsonView(JsonViews.SerieView.class)
     private String surname;
 
     // Constructor

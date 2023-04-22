@@ -30,6 +30,7 @@ public class Serie implements Comparable<Serie> {
     @JsonView({JsonViews.UserView.class, JsonViews.SerieView.class, JsonViews.BillView.class, 
         JsonViews.ChapterView.class, JsonViews.SerieListView.class})
     private String title;
+    @JsonView({JsonViews.SerieView.class})
     private String description;
     private char initial;
     @ManyToOne
@@ -38,8 +39,10 @@ public class Serie implements Comparable<Serie> {
     @JsonView(JsonViews.SerieView.class)
     private Set<Season> seasons = new TreeSet<Season>();
     @ElementCollection
+    @JsonView(JsonViews.SerieView.class)
     private Set<Creator> creators = new HashSet<Creator>();
     @ElementCollection
+    @JsonView(JsonViews.SerieView.class)
     private Set<Actor> actors = new HashSet<Actor>();
 
     // Constructor

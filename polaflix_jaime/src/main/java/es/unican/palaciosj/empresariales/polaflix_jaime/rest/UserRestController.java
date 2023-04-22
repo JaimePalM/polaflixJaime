@@ -1,7 +1,11 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.rest;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +25,9 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieReposi
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(value = "users")
@@ -38,8 +44,9 @@ public class UserRestController {
 
     // Get all users
     @GetMapping()
-    public Iterable<User> getUsers() {
-        return ur.findAll();
+    @JsonView(JsonViews.UserView.class)
+    public ResponseEntity<Iterable<User>> getAllUsers() {
+        return ResponseEntity.ok(ur.findAll());
     }
 
     // Get user by id
@@ -59,11 +66,12 @@ public class UserRestController {
     }
 
     // Add user to database by atributtes
-    @PostMapping(value = "/new/{email}/{username}/{password}/{IBAN}/{fixedFee}")
-    public ResponseEntity<User> addUser(@PathVariable("email") String email, @PathVariable("username") String username, 
-                                        @PathVariable("password") String password, @PathVariable("IBAN") String IBAN, 
-                                        @PathVariable("fixedFee") boolean fixedFee) {
-        ResponseEntity<User> result;
+    @PostMapping(params = {"email", "username", "password", "IBAN", "fixedFee"})
+    @JsonView(JsonViews.UserView.class)
+    public ResponseEntity<User> addUser(@RequestParam("email") String email, @RequestParam("username") String username, 
+                                        @RequestParam("password") String password, @RequestParam("IBAN") String IBAN, 
+                                        @RequestParam("fixedFee") Boolean fixedFee) {
+        ResponseEntity<User> result;    
 
         if (ur.findByUsername(username) != null) {
             result = ResponseEntity.badRequest().build();
@@ -77,10 +85,27 @@ public class UserRestController {
         return result;
     }
 
+    // Get user pending series
+    @GetMapping(value ="/{id}/pending-series")
+    @JsonView(JsonViews.SerieListView.class)
+    public ResponseEntity<Iterable<Serie>> getPendingSeries(@PathVariable("id") long id) {
+        ResponseEntity<Iterable<Serie>> result;
+        Optional<User> u = ur.findById(id);
+
+        if (u.isPresent()) {
+            result = ResponseEntity.ok(u.get().getPendingSeries());
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+
+    }
+
     // Add serie to user pending list
-    @PostMapping(value = "/{id}/add-serie-pending/{idSerie}")
+    @PostMapping(value = "/{id}/pending-series", params = {"idSerie"})
     @JsonView(JsonViews.UserView.class)
-    public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
+    public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @RequestParam("idSerie") long idSerie) {
         ResponseEntity<User> result;
         Optional<User> u = ur.findById(id);
         Optional<Serie> s = sr.findById(idSerie);
@@ -117,23 +142,6 @@ public class UserRestController {
         }
 
         return result;
-    }
-
-    // Get user pending series
-    @GetMapping(value ="/{id}/pending-series")
-    @JsonView(JsonViews.SerieListView.class)
-    public ResponseEntity<Iterable<Serie>> getPendingSeries(@PathVariable("id") long id) {
-        ResponseEntity<Iterable<Serie>> result;
-        Optional<User> u = ur.findById(id);
-
-        if (u.isPresent()) {
-            result = ResponseEntity.ok(u.get().getPendingSeries());
-        } else {
-            result = ResponseEntity.notFound().build();
-        }
-
-        return result;
-
     }
 
     // Get last chapter viewed for a given serie
@@ -179,6 +187,30 @@ public class UserRestController {
 
         if (u.isPresent()) {
             result = ResponseEntity.ok(u.get().getBills());
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+    }
+
+    // Get bill by date (precondition: date is in format dd/MM/yy)
+    @GetMapping(value = "/{id}/bills", params = "date")
+    @JsonView(JsonViews.BillView.class)
+    public ResponseEntity<Bill> getBillByDate(@PathVariable("id") long id, @RequestParam("date") String date) {
+        ResponseEntity<Bill> result;
+        Optional<User> u = ur.findById(id);
+
+        if (u.isPresent()) {
+            // Convert date to Date
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+            Date dateConverted;
+            try {
+                dateConverted = new Date(formatter.parse(date).getTime());
+                result = ResponseEntity.ok(u.get().getBillByDate(dateConverted));
+            } catch (ParseException e) {
+                result = ResponseEntity.badRequest().build();
+            }
         } else {
             result = ResponseEntity.notFound().build();
         }

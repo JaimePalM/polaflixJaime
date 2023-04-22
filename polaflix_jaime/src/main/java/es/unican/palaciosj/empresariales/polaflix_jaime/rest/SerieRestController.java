@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Creator;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.CategoryRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -33,13 +36,15 @@ public class SerieRestController {
 
     // Get all series
     @GetMapping()
-    public Iterable<Serie> getSeries() {
+    @JsonView(JsonViews.SerieView.class)
+    public Iterable<Serie> getAllSeries() {
         return sr.findAll();
     }
 
     // Get series by initial letter
-    @GetMapping(value = "/search/{initialLetter}")
-    public Iterable<Serie> getSeriesByInitialLetter(@PathVariable("initialLetter") char initialLetter) {
+    @GetMapping(params = "initial")
+    @JsonView(JsonViews.SerieView.class)
+    public Iterable<Serie> getSeriesByInitialLetter(@RequestParam("initial") char initialLetter) {
         return sr.findByInitial(initialLetter);
     }
 
@@ -60,9 +65,11 @@ public class SerieRestController {
     }
 
     // Add serie to database by atributtes
-    @PostMapping(value = "/new/{title}/{description}/{category}")
-    public ResponseEntity<?> addSerie(@PathVariable("title") String title, @PathVariable("description") String description, 
-                                        @PathVariable("category") String category) {
+    @PostMapping(params = {"title", "description", "category", "creatorName", "creatorSurname"})
+    @JsonView(JsonViews.SerieView.class)
+    @Transactional
+    public ResponseEntity<?> addSerie(@RequestParam("title") String title, @RequestParam("description") String description, @RequestParam("category") String category, 
+                                        @RequestParam("creatorName") String creatorName, @RequestParam("creatorSurname") String creatorSurname) {
         ResponseEntity<?> result;
 
         if (!sr.findByTitle(title).isEmpty()) {
@@ -73,6 +80,8 @@ public class SerieRestController {
                 result = ResponseEntity.badRequest().body("Category does not exist");
             }
             Serie serie = new Serie(title, description, c);
+            Creator cr = new Creator(creatorName, creatorSurname);
+            serie.addCreator(cr);
             sr.save(serie);
             result = ResponseEntity.ok(serie);
         }

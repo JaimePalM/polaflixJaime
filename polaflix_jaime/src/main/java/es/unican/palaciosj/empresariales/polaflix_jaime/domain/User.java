@@ -49,18 +49,18 @@ public class User {
     @ManyToMany
     @JsonView(JsonViews.UserView.class)
     private Set<Serie> pendingSeries = new TreeSet<Serie>();
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JsonView(JsonViews.UserView.class)
     private Set<Serie> startedSeries = new TreeSet<Serie>();
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JsonView(JsonViews.UserView.class)
     private Set<Serie> finishedSeries = new TreeSet<Serie>();
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private Map<Serie, Chapter> lastChapterView = new HashMap<Serie, Chapter>();
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonView(JsonViews.SerieView.class)
     private Map<Serie, Views> serieViews = new HashMap<Serie, Views>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private SortedSet<Bill> bills = new TreeSet<Bill>();
 
     // Constructor
@@ -83,7 +83,7 @@ public class User {
         this.pendingSeries.add(serie);
     }
 
-    // Mark chapter as viewed for a serie (precondicion: la serie esta en alguna lista)
+    // Mark chapter as viewed for a serie (precondition: the serie is in any list)
     public void markChapterViewed(Serie serie, Chapter chapter) {
         // Check if the chapter is later than the last chapter viewed
         Chapter lastChapter = this.lastChapterView.get(serie);
@@ -129,6 +129,16 @@ public class User {
     // Get views for a serie
     public Views getSerieViews(Serie serie) {
         return this.serieViews.get(serie);
+    }
+
+    // Get bill for a date (precondition: the date is the first day of the month)
+    public Bill getBillByDate(Date date) {
+        for (Bill bill : this.bills) {
+            if (bill.getMonthBilled().equals(date)) {
+                return bill;
+            }
+        }
+        return null;
     }
 
 

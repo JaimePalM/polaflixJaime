@@ -1,7 +1,11 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -51,9 +55,9 @@ public class Bill implements Comparable<Bill>{
 
     // Auxiliar methods
     public void addChapterView(Chapter chapter) {
-        LocalDate date = LocalDate.now();
-        Date today = Date.valueOf(date);
-        ChapterView chapterView = new ChapterView(chapter, today, chapter.getSeason().getSerie().getCategory().getPrice());
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Madrid"));
+        Timestamp dateView = Timestamp.valueOf(localDateTime);
+        ChapterView chapterView = new ChapterView(chapter, dateView, chapter.getSeason().getSerie().getCategory().getPrice());
         this.monthViews.add(chapterView);
         if (this instanceof OnDemandBill) {
             this.totalAmount += chapterView.getPrice();
