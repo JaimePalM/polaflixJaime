@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
@@ -34,6 +33,7 @@ public class Serie implements Comparable<Serie> {
     private String description;
     private char initial;
     @ManyToOne
+    @JsonView({JsonViews.SerieView.class})
     private Category category;
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     @JsonView(JsonViews.SerieView.class)

@@ -2,10 +2,8 @@ package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,7 +19,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.transaction.Transactional;
 
 /**
  * Bill class

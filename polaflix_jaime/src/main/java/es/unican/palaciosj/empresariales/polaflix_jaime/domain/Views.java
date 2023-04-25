@@ -23,7 +23,7 @@ public class Views implements Comparable<Views> {
     private long id;
     @ElementCollection
     @JsonView(JsonViews.SerieViewsView.class)
-    private List<SeasonViews> serieChapterViews;
+    private List<SeasonViews> serieSeasonViews;
     @OneToOne
     private Serie serie;
 
@@ -32,13 +32,13 @@ public class Views implements Comparable<Views> {
     public Views(Serie serie) {
         this.serie = serie;
         // Initialize array with seasons as rows and chapters as columns
-        this.serieChapterViews = new ArrayList<SeasonViews>();
+        this.serieSeasonViews = new ArrayList<SeasonViews>();
         Iterator<Season> it = serie.getSeasons().iterator();
         int chapters = 0;
         while (it.hasNext()) {
             chapters = it.next().getChapters().size();
             SeasonViews seasonViews = new SeasonViews(chapters);
-            this.serieChapterViews.add(seasonViews);
+            this.serieSeasonViews.add(seasonViews);
         }
     }
 
@@ -46,7 +46,7 @@ public class Views implements Comparable<Views> {
     public void markChapterViewed(Chapter chapter) {
         int seasonIndex = chapter.getSeason().getNumber() - 1;
         int chapterIndex = chapter.getNumber() - 1;
-        this.serieChapterViews.get(seasonIndex).markChapterViewed(chapterIndex);
+        this.serieSeasonViews.get(seasonIndex).markChapterViewed(chapterIndex);
     }
 
     // Override methods

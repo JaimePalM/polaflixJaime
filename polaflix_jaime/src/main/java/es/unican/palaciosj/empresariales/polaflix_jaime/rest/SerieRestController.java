@@ -90,13 +90,13 @@ public class SerieRestController {
     }
 
     // Change serie category
-    @PostMapping(value = "/{id}/changeCategory/{category}")
-    public ResponseEntity<Serie> changeCategory(@PathVariable("id") long id, @PathVariable("category") String category) {
+    @PostMapping(value = "/{id}/change-category/{newCategory}")
+    public ResponseEntity<Serie> changeCategory(@PathVariable("id") long id, @PathVariable("newCategory") String newCategory) {
         ResponseEntity<Serie> result;
 
         Optional<Serie> s = sr.findById(id);
         if (s.isPresent()) {
-            Category c = cr.findByName(category);
+            Category c = cr.findByName(newCategory);
             if (c == null) {
                 result = ResponseEntity.notFound().build();
             }

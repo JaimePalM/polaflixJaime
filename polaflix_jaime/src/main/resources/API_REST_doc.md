@@ -7,13 +7,17 @@ A continaución se definarán los diferentes recursos de la API REST de Polaflix
       - [GET /users](#get-users)
       - [GET /users/{id}](#get-usersid)
       - [POST /users](#post-users)
-      - [PUT /users/{id}](#put-usersid)
       - [GET /users/{id}/pending-series](#get-usersidpending-series)
       - [POST /users/{id}/pending-series](#post-usersidpending-series)
+      - [GET /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}](#get-usersidmark-chapter-viewedidserieidseasonidchapter)
+      - [GET /users/{id}/last-chapter-viewed/{idSerie}](#get-usersidlast-chapter-viewedidserie)
+      - [GET /users/{id}/views](#get-usersidviews)
       - [GET /users/{id}/bills](#get-usersidbills)
     - [Series](#series)
       - [GET /series](#get-series)
+      - [GET /series/{id}](#get-seriesid)
       - [POST /series](#post-series)
+      - [POST /series/{id}/change-category/{newCategory}](#post-seriesidchange-categorynewcategory)
 
 ### Usuarios
 
@@ -152,49 +156,6 @@ Campos de respuesta
 | startedSeries | Array | Array de series en curso |
 | finishedSeries | Array | Array de series finalizadas |
 
-#### PUT /users/{id}
-Actualiza un usuario en la base de datos.
-
-Endpoint URL
-```
-http://localhost:8080/users/{id}
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id del usuario |
-| email | String | Email del usuario |
-| username | String | Nombre de usuario |
-| password | String | Contraseña del usuario |
-| IBAN | String | IBAN del usuario |
-| fixedFee | Boolean | Cuota fija del usuario |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
-
-Modelo de respuesta
-```json
-{
-    "email": "manolo@polaflix.com",
-    "username": "Manolo",
-    "pendingSeries": [],
-    "startedSeries": [],
-    "finishedSeries": []
-}
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| email | String | Email del usuario |
-| username | String | Nombre de usuario |
-| pendingSeries | Array | Array de series pendientes |
-| startedSeries | Array | Array de series en curso |
-| finishedSeries | Array | Array de series finalizadas |
-
 #### GET /users/{id}/pending-series
 Retorna las series pendientes de un usuario.
 
@@ -277,6 +238,121 @@ Campos de respuesta
 | startedSeries | Array | Array de series en curso |
 | finishedSeries | Array | Array de series finalizadas |
 
+#### GET /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}
+Marca un capítulo como visto.
+
+Endpoint URL
+```
+http://localhost:8080/users/{id}/mark-chapter-viewed/{idSerie}/{numSeason}/{numChapter}
+```
+
+Parametros de la URL
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id del usuario |
+| idSerie | Long | Id de la serie |
+| numSeason | Integer | Numero de la temporada |
+| numChapter | Integer | Numero del capítulo |
+
+Parametros de la petición
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| - | - | - |
+
+Modelo de respuesta
+```json
+{
+    "email": "
+}
+```
+
+Campos de respuesta
+
+
+#### GET /users/{id}/last-chapter-viewed/{idSerie}
+Retorna el último capítulo visto de una serie.
+
+Endpoint URL
+```
+http://localhost:8080/users/{id}/last-chapter-viewed/{idSerie}
+```
+
+Parametros de la URL
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id del usuario |
+| idSerie | Long | Id de la serie |
+
+Parametros de la petición
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| - | - | - |
+
+Modelo de respuesta
+```json
+{
+    "number": 2,
+    "title": "Lies",
+    "description": "Second chapter",
+    "season": {
+        "number": 1,
+        "serie": {
+            "title": "Dark"
+        }
+    }
+}
+```
+
+Campos de respuesta
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| number | Integer | Numero del capítulo |
+| title | String | Titulo del capítulo |
+| description | String | Descripción del capítulo |
+| season | Object | Objeto de la temporada |
+| number | Integer | Numero de la temporada |
+| serie | Object | Objeto de la serie |
+| title | String | Titulo de la serie |
+
+#### GET /users/{id}/views
+Retorna las vistas de un usuario.
+
+Endpoint URL
+```
+http://localhost:8080/users/{id}/views
+```
+
+Parametros de la URL
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id del usuario |
+
+Parametros de la petición
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| - | - | - |
+
+Modelo de respuesta
+```json
+{
+    "serieSeasonViews": [
+        {
+            "chapters": [
+                false,
+                true
+            ]
+        }
+    ]
+}
+```
+
+Campos de respuesta
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| serieSeasonViews | Array | Array de vistas de capítulos por temporada |
+| chapters | Array | Array de booleanos ordenados que indican si el capítulo ha sido visto o no |
+
+
 #### GET /users/{id}/bills
 Retorna las facturas de un usuario.
 
@@ -293,7 +369,7 @@ Parametros de la URL
 Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
-| month (opcional) | String | Mes de la factura |
+| date (opcional) | String | Fecha del mes de la factura |
 
 Modelo de respuesta
 ```json
@@ -341,17 +417,21 @@ http://localhost:8080/series
 Parametror de la URL
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
-
+| - | - | - |
 
 Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
-| initial (opcional) | String | Filtra por la inicial de la serie |
+| initial (opcional) | String | Inicial de las series |
 
 Modelo de respuesta
 ```json
 {
     "title": "Dark",
+    "description": "Time travel",
+    "category": {
+        "name": "Gold"
+    },
     "seasons": [
         {
             "number": 1,
@@ -366,19 +446,44 @@ Modelo de respuesta
                 }
             ]
         }
+    ],
+    "creators": [
+        {
+            "name": "Baran",
+            "surname": "Bo Odar"
+        }
+    ],
+    "actors": [
+        {
+            "name": "Louis",
+            "surname": "Hofmann"
+        },
+        {
+            "name": "Lisa",
+            "surname": "Vicari"
+        }
     ]
 }
-```	
+```
 
 Campos de respuesta
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | title | String | Titulo de la serie |
-| seasons | Array | Array de temporadas de la serie |
+| description | String | Descripción de la serie |
+| category | Object | Objeto de la categoría |
+| name | String | Nombre de la categoría |
+| seasons | Array | Array de temporadas |
 | number | Integer | Numero de la temporada |
-| chapters | Array | Array de capitulos de la temporada |
-| number | Integer | Numero del capitulo |
-| title | String | Titulo del capitulo |
+| chapters | Array | Array de capítulos |
+| number | Integer | Numero del capítulo |
+| title | String | Titulo del capítulo |
+| creators | Array | Array de creadores |
+| name | String | Nombre del creador |
+| surname | String | Apellido del creador |
+| actors | Array | Array de actores |
+| name | String | Nombre del actor |
+| surname | String | Apellido del actor |
 
 #### GET /series/{id}
 Retorna una serie de la base de datos.
@@ -402,6 +507,10 @@ Modelo de respuesta
 ```json
 {
     "title": "Dark",
+    "description": "Time travel",
+    "category": {
+        "name": "Gold"
+    },
     "seasons": [
         {
             "number": 1,
@@ -416,6 +525,22 @@ Modelo de respuesta
                 }
             ]
         }
+    ],
+    "creators": [
+        {
+            "name": "Baran",
+            "surname": "Bo Odar"
+        }
+    ],
+    "actors": [
+        {
+            "name": "Louis",
+            "surname": "Hofmann"
+        },
+        {
+            "name": "Lisa",
+            "surname": "Vicari"
+        }
     ]
 }
 ```
@@ -424,11 +549,20 @@ Campos de respuesta
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | title | String | Titulo de la serie |
-| seasons | Array | Array de temporadas de la serie |
+| description | String | Descripción de la serie |
+| category | Object | Objeto de la categoría |
+| name | String | Nombre de la categoría |
+| seasons | Array | Array de temporadas |
 | number | Integer | Numero de la temporada |
-| chapters | Array | Array de capitulos de la temporada |
-| number | Integer | Numero del capitulo |
-| title | String | Titulo del capitulo |
+| chapters | Array | Array de capítulos |
+| number | Integer | Numero del capítulo |
+| title | String | Titulo del capítulo |
+| creators | Array | Array de creadores |
+| name | String | Nombre del creador |
+| surname | String | Apellido del creador |
+| actors | Array | Array de actores |
+| name | String | Nombre del actor |
+| surname | String | Apellido del actor |
 
 #### POST /series
 Crea una serie en la base de datos.
@@ -457,6 +591,9 @@ Modelo de respuesta
 {
     "title": "Lost",
     "description": "Plane crashes on a dessert island",
+    "category": {
+        "name": "Standard"
+    },
     "seasons": [],
     "creators": [
         {
@@ -473,6 +610,60 @@ Campos de respuesta
 | ------ | ------ | ------ |
 | title | String | Titulo de la serie |
 | description | String | Descripción de la serie |
+| category | Object | Objeto de la categoría |
+| name | String | Nombre de la categoría |
+| seasons | Array | Array de temporadas de la serie |
+| creators | Array | Array de creadores de la serie |
+| name | String | Nombre del creador |
+| surname | String | Apellido del creador |
+| actors | Array | Array de actores de la serie |
+
+
+#### POST /series/{id}/change-category/{newCategory}
+Cambia la categoria de una serie.
+
+Endpoint URL
+```
+http://localhost:8080/series/{id}/change-category/{newCategory}
+```
+
+Parametros de la URL
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id de la serie |
+| newCategory | String | Nueva categoria de la serie |
+
+Parametros de la petición
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| - | - | - |
+
+Modelo de respuesta
+```json
+{
+    "title": "Lost",
+    "description": "Plane crashes on a dessert island",
+    "category": {
+        "name": "Silver"
+    },
+    "seasons": [],
+    "creators": [
+        {
+            "name": "Jeffrey Jacob",
+            "surname": "Abrams"
+        }
+    ],
+    "actors": []
+}
+```
+
+Campos de respuesta
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| title | String | Titulo de la serie |
+| description | String | Descripción de la serie |
+| category | Object | Objeto de la categoría |
+| name | String | Nombre de la categoría |
 | seasons | Array | Array de temporadas de la serie |
 | creators | Array | Array de creadores de la serie |
 | name | String | Nombre del creador |

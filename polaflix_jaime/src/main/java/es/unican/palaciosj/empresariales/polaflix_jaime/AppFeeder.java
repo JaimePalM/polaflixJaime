@@ -1,7 +1,6 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime;
 
 
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Actor;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Creator;
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.OnDemandBill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Season;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;

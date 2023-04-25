@@ -1,6 +1,5 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
@@ -21,6 +20,7 @@ public class Chapter implements Comparable<Chapter> {
     private int number;
     @JsonView({JsonViews.SerieView.class, JsonViews.ChapterView.class})
     private String title;
+    @JsonView({JsonViews.ChapterView.class})
     private String description;
     private String url;
     @ManyToOne

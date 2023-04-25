@@ -1,5 +1,8 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -11,6 +14,7 @@ public class Category {
 
     // Atributes
     @Id
+    @JsonView({JsonViews.SerieView.class})
     private String name;
     private double price;
 
