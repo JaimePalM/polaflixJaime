@@ -25,6 +25,7 @@ public class Serie implements Comparable<Serie> {
     // Atributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView({JsonViews.SerieListView.class})
     private long id;
     @JsonView({JsonViews.UserView.class, JsonViews.SerieView.class, JsonViews.BillView.class, 
         JsonViews.ChapterView.class, JsonViews.SerieListView.class})

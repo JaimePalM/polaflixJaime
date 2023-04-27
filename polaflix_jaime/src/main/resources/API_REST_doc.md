@@ -9,6 +9,8 @@ A continaución se definarán los diferentes recursos de la API REST de Polaflix
       - [POST /users](#post-users)
       - [GET /users/{id}/pending-series](#get-usersidpending-series)
       - [POST /users/{id}/pending-series](#post-usersidpending-series)
+      - [GET /users/{id}/started-series](#get-usersidstarted-series)
+      - [GET /users/{id}/finished-series](#get-usersidfinished-series)
       - [GET /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}](#get-usersidmark-chapter-viewedidserieidseasonidchapter)
       - [GET /users/{id}/last-chapter-viewed/{idSerie}](#get-usersidlast-chapter-viewedidserie)
       - [GET /users/{id}/views](#get-usersidviews)
@@ -72,6 +74,7 @@ Campos de respuesta
 | startedSeries | Array | Array de series en curso |
 | finishedSeries | Array | Array de series finalizadas |
 
+
 #### GET /users/{id}
 Retorna un usuario de la base de datos.
 
@@ -114,6 +117,7 @@ Campos de respuesta
 | startedSeries | Array | Array de series en curso |
 | finishedSeries | Array | Array de series finalizadas |
 
+
 #### POST /users
 Crea un usuario en la base de datos.
 
@@ -125,16 +129,16 @@ http://localhost:8080/users
 Parametros de la URL
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
+| - | - | - |
+
+Parametros de la petición
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
 | email | String | Email del usuario |
 | username | String | Nombre de usuario |
 | password | String | Contraseña del usuario |
 | IBAN | String | IBAN del usuario |
 | fixedFee | Boolean | Cuota fija del usuario |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
 
 Modelo de respuesta
 ```json
@@ -155,6 +159,7 @@ Campos de respuesta
 | pendingSeries | Array | Array de series pendientes |
 | startedSeries | Array | Array de series en curso |
 | finishedSeries | Array | Array de series finalizadas |
+
 
 #### GET /users/{id}/pending-series
 Retorna las series pendientes de un usuario.
@@ -178,9 +183,11 @@ Modelo de respuesta
 ```json
 [
     {
+        "id": 2,
         "title": "Dark"
     },
     {
+        "id": 1,
         "title": "Breaking Bad"
     }
 ]
@@ -189,6 +196,7 @@ Modelo de respuesta
 Campos de respuesta
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
+| id | Long | Id de la serie |
 | title | String | Titulo de la serie |
 
 
@@ -238,6 +246,77 @@ Campos de respuesta
 | startedSeries | Array | Array de series en curso |
 | finishedSeries | Array | Array de series finalizadas |
 
+
+#### GET /users/{id}/started-series
+Retorna las series en curso de un usuario.
+
+Endpoint URL
+```
+http://localhost:8080/users/{id}/started-series
+```
+
+Parametros de la URL
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id del usuario |
+
+Parametros de la petición
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| - | - | - |
+
+Modelo de respuesta
+```json
+[
+    {
+        "id": 1,
+        "title": "Breaking Bad"
+    }
+]
+```
+
+Campos de respuesta
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id de la serie |
+| title | String | Titulo de la serie |
+
+
+#### GET /users/{id}/finished-series
+Retorna las series finalizadas de un usuario.
+
+Endpoint URL
+```
+http://localhost:8080/users/{id}/finished-series
+```
+
+Parametros de la URL
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id del usuario |
+
+Parametros de la petición
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| - | - | - |
+
+Modelo de respuesta
+```json
+[
+    {
+        "id": 2,
+        "title": "Dark"
+    }
+]
+```
+
+Campos de respuesta
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| id | Long | Id de la serie |
+| title | String | Titulo de la serie |
+
+
 #### GET /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}
 Marca un capítulo como visto.
 
@@ -262,11 +341,24 @@ Parametros de la petición
 Modelo de respuesta
 ```json
 {
-    "email": "
+    "serieSeasonViews": [
+        {
+            "chapters": [
+                true,
+                true
+            ]
+        }
+    ]
 }
 ```
 
 Campos de respuesta
+| Campo | Tipo | Descripción |
+| ------ | ------ | ------ |
+| serieSeasonViews | Array | Array de temporadas |
+| chapters | Array | Array de capítulos |
+| true | Boolean | Capítulo visto |
+| false | Boolean | Capítulo no visto |
 
 
 #### GET /users/{id}/last-chapter-viewed/{idSerie}
@@ -313,6 +405,7 @@ Campos de respuesta
 | number | Integer | Numero de la temporada |
 | serie | Object | Objeto de la serie |
 | title | String | Titulo de la serie |
+
 
 #### GET /users/{id}/views
 Retorna las vistas de un usuario.
@@ -485,6 +578,7 @@ Campos de respuesta
 | name | String | Nombre del actor |
 | surname | String | Apellido del actor |
 
+
 #### GET /series/{id}
 Retorna una serie de la base de datos.
 
@@ -563,6 +657,7 @@ Campos de respuesta
 | actors | Array | Array de actores |
 | name | String | Nombre del actor |
 | surname | String | Apellido del actor |
+
 
 #### POST /series
 Crea una serie en la base de datos.

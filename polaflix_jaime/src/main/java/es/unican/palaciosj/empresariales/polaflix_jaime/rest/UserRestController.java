@@ -118,15 +118,48 @@ public class UserRestController {
 
         return result;
     }
+
+    // Get user started series
+    @GetMapping(value ="/{id}/started-series")
+    @JsonView(JsonViews.SerieListView.class)
+    public ResponseEntity<Iterable<Serie>> getStartedSeries(@PathVariable("id") long id) {
+        ResponseEntity<Iterable<Serie>> result;
+        Optional<User> u = ur.findById(id);
+
+        if (u.isPresent()) {
+            result = ResponseEntity.ok(u.get().getStartedSeries());
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+
+    }
     
+    // Get user finished series
+    @GetMapping(value ="/{id}/finished-series")
+    @JsonView(JsonViews.SerieListView.class)
+    public ResponseEntity<Iterable<Serie>> getFinishedSeries(@PathVariable("id") long id) {
+        ResponseEntity<Iterable<Serie>> result;
+        Optional<User> u = ur.findById(id);
+
+        if (u.isPresent()) {
+            result = ResponseEntity.ok(u.get().getFinishedSeries());
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+
+    }
 
     // Mark chapter as viewed
     @PostMapping(value = "/{id}/mark-chapter-viewed/{idSerie}/{numSeason}/{numChapter}")
-    @JsonView(JsonViews.UserView.class)
+    @JsonView(JsonViews.SerieViewsView.class)
     @Transactional
-    public ResponseEntity<User> markChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie, 
+    public ResponseEntity<Views> markChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie, 
                                                   @PathVariable("numSeason") int numSeason, @PathVariable("numChapter") int numChapter) {
-        ResponseEntity<User> result;
+        ResponseEntity<Views> result;
         Optional<User> u = ur.findById(id);
         Optional<Serie> s = sr.findById(idSerie);
 
@@ -134,7 +167,7 @@ public class UserRestController {
             Chapter c = s.orElseThrow().getSeason(numSeason).getChapter(numChapter);
             u.get().markChapterViewed(s.orElseThrow(), c);
             ur.save(u.get());
-            result = ResponseEntity.ok(u.get());
+            result = ResponseEntity.ok(u.get().getSerieViews(s.orElseThrow()));
         } else {
             result = ResponseEntity.notFound().build();
         }
