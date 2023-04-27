@@ -3,7 +3,7 @@
 A continaución se definarán los diferentes recursos de la API REST de Polaflix. Teniendo controladores para los usuarios y las series.
 
 - [Polaflix API REST](#polaflix-api-rest)
-    - [Usuarios](#usuarios)
+  - [**Usuarios**](#usuarios)
       - [GET /users](#get-users)
       - [GET /users/{id}](#get-usersid)
       - [POST /users](#post-users)
@@ -13,13 +13,13 @@ A continaución se definarán los diferentes recursos de la API REST de Polaflix
       - [GET /users/{id}/last-chapter-viewed/{idSerie}](#get-usersidlast-chapter-viewedidserie)
       - [GET /users/{id}/views](#get-usersidviews)
       - [GET /users/{id}/bills](#get-usersidbills)
-    - [Series](#series)
+  - [**Series**](#series)
       - [GET /series](#get-series)
       - [GET /series/{id}](#get-seriesid)
       - [POST /series](#post-series)
       - [POST /series/{id}/change-category/{newCategory}](#post-seriesidchange-categorynewcategory)
 
-### Usuarios
+## **Usuarios**
 
 #### GET /users
 Retorna todos los usuarios de la base de datos.
@@ -404,7 +404,7 @@ Campos de respuesta
 | dateView | String | Fecha de la visualización |
 | price | Double | Precio de la visualización |
 
-### Series
+## **Series**
 
 #### GET /series
 Retorna todas las series de la base de datos.
