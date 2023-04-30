@@ -63,6 +63,22 @@ public class UserRestController {
         return result;
     }
 
+    // Search user by email
+    @GetMapping(params = "email")
+    @JsonView(JsonViews.UserView.class)
+    public ResponseEntity<User> getUserEmail(@RequestParam("email") String email) {
+        User u = ur.findByEmail(email);
+        ResponseEntity<User> result;
+
+        if (u != null) {
+            result = ResponseEntity.ok(u);
+        } else {
+            result = ResponseEntity.notFound().build();
+        }
+
+        return result;
+    }
+
     // Add user to database by atributtes
     @PostMapping(params = {"email", "username", "password", "IBAN", "fixedFee"})
     @JsonView(JsonViews.UserView.class)

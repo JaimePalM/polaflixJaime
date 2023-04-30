@@ -1,25 +1,26 @@
-# Polaflix API REST
+---
+Polaflix API REST - Jaime Palacios Mediavilla
+--- 
 
 A continaución se definarán los diferentes recursos de la API REST de Polaflix. Teniendo controladores para los usuarios y las series.
 
-- [Polaflix API REST](#polaflix-api-rest)
-  - [**Usuarios**](#usuarios)
-      - [GET /users](#get-users)
-      - [GET /users/{id}](#get-usersid)
-      - [POST /users](#post-users)
-      - [GET /users/{id}/pending-series](#get-usersidpending-series)
-      - [POST /users/{id}/pending-series](#post-usersidpending-series)
-      - [GET /users/{id}/started-series](#get-usersidstarted-series)
-      - [GET /users/{id}/finished-series](#get-usersidfinished-series)
-      - [GET /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}](#get-usersidmark-chapter-viewedidserieidseasonidchapter)
-      - [GET /users/{id}/last-chapter-viewed/{idSerie}](#get-usersidlast-chapter-viewedidserie)
-      - [GET /users/{id}/views](#get-usersidviews)
-      - [GET /users/{id}/bills](#get-usersidbills)
-  - [**Series**](#series)
-      - [GET /series](#get-series)
-      - [GET /series/{id}](#get-seriesid)
-      - [POST /series](#post-series)
-      - [POST /series/{id}/change-category/{newCategory}](#post-seriesidchange-categorynewcategory)
+- [**Usuarios**](#usuarios)
+    - [GET /users](#get-users)
+    - [GET /users/{id}](#get-usersid)
+    - [POST /users](#post-users)
+    - [GET /users/{id}/pending-series](#get-usersidpending-series)
+    - [POST /users/{id}/pending-series](#post-usersidpending-series)
+    - [GET /users/{id}/started-series](#get-usersidstarted-series)
+    - [GET /users/{id}/finished-series](#get-usersidfinished-series)
+    - [POST /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}](#post-usersidmark-chapter-viewedidserieidseasonidchapter)
+    - [GET /users/{id}/last-chapter-viewed/{idSerie}](#get-usersidlast-chapter-viewedidserie)
+    - [GET /users/{id}/views](#get-usersidviews)
+    - [GET /users/{id}/bills](#get-usersidbills)
+- [**Series**](#series)
+    - [GET /series](#get-series)
+    - [GET /series/{id}](#get-seriesid)
+    - [POST /series](#post-series)
+    - [POST /series/{id}/change-category/{newCategory}](#post-seriesidchange-categorynewcategory)
 
 ## **Usuarios**
 
@@ -39,7 +40,7 @@ Parametros de la URL
 Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
-| - | - | - |
+| email | String | Filtra por email del usuario |
 
 Modelo de respuesta
 ```json
@@ -317,7 +318,7 @@ Campos de respuesta
 | title | String | Titulo de la serie |
 
 
-#### GET /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}
+#### POST /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}
 Marca un capítulo como visto.
 
 Endpoint URL
@@ -711,7 +712,7 @@ Campos de respuesta
 | creators | Array | Array de creadores de la serie |
 | name | String | Nombre del creador |
 | surname | String | Apellido del creador |
-| actors | Array | Array de actores de la serie |
+| actors (optional) | Array | Array de actores de la serie |
 
 
 #### POST /series/{id}/change-category/{newCategory}

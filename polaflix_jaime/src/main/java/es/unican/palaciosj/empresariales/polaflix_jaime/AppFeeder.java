@@ -45,15 +45,8 @@ public class AppFeeder implements CommandLineRunner {
 		paco.addSerieToPending(dark);
 		ur.save(paco);
 
-		paco = ur.findByEmail("paco23@polaflix.com");
-		if (paco == null){
-			System.out.println("Paco es nulo\n");
-		} else {
-			System.out.println("Paco no es nulo\n");
-		}
 		 
 		// Test mark chapter as viewed
-		
 		User lola = ur.findByUsername("Lola");
 		List<Serie> bList = sr.findByInitial('B');
 		Serie breakingBad = bList.get(0); 
@@ -71,7 +64,7 @@ public class AppFeeder implements CommandLineRunner {
 	private void feedUsers() {
         BankAccount b1 = new BankAccount("ES12 3456 7890 1234 5678 9012");
         BankAccount b2 = new BankAccount("ES12 3456 7890 1234 5678 9013");
-	    User u1 = new User("paco23@polafix.com","Paco","paco123", b1, false);
+	    User u1 = new User("paco23@polaflix.com","Paco","paco123", b1, false);
 		User u2 = new User("lola43@polaflix.com","Lola","lola123", b2, true);
 		ur.save(u1);
 		ur.save(u2);
