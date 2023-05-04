@@ -1,0 +1,42 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Empezadas</h5>
+    </div>
+    <div class="card-body">
+        <ul class="started-series">
+            <div ng-controller="getUserSeries">
+                <li  class="list-group-item" ng-repeat="serie in startedSeries">
+                    <a href="#!watchSerie" ng-click="watchSerie(serie)">{{serie.title}}</a>
+                </li>
+            </div>
+        </ul>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Pendientes</h5>
+    </div>
+    <div class="card-body">
+        <ul class="pending-series">
+            <div ng-controller="getUserSeries">
+                <li  class="list-group-item" ng-repeat="serie in pendingSeries">
+                    <a href="#!watchSerie" ng-click="watchSerie(serie)">{{serie.title}}</a>
+                </li>
+            </div>
+        </ul>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Finalizadas</h5>
+    </div>
+    <div class="card-body">
+        <ul class="finished-series">
+            <div ng-controller="getUserSeries">
+                <li  class="list-group-item" ng-repeat="serie in finishedSeries">
+                    <a href="#!watchSerie" ng-click="watchSerie(serie)">{{serie.title}}</a>
+                </li>
+            </div>
+        </ul>
+    </div>
+</div>

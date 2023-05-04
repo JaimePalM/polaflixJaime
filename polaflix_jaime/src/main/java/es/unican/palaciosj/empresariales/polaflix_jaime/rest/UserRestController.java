@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,6 +83,7 @@ public class UserRestController {
     // Add user to database by atributtes
     @PostMapping(params = {"email", "username", "password", "IBAN", "fixedFee"})
     @JsonView(JsonViews.UserView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<User> addUser(@RequestParam("email") String email, @RequestParam("username") String username, 
                                         @RequestParam("password") String password, @RequestParam("IBAN") String IBAN, 
                                         @RequestParam("fixedFee") Boolean fixedFee) {
@@ -117,12 +119,13 @@ public class UserRestController {
     }
 
     // Add serie to user pending list
-    @PostMapping(value = "/{id}/pending-series", params = {"idSerie"})
+    @PostMapping(value = "/{id}/pending-series", params = {"serieId"})
     @JsonView(JsonViews.UserView.class)
-    public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @RequestParam("idSerie") long idSerie) {
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @RequestParam("serieId") long serieId) {
         ResponseEntity<User> result;
         Optional<User> u = ur.findById(id);
-        Optional<Serie> s = sr.findById(idSerie);
+        Optional<Serie> s = sr.findById(serieId);
 
         if (u.isPresent() && s.isPresent()) {
             u.get().addSerieToPending(s.orElseThrow());
@@ -172,6 +175,7 @@ public class UserRestController {
     // Mark chapter as viewed
     @PostMapping(value = "/{id}/mark-chapter-viewed/{idSerie}/{numSeason}/{numChapter}")
     @JsonView(JsonViews.SerieViewsView.class)
+    @CrossOrigin(origins = "*")
     @Transactional
     public ResponseEntity<Views> markChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie, 
                                                   @PathVariable("numSeason") int numSeason, @PathVariable("numChapter") int numChapter) {

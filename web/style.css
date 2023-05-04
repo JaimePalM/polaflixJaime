@@ -1,0 +1,108 @@
+    /* Estilos para la barra superior */
+    .title {
+        font-size: 3em;
+        text-align: center;
+        color: #333;
+        margin: 10px;
+    }
+
+    .topbar {
+        background-color: #333;
+        color: white;
+        display: flex;
+        align-items: center;
+        height: 100px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        height: 40px;
+    }
+
+    .welcome-text {
+        flex-grow: 1;
+        text-align: center;
+        font-size: 44px;
+    }
+
+    .user-image {
+        height: 40px;
+    }
+
+    /* Estilos para la barra de navegación */
+    .navbar {
+        background-color: #f2f2f2;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        padding: 0 20px;
+    }
+
+    .navbar .active {
+        color: red;
+    }
+
+    .navbar a {
+        color: #333;
+        text-decoration: none;
+        margin: 0 10px;
+        font-size: 18px;
+    }
+
+    /* Estilo para la lista */
+    .series-list {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .series-list ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .series-list li {
+        padding: 5px;
+        margin-bottom: 5px;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+    }
+
+    .card {
+        margin-top: 5em;
+    }
+
+    .chapters-container {
+        margin: 40px;
+    }
+
+    .seasons-container {
+        align-content: center;
+        margin: 40px;
+    }
+
+    .category-name {
+        padding: 5px 15px;
+        border-radius: 10px;
+        border: 1px solid black;
+        font-weight: bold;
+        font-size: px;
+    }
+    
+    .category-name.gold {
+        background-color: gold;
+    }
+    
+    .category-name.silver {
+        background-color: silver;
+    }
+    
+    .category-name.standard {
+        background-color: white;
+    }
+
+    .description {
+        margin: 10px;
+        background-color: #f9f9f9;
+    }
+    

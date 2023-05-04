@@ -1,0 +1,37 @@
+<div ng-controller="watchSerie">
+    <h1 class="title">{{ serie.title }}</h1>
+    <div class="chapters-container">
+        <div ng-repeat="season in serie.seasons" ng-show="season.number == currentSeason">
+            <div class="text-center mb-2">
+                <a class="text-dark mr-2" ng-if="season.number > 1" ng-click="changeSeason(currentSeason - 1)">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h3 class="d-inline-block">{{ 'Temporada ' + season.number }}</h3>
+                <a class="text-dark ml-4" ng-if="season.number < serie.seasons.length"
+                    ng-click="changeSeason(currentSeason + 1)">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <div class="float-right">
+                    <div class="category-name {{ serie.category.name.toLowerCase() }}">
+                        {{ serie.category.name }}
+                    </div>
+                </div>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="chapter in season.chapters | orderBy: 'number'">
+                    <a ng-click="showDescription(chapter)">
+                        {{ "E" + chapter.number + " " + chapter.title }}
+                    </a>
+                    <span class="float-right">
+                        <a href="#">Ver</a>
+                        <span ng-if="views.serieSeasonViews[season.number - 1].chapters[chapter.number - 1]">Visto</span>
+                        <span ng-if="!views.serieSeasonViews[season.number - 1].chapters[chapter.number - 1]">No visto</span>
+                    </span>
+                    <div class="description" ng-show="descriptionView[chapter.number - 1]">
+                        {{ chapter.description }}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

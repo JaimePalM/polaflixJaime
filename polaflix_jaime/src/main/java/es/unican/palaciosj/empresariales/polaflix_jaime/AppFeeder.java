@@ -91,18 +91,22 @@ public class AppFeeder implements CommandLineRunner {
         // Add seasons to series
         Season s1s1 = new Season(1, s1);
         Season s2s1 = new Season(1, s2);
+		Season s2s2 = new Season(2, s2);
         s1.addSeason(s1s1);
         s2.addSeason(s2s1);
+		s2.addSeason(s2s2);
 		
         // Add chapters to seasons
         Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter", "http://www.polaflix.com/breaking-bad/season-1/chapter-1", s1s1);
         Chapter s1s1c2 = new Chapter(2, "Cat's in the bag", "Second chapter", "http://www.polaflix.com/breaking-bad/season-1/chapter-2", s1s1);
-        Chapter s2s1c1 = new Chapter(1, "Secrets", "First chapter", "http://www.polaflix.com/dark/season-1/chapter-1", s2s1);
-        Chapter s2s1c2 = new Chapter(2, "Lies", "Second chapter", "http://www.polaflix.com/dark/season-1/chapter-2", s2s1);
+        Chapter s2s1c1 = new Chapter(1, "Secrets", "In 2019, a local boy's disappearance stokes fear in the residents of Winden, a small German town with a strange and tragic history.", "http://www.polaflix.com/dark/season-1/chapter-1", s2s1);
+        Chapter s2s1c2 = new Chapter(2, "Lies", "When a grim discovery leaves the police baffled, Ulrich seeks a search warrant for the power plant. A mysterious stranger checks into the hotel.", "http://www.polaflix.com/dark/season-1/chapter-2", s2s1);
+		Chapter s2s2c1 = new Chapter(1, "Beginnings and Endings", "Six months after the disappearances, the police form a task force. In 2052, Jonas learns that most of Winden perished in an apocalyptic event.", "http://www.polaflix.com/dark/season-2/chapter-1", s2s2);
         s1s1.addChapter(s1s1c1);
         s1s1.addChapter(s1s1c2);
         s2s1.addChapter(s2s1c1);
-        s2s1.addChapter(s2s1c2);		
+        s2s1.addChapter(s2s1c2);
+		s2s2.addChapter(s2s2c1);	
 
 		// Add creators to series
 		Creator c1s1 = new Creator("Vince", "Gilligan");
@@ -122,14 +126,6 @@ public class AppFeeder implements CommandLineRunner {
 
 		sr.save(s1);
 		sr.save(s2);
-
-		// User lola = ur.findByUsername("Lola");
-		// lola.markChapterViewed(s1, s1.getSeason(1).getChapter(1));
-		// ur.save(lola);
-		// User paco = ur.findByUsername("Paco");
-		// paco.markChapterViewed(s2, s2.getSeason(1).getChapter(2));
-		// ur.save(paco);
-		// sr.save(s1);
 	}
 
 }

@@ -20,7 +20,7 @@ public class Chapter implements Comparable<Chapter> {
     private int number;
     @JsonView({JsonViews.SerieView.class, JsonViews.ChapterView.class})
     private String title;
-    @JsonView({JsonViews.ChapterView.class})
+    @JsonView({JsonViews.ChapterView.class, JsonViews.SerieView.class})
     private String description;
     private String url;
     @ManyToOne
