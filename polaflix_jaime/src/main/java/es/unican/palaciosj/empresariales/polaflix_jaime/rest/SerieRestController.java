@@ -45,6 +45,7 @@ public class SerieRestController {
     // Get series by initial letter
     @GetMapping(params = "initial")
     @JsonView(JsonViews.SerieView.class)
+    @CrossOrigin(origins = "*")
     public Iterable<Serie> getSeriesByInitialLetter(@RequestParam("initial") char initialLetter) {
         return sr.findByInitial(initialLetter);
     }

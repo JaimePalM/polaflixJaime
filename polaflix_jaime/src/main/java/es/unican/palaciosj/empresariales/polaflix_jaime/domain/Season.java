@@ -3,8 +3,6 @@ package es.unican.palaciosj.empresariales.polaflix_jaime.domain;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.rest.JsonViews;

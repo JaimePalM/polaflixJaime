@@ -1,6 +1,7 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime;
 
-
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Actor;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Creator;
+import es.unican.palaciosj.empresariales.polaflix_jaime.domain.OnDemandBill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Season;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
@@ -22,50 +25,48 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserReposit
 
 @Component
 public class AppFeeder implements CommandLineRunner {
-	
+
 	@Autowired
 	protected UserRepository ur;
 	@Autowired
 	protected SerieRepository sr;
 	@Autowired
 	protected CategoryRepository cr;
-	
+
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
 		feedUsers();
-		//feedBills();
+		feedBills();
 		feedCategories();
 		feedSeries();
 
 		// Test add serie to pending list
 		User paco = ur.findByUsername("Paco");
 		List<Serie> dList = sr.findByInitial('D');
-		Serie dark = dList.get(0);	
+		Serie dark = dList.get(0);
 		paco.addSerieToPending(dark);
 		ur.save(paco);
 
-		 
 		// Test mark chapter as viewed
 		User lola = ur.findByUsername("Lola");
 		List<Serie> bList = sr.findByInitial('B');
-		Serie breakingBad = bList.get(0); 
+		Serie breakingBad = bList.get(0);
 		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
 		ur.save(lola);
 
 		paco = ur.findByUsername("Paco");
 		paco.markChapterViewed(dark, dark.getSeason(1).getChapter(2));
 		ur.save(paco);
-		 
 
 		System.out.println("Application feeded");
 	}
-	
+
 	private void feedUsers() {
-        BankAccount b1 = new BankAccount("ES12 3456 7890 1234 5678 9012");
-        BankAccount b2 = new BankAccount("ES12 3456 7890 1234 5678 9013");
-	    User u1 = new User("paco23@polaflix.com","Paco","paco123", b1, false);
-		User u2 = new User("lola43@polaflix.com","Lola","lola123", b2, true);
+		BankAccount b1 = new BankAccount("ES12 3456 7890 1234 5678 9012");
+		BankAccount b2 = new BankAccount("ES12 3456 7890 1234 5678 9013");
+		User u1 = new User("paco23@polaflix.com", "Paco", "paco123", b1, false);
+		User u2 = new User("lola43@polaflix.com", "Lola", "lola123", b2, true);
 		ur.save(u1);
 		ur.save(u2);
 	}
@@ -78,35 +79,43 @@ public class AppFeeder implements CommandLineRunner {
 		cr.save(silver);
 		cr.save(standard);
 	}
-	
+
 	private void feedSeries() {
-        // Get categories
+		// Get categories
 		Category gold = cr.findByName("Gold");
 		Category standard = cr.findByName("Standard");
 
 		// Create series
 		Serie s1 = new Serie("Breaking Bad", "Drug dealer", standard);
-        Serie s2 = new Serie("Dark", "Time travel", gold);
+		Serie s2 = new Serie("Dark", "Time travel", gold);
 
-        // Add seasons to series
-        Season s1s1 = new Season(1, s1);
-        Season s2s1 = new Season(1, s2);
+		// Add seasons to series
+		Season s1s1 = new Season(1, s1);
+		Season s2s1 = new Season(1, s2);
 		Season s2s2 = new Season(2, s2);
-        s1.addSeason(s1s1);
-        s2.addSeason(s2s1);
+		s1.addSeason(s1s1);
+		s2.addSeason(s2s1);
 		s2.addSeason(s2s2);
-		
-        // Add chapters to seasons
-        Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter", "http://www.polaflix.com/breaking-bad/season-1/chapter-1", s1s1);
-        Chapter s1s1c2 = new Chapter(2, "Cat's in the bag", "Second chapter", "http://www.polaflix.com/breaking-bad/season-1/chapter-2", s1s1);
-        Chapter s2s1c1 = new Chapter(1, "Secrets", "In 2019, a local boy's disappearance stokes fear in the residents of Winden, a small German town with a strange and tragic history.", "http://www.polaflix.com/dark/season-1/chapter-1", s2s1);
-        Chapter s2s1c2 = new Chapter(2, "Lies", "When a grim discovery leaves the police baffled, Ulrich seeks a search warrant for the power plant. A mysterious stranger checks into the hotel.", "http://www.polaflix.com/dark/season-1/chapter-2", s2s1);
-		Chapter s2s2c1 = new Chapter(1, "Beginnings and Endings", "Six months after the disappearances, the police form a task force. In 2052, Jonas learns that most of Winden perished in an apocalyptic event.", "http://www.polaflix.com/dark/season-2/chapter-1", s2s2);
-        s1s1.addChapter(s1s1c1);
-        s1s1.addChapter(s1s1c2);
-        s2s1.addChapter(s2s1c1);
-        s2s1.addChapter(s2s1c2);
-		s2s2.addChapter(s2s2c1);	
+
+		// Add chapters to seasons
+		Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter",
+				"http://www.polaflix.com/breaking-bad/season-1/chapter-1", s1s1);
+		Chapter s1s1c2 = new Chapter(2, "Cat's in the bag", "Second chapter",
+				"http://www.polaflix.com/breaking-bad/season-1/chapter-2", s1s1);
+		Chapter s2s1c1 = new Chapter(1, "Secrets",
+				"In 2019, a local boy's disappearance stokes fear in the residents of Winden, a small German town with a strange and tragic history.",
+				"http://www.polaflix.com/dark/season-1/chapter-1", s2s1);
+		Chapter s2s1c2 = new Chapter(2, "Lies",
+				"When a grim discovery leaves the police baffled, Ulrich seeks a search warrant for the power plant. A mysterious stranger checks into the hotel.",
+				"http://www.polaflix.com/dark/season-1/chapter-2", s2s1);
+		Chapter s2s2c1 = new Chapter(1, "Beginnings and Endings",
+				"Six months after the disappearances, the police form a task force. In 2052, Jonas learns that most of Winden perished in an apocalyptic event.",
+				"http://www.polaflix.com/dark/season-2/chapter-1", s2s2);
+		s1s1.addChapter(s1s1c1);
+		s1s1.addChapter(s1s1c2);
+		s2s1.addChapter(s2s1c1);
+		s2s1.addChapter(s2s1c2);
+		s2s2.addChapter(s2s2c1);
 
 		// Add creators to series
 		Creator c1s1 = new Creator("Vince", "Gilligan");
@@ -126,6 +135,10 @@ public class AppFeeder implements CommandLineRunner {
 
 		sr.save(s1);
 		sr.save(s2);
+	}
+
+	public void feedBills() {
+
 	}
 
 }

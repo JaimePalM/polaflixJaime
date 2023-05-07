@@ -1,34 +1,52 @@
 <div class="seriesContainer" ng-controller="addSerie">
-  <div class="row">
-      <div class="col-md-9">
-        <ul class="pagination">
-          <li class="page-item" ng-repeat="letter in alphabet">
-            <a href class="page-link" ng-click="changeInitial(letter)">{{ letter }}</a>
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-9">
+          <ul class="pagination">
+            <li class="page-item" ng-repeat="letter in alphabet">
+              <a href class="page-link" ng-click="changeInitial(letter)">{{ letter }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <form class="form-inline float-right">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Buscar">
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="seriesList">
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="serie in series | orderBy: 'title'" ng-hide="isPending(serie.id)">
+            <a class="serie-title" ng-click="showDescription(serie)">
+              {{ serie.title }}
+            </a>
+            <a href class="add-button" ng-click="addPending(serie)">Agregar</a>
+            <div class="description" ng-show="descriptionView[serie.id]">
+              {{ serie.description }}
+              <p>
+                Creadores:
+                <span ng-repeat="creator in serie.creators">
+                  {{ creator.name + " " + creator.surname }}
+                </span>
+                <br>
+                Actores:
+                <span ng-repeat="actor in serie.actors">
+                  {{$index > 0 ? ', ' : ''}}{{ actor.name + " " + actor.surname}}
+                </span>
+              </p>
+            </div>
           </li>
         </ul>
       </div>
-      <div class="col-md-3">
-        <form class="form-inline float-right">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Buscar">
-          </div>
-          <button type="submit" class="btn btn-primary">Buscar</button>
-        </form>
+      <div class="noSeries" ng-show="series.length == 0">
+        No hay series que mostrar
       </div>
-  </div>
-  <div class="seriesList">
-    <ul class="list-group">
-      <li class="list-group-item" ng-repeat="serie in series | orderBy: 'title'">
-        <a ng-click="showDescription(serie)">
-          {{ serie.title }}
-        </a>
-        <span class="float-right">
-          <a href class="addButton" ng-click="addPending(serie)">Agregar</a>
-        </span>
-        <div>
-          {{ serie.description }}
-        </div>
-      </li>
-    </ul>
+    </div>
   </div>
 </div>

@@ -1,0 +1,39 @@
+<div ng-controller="viewBills">
+    <div class="bills-container">
+        <div class="card">
+        <div ng-repeat="monthBill in bills" ng-show="monthBill.monthBilled == currentMonth">
+            <div class="text-center mb-4">
+                <a class="text-dark mr-2" ng-if="previousMonthAvailable()" ng-click="changeMonth(currentMonth | date:'yyyy-MM'-1)">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="card-header">
+                    <h3 class="d-inline-block">{{ currentMonth | date:'MMMM yyyy'}}</h3>
+                </div>
+                <a class="text-dark ml-2" ng-if="nextMonthAvailable()" ng-click="changeMonth(currentMonth | date:'yyyy-MM'+1)">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th> <th>Serie</th> <th>Episodio</th> <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="view in monthBill.monthViews">
+                                <td>{{ view.dateView | date:'dd/MM/yyyy'}}</td>
+                                <td>{{ view.chapter.season.serie.title }}</td>
+                                <td>{{ view.chapter.season.number + "x" + view.chapter.number }}</td>
+                                <td>{{ view.price + "€" }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="total-amount">
+                    <p>Total: {{ monthBill.totalAmount + "€" }}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -20,7 +20,7 @@
         <ul class="pending-series">
             <div ng-controller="getUserSeries">
                 <li  class="list-group-item" ng-repeat="serie in pendingSeries">
-                    <a href="#!watchSerie" ng-click="watchSerie(serie)">{{serie.title}}</a>
+                    <a href="#watchSerie/{{ serie.id }}" ng-click="watchSerie(serie)">{{serie.title}}</a>
                 </li>
             </div>
         </ul>
