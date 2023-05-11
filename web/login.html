@@ -1,0 +1,26 @@
+<div class="loginContainer" ng-controller="loginCtrl">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="mb-0">Iniciar sesión</h4>
+              </div>
+              <div class="card-body">
+                <form ng-submit="login()">
+                  <div class="form-group">
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="username" ng-model="username" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" class="form-control" id="password" ng-model="password" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary" ng-click="login(username, password)">Ingresar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

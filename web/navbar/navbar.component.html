@@ -10,14 +10,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Inicio</a>
+      <li class="nav-item" ng-class="{ active: isActive('/home') }">
+        <a class="nav-link" href="#/home">Inicio</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#addSerie">Agregar Serie</a>
+      <li class="nav-item" ng-class="{ active: isActive('/addSerie') }">
+        <a class="nav-link" href="#/addSerie">Agregar Serie</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#viewBills">Ver cargos</a>
+      <li class="nav-item" ng-class="{ active: isActive('/viewBills') }">
+        <a class="nav-link" href="#/viewBills">Ver cargos</a>
       </li>
     </ul>
   </div>
