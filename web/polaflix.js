@@ -66,7 +66,7 @@ polaflixMod.controller('watchSerie', function ($scope, $http, $routeParams) {
         $scope.currentSeason = 1;
     });
 
-    $http.get(polaflixUrl + "/users/" + userId + "/views/2").then(function (response) {
+    $http.get(polaflixUrl + "/users/" + userId + "/views/" + $scope.serieId).then(function (response) {
         $scope.views = response.data;
     });
 
