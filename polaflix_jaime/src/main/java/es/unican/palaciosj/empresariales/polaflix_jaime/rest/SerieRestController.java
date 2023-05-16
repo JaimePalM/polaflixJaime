@@ -38,6 +38,7 @@ public class SerieRestController {
     // Get all series
     @GetMapping()
     @JsonView(JsonViews.SerieView.class)
+    @CrossOrigin(origins = "*")
     public Iterable<Serie> getAllSeries() {
         return sr.findAll();
     }
@@ -53,6 +54,7 @@ public class SerieRestController {
     // Get series by id
     @GetMapping(value = "/{id}")
     @JsonView(JsonViews.SerieView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Serie> getSerie(@PathVariable("id") long id) {
         Optional<Serie> s = sr.findById(id);
         ResponseEntity<Serie> result;
@@ -66,6 +68,7 @@ public class SerieRestController {
         return result;
     }
 
+    // NO SE UTILIZA
     // Add serie to database by atributtes
     @PostMapping(params = {"title", "description", "category", "creatorName", "creatorSurname"})
     @JsonView(JsonViews.SerieView.class)
@@ -92,6 +95,7 @@ public class SerieRestController {
         return result;
     }
 
+    // NO SE UTILIZA
     // Change serie category
     @PostMapping(value = "/{id}/change-category/{newCategory}")
     @CrossOrigin(origins = "*")

@@ -1,7 +1,5 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Actor;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Creator;
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.OnDemandBill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Season;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
@@ -41,23 +37,38 @@ public class AppFeeder implements CommandLineRunner {
 		feedCategories();
 		feedSeries();
 
-		// Test add serie to pending list
 		User paco = ur.findByUsername("Paco");
+		User lola = ur.findByUsername("Lola");
 		List<Serie> dList = sr.findByInitial('D');
 		Serie dark = dList.get(0);
-		paco.addSerieToPending(dark);
-		ur.save(paco);
-
-		// Test mark chapter as viewed
-		User lola = ur.findByUsername("Lola");
 		List<Serie> bList = sr.findByInitial('B');
 		Serie breakingBad = bList.get(0);
-		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
+		List<Serie> gList = sr.findByInitial('G');
+		Serie got = gList.get(0);
+		List<Serie> bcList = sr.findByInitial('B');
+		Serie betterCallSaul = bcList.get(1);
+		
+		// Test add serie to pending list
+		paco.addSerieToPending(dark);
+		paco.addSerieToPending(breakingBad);
+		ur.save(paco);
+		lola.addSerieToPending(got);
 		ur.save(lola);
 
+		// Test mark chapter as viewed
+		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
+		ur.save(lola);
 		paco = ur.findByUsername("Paco");
 		paco.markChapterViewed(dark, dark.getSeason(1).getChapter(2));
 		ur.save(paco);
+
+		// Populate started and finished series
+		paco.addSerieToStarted(got);
+		paco.addSerieToFinished(betterCallSaul);
+		lola.addSerieToStarted(breakingBad);
+		lola.addSerieToFinished(dark);
+		ur.save(paco);
+		ur.save(lola);
 
 		System.out.println("Application feeded");
 	}
@@ -91,6 +102,10 @@ public class AppFeeder implements CommandLineRunner {
 		Serie s2 = new Serie("Dark", "Time travel", gold);
 		Serie s3 = new Serie("Game of Thrones", "Kings, Queens and Dragons", gold);
 		Serie s4 = new Serie("Better Call Saul", "Lawyer", gold);
+		// Create some series that will we empty
+		Serie s5 = new Serie("The Walking Dead", "Zombies", silver);
+		Serie s6 = new Serie("MindHunter", "Serial killers", silver);
+		Serie s7 = new Serie("Prison Break", "Prison", silver);
 
 		// Add seasons to series
 		Season s1s1 = new Season(1, s1);
@@ -175,6 +190,9 @@ public class AppFeeder implements CommandLineRunner {
 		sr.save(s2);
 		sr.save(s3);
 		sr.save(s4);
+		sr.save(s5);
+		sr.save(s6);
+		sr.save(s7);
 	}
 
 	public void feedBills() {

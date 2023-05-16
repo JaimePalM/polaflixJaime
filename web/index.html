@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Polaflix</title>
+    <base href="/">
+    <link rel="icon" type="img/logo" href="favicon.ico">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Bootstrap -->
@@ -16,13 +18,14 @@
     <!-- Angular Dialog -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/1.4.0/js/ngDialog.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/1.4.0/css/ngDialog.min.css">
+    <!-- Main Module -->
     <script src="polaflix.js"></script>
     <!-- Components -->
     <script src="navbar/navbar.component.js"></script>
     <script src="footer/polaflix-footer.component.js"></script>
 </head>
-<body ng-app="polaflix" >
-  <navbar></navbar>
+<body ng-app="polaflix">
+  <navbar user-email="paco23@polaflix.com" polaflix-url="http://localhost:8000"></navbar>
   <div ng-view></div>
   <polaflix-footer></polaflix-footer>
 </body>

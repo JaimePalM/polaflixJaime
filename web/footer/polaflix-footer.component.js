@@ -1,8 +1,8 @@
-var polaflixMod = angular.module('polaflix-footer', ['ngRoute']);
+var polaflixMod = angular.module('polaflix-footer', []);
 
-polaflixMod.component('polaflix-foote', {
-  templateUrl: 'footer/polaflix-foote.component.html',
+polaflixMod.component('polaflix-footer', {
+  templateUrl: 'footer/polaflix-footer.component.html',
   controller: function FooterController($scope, $http) {
-
+    console.log("FooterController");
 }
 });

@@ -5,14 +5,10 @@ Polaflix API REST - Jaime Palacios Mediavilla
 A continaución se definarán los diferentes recursos de la API REST de Polaflix. Teniendo controladores para los usuarios y las series.
 
 - [**Usuarios**](#usuarios)
-    - [GET /users](#get-users)
     - [GET /users/{id}](#get-usersid)
     - [POST /users](#post-users)
-    - [GET /users/{id}/pending-series](#get-usersidpending-series)
-    - [POST /users/{id}/pending-series](#post-usersidpending-series)
-    - [GET /users/{id}/started-series](#get-usersidstarted-series)
-    - [GET /users/{id}/finished-series](#get-usersidfinished-series)
-    - [POST /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}](#post-usersidmark-chapter-viewedidserieidseasonidchapter)
+    - [PUT /users/{id}/pending-series/{serieId}](#put-usersidpending-seriesserieid)
+    - [POST /users/{id}/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}/viewed](#post-usersidserieidserieseasonnumseasonchapternumchapterviewed)
     - [GET /users/{id}/last-chapter-viewed/{idSerie}](#get-usersidlast-chapter-viewedidserie)
     - [GET /users/{id}/views](#get-usersidviews)
     - [GET /users/{id}/bills](#get-usersidbills)
@@ -24,64 +20,12 @@ A continaución se definarán los diferentes recursos de la API REST de Polaflix
 
 ## **Usuarios**
 
-#### GET /users
-Retorna todos los usuarios de la base de datos.
-
-Endpoint URL
-```
-http://localhost:8080/users
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| email | String | Filtra por email del usuario |
-
-Modelo de respuesta
-```json
-[
-    {
-        "email": "paco23@polafix.com",
-        "username": "Paco",
-        "pendingSeries": [
-            {
-                "title": "Dark"
-            }
-        ],
-        "startedSeries": [],
-        "finishedSeries": []
-    },
-    {
-        "email": "lola43@polaflix.com",
-        "username": "Lola",
-        "pendingSeries": [],
-        "startedSeries": [],
-        "finishedSeries": []
-    }
-]
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| email | String | Email del usuario |
-| username | String | Nombre de usuario |
-| pendingSeries | Array | Array de series pendientes |
-| startedSeries | Array | Array de series en curso |
-| finishedSeries | Array | Array de series finalizadas |
-
-
 #### GET /users/{id}
 Retorna un usuario de la base de datos.
 
 Endpoint URL
 ```
-http://localhost:8080/users/{id}
+http://localhost:8000/users/{id}
 ```
 
 Parametros de la URL
@@ -101,11 +45,22 @@ Modelo de respuesta
     "username": "Paco",
     "pendingSeries": [
         {
+            "id": 1,
             "title": "Dark"
         }
     ],
-    "startedSeries": [],
-    "finishedSeries": []
+    "startedSeries": [
+        {
+            "id": 2,
+            "title": "Breaking Bad"
+        }
+    ],
+    "finishedSeries": [
+        {
+            "id": 3,
+            "title": "Game of Thrones"
+        }
+    ]
 }
 ```
 
@@ -124,7 +79,7 @@ Crea un usuario en la base de datos.
 
 Endpoint URL
 ```
-http://localhost:8080/users
+http://localhost:8000/users
 ```
 
 Parametros de la URL
@@ -146,9 +101,24 @@ Modelo de respuesta
 {
     "email": "manolo@polaflix.com",
     "username": "Manolo",
-    "pendingSeries": [],
-    "startedSeries": [],
-    "finishedSeries": []
+    "pendingSeries": [
+        {
+            "id": 1,
+            "title": "Dark"
+        }
+    ],
+    "startedSeries": [
+        {
+            "id": 2,
+            "title": "Breaking Bad"
+        }
+    ],
+    "finishedSeries": [
+        {
+            "id": 3,
+            "title": "Game of Thrones"
+        }
+    ]
 }
 ```
 
@@ -162,62 +132,25 @@ Campos de respuesta
 | finishedSeries | Array | Array de series finalizadas |
 
 
-#### GET /users/{id}/pending-series
-Retorna las series pendientes de un usuario.
+#### PUT /users/{id}/pending-series/{serieId}
+Añade una serie a la lista de pendientes de un usuario.
 
 Endpoint URL
 ```
-http://localhost:8080/users/{id}/pending-series
+http://localhost:8000/users/{id}/pending-series/{serieId}
 ```
 
 Parametros de la URL
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | id | Long | Id del usuario |
+| serieId | Long | Id de la serie |
 
 Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | - | - | - |
 
-Modelo de respuesta
-```json
-[
-    {
-        "id": 2,
-        "title": "Dark"
-    },
-    {
-        "id": 1,
-        "title": "Breaking Bad"
-    }
-]
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id de la serie |
-| title | String | Titulo de la serie |
-
-
-#### POST /users/{id}/pending-series
-Añade una serie a la lista de pendientes de un usuario.
-
-Endpoint URL
-```
-http://localhost:8080/users/{id}/pending-series
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id del usuario |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| serieId | Long | Id de la serie |
 
 Modelo de respuesta
 ```json
@@ -226,14 +159,26 @@ Modelo de respuesta
     "username": "Paco",
     "pendingSeries": [
         {
+            "id": 1,
             "title": "Dark"
         },
         {
+            "id": 2,
             "title": "Breaking Bad"
         }
     ],
-    "startedSeries": [],
-    "finishedSeries": []
+    "startedSeries": [
+        {
+            "id": 4,
+            "title": "Better Call Saul"
+        }
+    ],
+    "finishedSeries": [
+        {
+            "id": 3,
+            "title": "Game of Thrones"
+        }
+    ]
 }
 ```
 
@@ -248,82 +193,12 @@ Campos de respuesta
 | finishedSeries | Array | Array de series finalizadas |
 
 
-#### GET /users/{id}/started-series
-Retorna las series en curso de un usuario.
-
-Endpoint URL
-```
-http://localhost:8080/users/{id}/started-series
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id del usuario |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
-
-Modelo de respuesta
-```json
-[
-    {
-        "id": 1,
-        "title": "Breaking Bad"
-    }
-]
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id de la serie |
-| title | String | Titulo de la serie |
-
-
-#### GET /users/{id}/finished-series
-Retorna las series finalizadas de un usuario.
-
-Endpoint URL
-```
-http://localhost:8080/users/{id}/finished-series
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id del usuario |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
-
-Modelo de respuesta
-```json
-[
-    {
-        "id": 2,
-        "title": "Dark"
-    }
-]
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id de la serie |
-| title | String | Titulo de la serie |
-
-
-#### POST /users/{id}/mark-chapter-viewed/{idSerie}/{idSeason}/{idChapter}
+#### POST /users/{id}/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}/viewed
 Marca un capítulo como visto.
 
 Endpoint URL
 ```
-http://localhost:8080/users/{id}/mark-chapter-viewed/{idSerie}/{numSeason}/{numChapter}
+http://localhost:8000//users/{id}/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}/viewed
 ```
 
 Parametros de la URL
@@ -367,7 +242,7 @@ Retorna el último capítulo visto de una serie.
 
 Endpoint URL
 ```
-http://localhost:8080/users/{id}/last-chapter-viewed/{idSerie}
+http://localhost:8000/users/{id}/last-chapter-viewed/{idSerie}
 ```
 
 Parametros de la URL
@@ -413,7 +288,7 @@ Retorna las vistas de un usuario.
 
 Endpoint URL
 ```
-http://localhost:8080/users/{id}/views
+http://localhost:8000/users/{id}/views
 ```
 
 Parametros de la URL
@@ -452,7 +327,7 @@ Retorna las facturas de un usuario.
 
 Endpoint URL
 ```
-http://localhost:8080/users/{id}/bills
+http://localhost:8000/users/{id}/bills
 ```
 
 Parametros de la URL
@@ -505,7 +380,7 @@ Retorna todas las series de la base de datos.
 
 Endpoint URL
 ```
-http://localhost:8080/series
+http://localhost:8000/series
 ```
 
 Parametror de la URL
@@ -585,7 +460,7 @@ Retorna una serie de la base de datos.
 
 Endpoint URL
 ```
-http://localhost:8080/series/{id}
+http://localhost:8000/series/{id}
 ```
 
 Parametros de la URL
@@ -665,7 +540,7 @@ Crea una serie en la base de datos.
 
 Endpoint URL
 ```
-http://localhost:8080/series
+http://localhost:8000/series
 ```
 
 Parametros de la URL
@@ -720,7 +595,7 @@ Cambia la categoria de una serie.
 
 Endpoint URL
 ```
-http://localhost:8080/series/{id}/change-category/{newCategory}
+http://localhost:8000/series/{id}/change-category/{newCategory}
 ```
 
 Parametros de la URL
@@ -742,14 +617,37 @@ Modelo de respuesta
     "category": {
         "name": "Silver"
     },
-    "seasons": [],
+    "seasons": [
+        {
+            "number": 1,
+            "chapters": [
+                {
+                    "number": 2,
+                    "title": "Pilot"
+                },
+                {
+                    "number": 1,
+                    "title": "Tabula Rasa"
+                }
+            ]
+        }
+    ],
     "creators": [
         {
             "name": "Jeffrey Jacob",
             "surname": "Abrams"
         }
     ],
-    "actors": []
+    "actors": [
+        {
+            "name": "Matthew",
+            "surname": "Fox"
+        },
+        {
+            "name": "Evangeline",
+            "surname": "Lilly"
+        }
+    ]
 }
 ```
 

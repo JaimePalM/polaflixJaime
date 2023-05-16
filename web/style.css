@@ -95,15 +95,15 @@
         font-weight: bold;
         font-size: px;
     }
-    
+
     .category-name.gold {
         background-color: gold;
     }
-    
+
     .category-name.silver {
         background-color: silver;
     }
-    
+
     .category-name.standard {
         background-color: white;
     }
@@ -118,7 +118,7 @@
         display: inline-block;
         text-align: left;
     }
-    
+
     .chapter-view {
         width: 100px;
         padding-left: 20px;
@@ -159,7 +159,7 @@
     }
 
     .ngdialog.custom-dialog .ngdialog-content {
-        max-width: 500px; 
+        max-width: 500px;
         margin: 30px auto;
     }
 
@@ -172,48 +172,48 @@
         color: #fff;
         padding: 30px 0;
         margin-top: 100px;
-      }
-      
-      footer h5 {
+    }
+
+    footer h5 {
         margin-top: 0;
         margin-bottom: 20px;
         font-weight: bold;
         color: #fff;
-      }
-      
-      footer ul {
+    }
+
+    footer ul {
         margin: 0;
         padding: 0;
         list-style: none;
         line-height: 1.8;
-      }
-      
-      footer ul li a {
+    }
+
+    footer ul li a {
         color: #fff;
         text-decoration: none;
         font-size: 16px;
-      }
-      
-      footer ul li a:hover {
+    }
+
+    footer ul li a:hover {
         color: #aaa;
         text-decoration: none;
-      }
-      
-      footer hr {
+    }
+
+    footer hr {
         margin-top: 20px;
         margin-bottom: 20px;
         border: 0;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      
-      footer p {
+    }
+
+    footer p {
         margin-top: 0;
         margin-bottom: 0;
+        height: 50;
         font-size: 14px;
         color: #fff;
-      }
-      
-    
+    }
+
     .search-button {
         margin-left: 10px;
     }

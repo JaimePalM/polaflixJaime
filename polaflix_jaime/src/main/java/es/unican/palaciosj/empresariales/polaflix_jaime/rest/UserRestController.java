@@ -25,6 +25,7 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieReposi
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -41,16 +42,10 @@ public class UserRestController {
         this.sr = sr;
     }
 
-    // Get all users
-    @GetMapping()
-    @JsonView(JsonViews.UserView.class)
-    public ResponseEntity<Iterable<User>> getAllUsers() {
-        return ResponseEntity.ok(ur.findAll());
-    }
-
     // Get user by id
     @GetMapping(value = "/{id}")
     @JsonView(JsonViews.UserView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         Optional<User> u = ur.findById(id);
         ResponseEntity<User> result;
@@ -67,6 +62,7 @@ public class UserRestController {
     // Search user by email
     @GetMapping(params = "email")
     @JsonView(JsonViews.UserView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<User> getUserEmail(@RequestParam("email") String email) {
         User u = ur.findByEmail(email);
         ResponseEntity<User> result;
@@ -80,6 +76,7 @@ public class UserRestController {
         return result;
     }
 
+    // NO SE UTILIZA
     // Add user to database by atributtes
     @PostMapping(params = {"email", "username", "password", "IBAN", "fixedFee"})
     @JsonView(JsonViews.UserView.class)
@@ -104,6 +101,7 @@ public class UserRestController {
     // Get user pending series
     @GetMapping(value ="/{id}/pending-series")
     @JsonView(JsonViews.SerieListView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Iterable<Serie>> getPendingSeries(@PathVariable("id") long id) {
         ResponseEntity<Iterable<Serie>> result;
         Optional<User> u = ur.findById(id);
@@ -119,10 +117,10 @@ public class UserRestController {
     }
 
     // Add serie to user pending list
-    @PostMapping(value = "/{id}/pending-series", params = {"serieId"})
+    @PutMapping(value = "/{id}/pending-series/{serieId}")
     @JsonView(JsonViews.UserView.class)
     @CrossOrigin(origins = "*")
-    public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @RequestParam("serieId") long serieId) {
+    public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @PathVariable("serieId") long serieId) {
         ResponseEntity<User> result;
         Optional<User> u = ur.findById(id);
         Optional<Serie> s = sr.findById(serieId);
@@ -141,6 +139,7 @@ public class UserRestController {
     // Get user started series
     @GetMapping(value ="/{id}/started-series")
     @JsonView(JsonViews.SerieListView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Iterable<Serie>> getStartedSeries(@PathVariable("id") long id) {
         ResponseEntity<Iterable<Serie>> result;
         Optional<User> u = ur.findById(id);
@@ -158,6 +157,7 @@ public class UserRestController {
     // Get user finished series
     @GetMapping(value ="/{id}/finished-series")
     @JsonView(JsonViews.SerieListView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Iterable<Serie>> getFinishedSeries(@PathVariable("id") long id) {
         ResponseEntity<Iterable<Serie>> result;
         Optional<User> u = ur.findById(id);
@@ -173,7 +173,7 @@ public class UserRestController {
     }
 
     // Mark chapter as viewed
-    @PostMapping(value = "/{id}/mark-chapter-viewed/{idSerie}/{numSeason}/{numChapter}")
+    @PostMapping(value = "/{id}/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}/viewed")
     @JsonView(JsonViews.SerieViewsView.class)
     @CrossOrigin(origins = "*")
     @Transactional
@@ -198,6 +198,7 @@ public class UserRestController {
     // Get last chapter viewed for a given serie
     @GetMapping(value = "/{id}/last-chapter-viewed/{idSerie}")
     @JsonView(JsonViews.ChapterView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Chapter> getLastChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
         ResponseEntity<Chapter> result;
         Optional<User> u = ur.findById(id);
@@ -215,6 +216,7 @@ public class UserRestController {
     // Get all chapters viewed for a given serie
     @GetMapping(value = "/{id}/views/{idSerie}")
     @JsonView(JsonViews.SerieViewsView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Views> getViews(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
         ResponseEntity<Views> result;
         Optional<User> u = ur.findById(id);
@@ -232,6 +234,7 @@ public class UserRestController {
     // Get bills
     @GetMapping(value = "/{id}/bills")
     @JsonView(JsonViews.BillView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Iterable<Bill>> getBills(@PathVariable("id") long id) {
         ResponseEntity<Iterable<Bill>> result;
         Optional<User> u = ur.findById(id);
@@ -245,9 +248,11 @@ public class UserRestController {
         return result;
     }
 
+    // NO SE UTILIZA (se utiliza getBills y luego se filtra en el frontend)
     // Get bill by date (precondition: date is in format dd/MM/yy)
     @GetMapping(value = "/{id}/bills", params = "date")
     @JsonView(JsonViews.BillView.class)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Bill> getBillByDate(@PathVariable("id") long id, @RequestParam("date") String date) {
         ResponseEntity<Bill> result;
         Optional<User> u = ur.findById(id);

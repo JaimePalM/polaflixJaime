@@ -81,6 +81,16 @@ public class User {
         this.pendingSeries.add(serie);
     }
 
+    // Add serie to started list
+    public void addSerieToStarted(Serie serie) {
+        this.startedSeries.add(serie);
+    }
+
+    // Add serie to finished list
+    public void addSerieToFinished(Serie serie) {
+        this.finishedSeries.add(serie);
+    }
+
     // Mark chapter as viewed for a serie (precondition: the serie is in any list)
     public void markChapterViewed(Serie serie, Chapter chapter) {
         // Check if the chapter is later than the last chapter viewed
