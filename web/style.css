@@ -1,6 +1,6 @@
     /* Estilos para la barra superior */
     .title {
-        font-size: 3em;
+        font-size: 2.5em;
         text-align: center;
         color: #333;
         margin: 10px;
@@ -199,21 +199,11 @@
         text-decoration: none;
     }
 
-    footer hr {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        border: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    footer p {
-        margin-top: 0;
-        margin-bottom: 0;
-        height: 50;
-        font-size: 14px;
-        color: #fff;
-    }
-
     .search-button {
         margin-left: 10px;
+    }
+
+    .table-header {
+        background-color: #dadada;
+        border: black; 
     }

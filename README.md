@@ -1,5 +1,6 @@
 # Servidor Web
 Para arrancar el servidor web utilizar:
 ```console
-$ http-server
+$ npm start
 ```
+Disponible en: http://localhost:8080

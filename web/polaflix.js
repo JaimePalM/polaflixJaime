@@ -55,17 +55,17 @@ polaflixMod.controller('watchSerie', function ($scope, $http, $routeParams) {
     });
 
     $http.get(polaflixUrl + "/users/" + userId + "/views/" + $scope.serieId).then(function (response) {
-        $scope.views = response.data;
+        $scope.views = response.data; // Variable reactiva
     });
 
     $scope.changeSeason = function (seasonNumber) {
-        $scope.currentSeason = seasonNumber;
+        $scope.currentSeason = seasonNumber; // Variable reactiva
     };
 
     $scope.descriptionView = [];
 
     $scope.showDescription = function (chapter) {
-        $scope.descriptionView[chapter.number - 1] = !$scope.descriptionView[chapter.number - 1];
+        $scope.descriptionView[chapter.number - 1] = !$scope.descriptionView[chapter.number - 1]; // Variable reactiva
     };
 
     $scope.viewChapter = function (serie, season, chapter) {
@@ -80,7 +80,7 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
     $scope.alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     $scope.changeInitial = function (initial) {
-        $scope.selectedInitial = initial;
+        $scope.selectedInitial = initial; // Variable reactiva
         $http.get(polaflixUrl + "/series?initial=" + initial).then(function (response) {
             $scope.series = response.data;
             $http.get(polaflixUrl + "/users/" + userId + "/pending-series").then(function (response) {
@@ -94,7 +94,7 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
         });
     };
     $scope.clearFilter = function () {
-        $scope.selectedInitial = '';
+        $scope.selectedInitial = ''; // Variable reactiva
         $http.get(polaflixUrl + "/series").then(function (response) {
             $scope.series = response.data;
             $http.get(polaflixUrl + "/users/" + userId + "/pending-series").then(function (response) {
@@ -134,12 +134,12 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
             });
         });
         
-        $scope.searchText = searchText;
+        $scope.searchText = searchText; // Variable reactiva
     }
 
     $scope.addPending = function (serie) {
         $http.put(polaflixUrl + "/users/" + userId + "/pending-series/" + serie.id).then(function (response) {
-            $scope.pendingSeries = response.data;
+            $scope.pendingSeries = response.data; // Variable reactiva
             // No funciona
             ngDialog.open({
                 template: '<h3>La serie se ha añadido con éxito.</h3>',
@@ -158,8 +158,7 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
 
     $scope.showDescription = function (serie) {
         // Put the selected description to true
-        $scope.descriptionView[serie.id] = !$scope.descriptionView[serie.id];
-        console.log($scope.descriptionView.size);
+        $scope.descriptionView[serie.id] = !$scope.descriptionView[serie.id]; // Variable reactiva
     };
 
 });
@@ -188,32 +187,4 @@ polaflixMod.controller('viewBills', function ($scope, $http) {
         });
     };
 
-});
-  
-
-// Route configuration
-polaflixMod.config(function ($routeProvider, $locationProvider) {
-
-    $locationProvider.hashPrefix('');
-
-    $routeProvider
-        .when("/", {
-            //templateUrl: "login.html"
-            templateUrl: "polaflix.html"
-        })
-        .when("/home", {
-            templateUrl: "polaflix.html"
-        })
-        .when("/watchSerie/:serieId", {
-            templateUrl: "watch.html"
-        })
-        .when("/addSerie", {
-            templateUrl: "add-serie.html"
-        })
-        .when("/viewBills", {
-            templateUrl: "view-bills.html"
-        })
-        .otherwise({
-            templateUrl: "polaflix.html"
-        });
 });
