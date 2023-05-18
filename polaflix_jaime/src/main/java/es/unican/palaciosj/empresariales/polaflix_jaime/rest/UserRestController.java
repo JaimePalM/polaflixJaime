@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.BankAccount;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Bill;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Chapter;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
@@ -71,28 +70,6 @@ public class UserRestController {
             result = ResponseEntity.ok(u);
         } else {
             result = ResponseEntity.notFound().build();
-        }
-
-        return result;
-    }
-
-    // NO SE UTILIZA
-    // Add user to database by atributtes
-    @PostMapping(params = {"email", "username", "password", "IBAN", "fixedFee"})
-    @JsonView(JsonViews.UserView.class)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<User> addUser(@RequestParam("email") String email, @RequestParam("username") String username, 
-                                        @RequestParam("password") String password, @RequestParam("IBAN") String IBAN, 
-                                        @RequestParam("fixedFee") Boolean fixedFee) {
-        ResponseEntity<User> result;    
-
-        if (ur.findByUsername(username) != null) {
-            result = ResponseEntity.badRequest().build();
-        } else {
-            BankAccount bankAccount = new BankAccount(IBAN);
-            User u = new User(email, username, password, bankAccount, fixedFee);
-            ur.save(u);
-            result = ResponseEntity.ok(u);
         }
 
         return result;

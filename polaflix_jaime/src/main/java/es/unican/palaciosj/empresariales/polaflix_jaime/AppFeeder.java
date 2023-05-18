@@ -37,8 +37,8 @@ public class AppFeeder implements CommandLineRunner {
 		feedCategories();
 		feedSeries();
 
-		User paco = ur.findByUsername("Paco");
-		User lola = ur.findByUsername("Lola");
+		User paco = ur.findByEmail("paco23@polaflix.com");
+		User lola = ur.findByEmail("lola43@polaflix.com");
 		List<Serie> dList = sr.findByInitial('D');
 		Serie dark = dList.get(0);
 		List<Serie> bList = sr.findByInitial('B');
@@ -58,7 +58,6 @@ public class AppFeeder implements CommandLineRunner {
 		// Test mark chapter as viewed
 		lola.markChapterViewed(breakingBad, breakingBad.getSeason(1).getChapter(1));
 		ur.save(lola);
-		paco = ur.findByUsername("Paco");
 		paco.markChapterViewed(dark, dark.getSeason(1).getChapter(2));
 		ur.save(paco);
 

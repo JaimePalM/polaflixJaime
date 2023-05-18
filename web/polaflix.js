@@ -43,6 +43,9 @@ polaflixMod.controller('getUserSeries', function ($scope, $http) {
 polaflixMod.controller('watchSerie', function ($scope, $http, $routeParams) {
 
     $scope.serieId = $routeParams.serieId;
+    $scope.userId = $routeParams.userId;
+
+    console.log($scope.userId);
 
     $http.get(polaflixUrl + "/series/" + $scope.serieId).then(function (response) {
         $scope.serie = response.data;

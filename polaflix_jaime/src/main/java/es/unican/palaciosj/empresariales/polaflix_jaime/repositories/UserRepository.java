@@ -12,7 +12,5 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.domain.User;
 @Repository("userRepo")
 public interface UserRepository extends JpaRepository<User, Long> {
         
-    User findByUsername(String username);
-
     User findByEmail(String email);
 }

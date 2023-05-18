@@ -6,7 +6,6 @@ A continaución se definarán los diferentes recursos de la API REST de Polaflix
 
 - [**Usuarios**](#usuarios)
     - [GET /users/{id}](#get-usersid)
-    - [POST /users](#post-users)
     - [PUT /users/{id}/pending-series/{serieId}](#put-usersidpending-seriesserieid)
     - [POST /users/{id}/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}/viewed](#post-usersidserieidserieseasonnumseasonchapternumchapterviewed)
     - [GET /users/{id}/last-chapter-viewed/{idSerie}](#get-usersidlast-chapter-viewedidserie)
@@ -72,65 +71,6 @@ Campos de respuesta
 | pendingSeries | Array | Array de series pendientes |
 | startedSeries | Array | Array de series en curso |
 | finishedSeries | Array | Array de series finalizadas |
-
-
-#### POST /users
-Crea un usuario en la base de datos.
-
-Endpoint URL
-```
-http://localhost:8000/users
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| email | String | Email del usuario |
-| username | String | Nombre de usuario |
-| password | String | Contraseña del usuario |
-| IBAN | String | IBAN del usuario |
-| fixedFee | Boolean | Cuota fija del usuario |
-
-Modelo de respuesta
-```json
-{
-    "email": "manolo@polaflix.com",
-    "username": "Manolo",
-    "pendingSeries": [
-        {
-            "id": 1,
-            "title": "Dark"
-        }
-    ],
-    "startedSeries": [
-        {
-            "id": 2,
-            "title": "Breaking Bad"
-        }
-    ],
-    "finishedSeries": [
-        {
-            "id": 3,
-            "title": "Game of Thrones"
-        }
-    ]
-}
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| email | String | Email del usuario |
-| username | String | Nombre de usuario |
-| pendingSeries | Array | Array de series pendientes |
-| startedSeries | Array | Array de series en curso |
-| finishedSeries | Array | Array de series finalizadas |
-
 
 #### PUT /users/{id}/pending-series/{serieId}
 Añade una serie a la lista de pendientes de un usuario.
