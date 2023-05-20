@@ -4,22 +4,22 @@ angular.module('polaflix').config(function ($routeProvider, $locationProvider) {
 
     $routeProvider
         .when("/", {
-            //templateUrl: "src/login.html"
-            templateUrl: "src/polaflix.html"
+            templateUrl: "app/login.html"
+            //templateUrl: "app/polaflix.html"
         })
         .when("/home", {
-            templateUrl: "src/polaflix.html"
+            templateUrl: "app/polaflix.html"
         })
         .when("/watchSerie/:serieId", {
-            templateUrl: "src/watch.html"
+            templateUrl: "app/watch.html"
         })
         .when("/addSerie", {
-            templateUrl: "src/add-serie.html"
+            templateUrl: "app/add-serie.html"
         })
         .when("/viewBills", {
-            templateUrl: "src/view-bills.html"
+            templateUrl: "app/view-bills.html"
         })
         .otherwise({
-            templateUrl: "src/polaflix.html"
+            templateUrl: "app/polaflix.html"
         });
 });

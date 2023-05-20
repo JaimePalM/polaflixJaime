@@ -3,36 +3,31 @@ var polaflixUrl = "http://localhost:8000";
 var userEmail = "paco23@polaflix.com";
 var userId = 1;
 
-
 // Get the footer component
 polaflixMod.component('polaflixFooter', {
     templateUrl: 'footer/polaflix-footer.component.html',
-    controller: function FooterController($scope, $http) { }
+    controller: function FooterController() { }
 });
 
-polaflixMod.controller('loginCtrl', function ($scope, $http, $location) {
+polaflixMod.controller('login', function ($scope, $location, $rootScope, LoginService) {
     $scope.login = function (username, password) {
-        $http.get(polaflixUrl + "/users?email=" + username).then(function (response) {
-            console.log(response.data);
+        LoginService.login(username, password).then(function (response) {
             if (response.data.length > 0) {
+                $rootScope.username = $scope.username;
                 $location.path("/home");
             } else {
-                $http.get(polaflixUrl + "/users?email=" + userEmail).then(function (response) {
-                    $scope.username = response.data.username;
-                    $location.path("/home");
-                });
+                $scope.error = "Usuario o contraseña incorrectos";
             }
         });
     };
 });
 
+polaflixMod.controller('getUserSeries', function ($scope, UserService) {
 
-polaflixMod.controller('getUserSeries', function ($scope, $http) {
-
-    $http.get(polaflixUrl + "/users/" + userId).then(function (response) {
-        $scope.startedSeries = response.data.startedSeries;
-        $scope.pendingSeries = response.data.pendingSeries;
-        $scope.finishedSeries = response.data.finishedSeries;
+    UserService.getUserById(userId).then(function (response) {
+        $scope.startedSeries = response.startedSeries;
+        $scope.pendingSeries = response.pendingSeries;
+        $scope.finishedSeries = response.finishedSeries;
     });
 
     $scope.watchSerie = function (serie) {
@@ -40,25 +35,23 @@ polaflixMod.controller('getUserSeries', function ($scope, $http) {
     }
 });
 
-polaflixMod.controller('watchSerie', function ($scope, $http, $routeParams) {
+polaflixMod.controller('watchSerie', function ($scope, $routeParams, SerieService, UserService) {
 
     $scope.serieId = $routeParams.serieId;
     $scope.userId = $routeParams.userId;
 
-    console.log($scope.userId);
-
-    $http.get(polaflixUrl + "/series/" + $scope.serieId).then(function (response) {
-        $scope.serie = response.data;
+    SerieService.getSerieById($scope.serieId).then(function (response) {
+        $scope.serie = response;
         $scope.currentSeason = 1;
         // Current season is the season with the lastest chapter viewed
-        $http.get(polaflixUrl + "/users/" + userId + "/last-chapter-viewed/" + $scope.serieId).then(function (response)
-        {
-            $scope.currentSeason = response.data.season.number;
+        UserService.getLastChapterViewed(userId, $scope.serieId).then(function (response) {
+            $scope.currentSeason = response.season.number;
         });
     });
 
-    $http.get(polaflixUrl + "/users/" + userId + "/views/" + $scope.serieId).then(function (response) {
-        $scope.views = response.data; // Variable reactiva
+
+    UserService.getViews(userId, $scope.serieId).then(function (response) {
+        $scope.views = response; // Variable reactiva
     });
 
     $scope.changeSeason = function (seasonNumber) {
@@ -72,50 +65,21 @@ polaflixMod.controller('watchSerie', function ($scope, $http, $routeParams) {
     };
 
     $scope.viewChapter = function (serie, season, chapter) {
-        $http.post(polaflixUrl + "/users/" + userId + "/serie/" + serie.id +  "/season/" +  season.number + "/chapter/" + chapter.number + "/viewed").then(function (response) {
-            $scope.views = response.data;
+        UserService.viewChapter(userId, serie.id, season.number, chapter.number).then(function (response) {
+            $scope.views = response;
         });
     };
+
 });
 
-polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
+polaflixMod.controller('addSerie', function ($scope, ngDialog, SerieService) {
 
     $scope.alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-    $scope.changeInitial = function (initial) {
-        $scope.selectedInitial = initial; // Variable reactiva
-        $http.get(polaflixUrl + "/series?initial=" + initial).then(function (response) {
-            $scope.series = response.data;
-            $http.get(polaflixUrl + "/users/" + userId + "/pending-series").then(function (response) {
-                $scope.pendingSeries = response.data;
-                $scope.series = $scope.series.filter(function (s) {
-                    return !$scope.pendingSeries.some(function (ps) {
-                        return ps.id === s.id;
-                    });
-                });
-            });
-        });
-    };
-    $scope.clearFilter = function () {
-        $scope.selectedInitial = ''; // Variable reactiva
-        $http.get(polaflixUrl + "/series").then(function (response) {
-            $scope.series = response.data;
-            $http.get(polaflixUrl + "/users/" + userId + "/pending-series").then(function (response) {
-                $scope.pendingSeries = response.data;
-                $scope.series = $scope.series.filter(function (s) {
-                    return !$scope.pendingSeries.some(function (ps) {
-                        return ps.id === s.id;
-                    });
-                });
-            });
-        });
-    };
-
-
-    $http.get(polaflixUrl + "/series").then(function (response) {
-        $scope.series = response.data;
-        $http.get(polaflixUrl + "/users/" + userId + "/pending-series").then(function (response) {
-            $scope.pendingSeries = response.data;
+    SerieService.getAllSeries().then(function (response) {
+        $scope.series = response;
+        SerieService.getPendingSeriesForUser(userId).then(function (response) {
+            $scope.pendingSeries = response;
             $scope.series = $scope.series.filter(function (s) {
                 return !$scope.pendingSeries.some(function (ps) {
                     return ps.id === s.id;
@@ -124,11 +88,12 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
         });
     });
 
-    $scope.search = function (searchText) {
-        $http.get(polaflixUrl + "/series?initial=" + searchText.charAt(0)).then(function (response) {
-            $scope.series = response.data;
-            $http.get(polaflixUrl + "/users/" + userId + "/pending-series").then(function (response) {
-                $scope.pendingSeries = response.data;
+    $scope.changeInitial = function (initial) {
+        $scope.selectedInitial = initial; // Variable reactiva
+        SerieService.getSeriesByInitial(initial).then(function (response) {
+            $scope.series = response;
+            SerieService.getPendingSeriesForUser(userId).then(function (response) {
+                $scope.pendingSeries = response;
                 $scope.series = $scope.series.filter(function (s) {
                     return !$scope.pendingSeries.some(function (ps) {
                         return ps.id === s.id;
@@ -136,14 +101,43 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
                 });
             });
         });
-        
+    };
+
+    $scope.clearFilter = function () {
+        $scope.selectedInitial = ''; // Variable reactiva
+        SerieService.getAllSeries().then(function (response) {
+            $scope.series = response;
+            SerieService.getPendingSeriesForUser(userId).then(function (response) {
+                $scope.pendingSeries = response;
+                $scope.series = $scope.series.filter(function (s) {
+                    return !$scope.pendingSeries.some(function (ps) {
+                        return ps.id === s.id;
+                    });
+                });
+            });
+        });
+    };
+
+    $scope.search = function (searchText) {
+        SerieService.getSeriesByInitial(searchText.charAt(0)).then(function (response) {
+            $scope.series = response;
+            SerieService.getPendingSeriesForUser(userId).then(function (response) {
+                $scope.pendingSeries = response;
+                $scope.series = $scope.series.filter(function (s) {
+                    return !$scope.pendingSeries.some(function (ps) {
+                        return ps.id === s.id;
+                    });
+                });
+            });
+        });
+
         $scope.searchText = searchText; // Variable reactiva
     }
 
     $scope.addPending = function (serie) {
-        $http.put(polaflixUrl + "/users/" + userId + "/pending-series/" + serie.id).then(function (response) {
-            $scope.pendingSeries = response.data; // Variable reactiva
-            // No funciona
+        SerieService.addPendingSerieForUser(userId, serie.id).then(function (response) {
+            console.log(response);
+            $scope.pendingSeries = response; // Variable reactiva
             ngDialog.open({
                 template: '<h3>La serie se ha añadido con éxito.</h3>',
                 className: 'ngdialog-theme-default',
@@ -156,7 +150,6 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
             });
         });
     };
-
     $scope.descriptionView = [];
 
     $scope.showDescription = function (serie) {
@@ -166,9 +159,10 @@ polaflixMod.controller('addSerie', function ($scope, $http, ngDialog) {
 
 });
 
-polaflixMod.controller('viewBills', function ($scope, $http) {
-    $http.get(polaflixUrl + "/users/" + userId + "/bills").then(function (response) {
-        $scope.bills = response.data;
+polaflixMod.controller('viewBills', function ($scope, BillService) {
+
+    BillService.getBillsForUser(userId).then(function (response) {
+        $scope.bills = response;
         // Set the firt day (yyyy-mm-dd) of current month
         $scope.currentMonth = new Date().toISOString().slice(0, 8) + "01";
         $scope.currentBill = $scope.bills[0];

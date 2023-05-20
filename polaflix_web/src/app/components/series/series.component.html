@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-9">
+                <ul class="pagination">
+                    <li class="page-item" *ngFor="let letter of alphabet"
+                        [ngClass]="{ 'active': selectedInitial == letter }">
+                        <a href="javascript:void(0)" class="page-link" (click)="changeInitial(letter)">{{ letter }}</a>
+                    </li>
+                </ul>
+                <button type="button" class="btn btn-link" (click)="clearFilter()">
+                    <i class="fas fa-filter"></i> Eliminar filtro
+                </button>
+            </div>
+            <div class="col-md-3">
+                <form class="form-inline float-right">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="search-button">
+                        <button type="submit" class="btn btn-primary" (click)="search(searchText)">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="seriesList">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let serie of series">
+                    <a class="serie-title" (click)="showDescription(serie)"
+                        [ngClass]="{ 'font-weight-bold': serie.exactMatch }">
+                        {{ serie.title }}
+                    </a>
+
+                    <a href="javascript:void(0)" class="add-button" (click)="addPending(serie)"
+                        *ngIf="!isSeriePending(serie)">
+                        Agregar
+                    </a>
+                    <div class="description" [hidden]="!descriptionView[serie.id]">
+                        {{ serie.description }}
+                        <p>
+                            Creadores:
+                            <span *ngFor="let creator of serie.creators">
+                                {{ creator.name + ' ' + creator.surname }}
+                            </span>
+                            <br>
+                            Actores:
+                            <span *ngFor="let actor of serie.actors; let isFirst = first">
+                                {{ isFirst ? '' : ', ' }}{{ actor.name + ' ' + actor.surname}}
+                            </span>
+                        </p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="noSeries" *ngIf="series.length === 0">
+            No hay series que mostrar
+        </div>
+    </div>
+</div>

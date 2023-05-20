@@ -150,7 +150,7 @@ public class UserRestController {
     }
 
     // Mark chapter as viewed
-    @PostMapping(value = "/{id}/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}/viewed")
+    @PutMapping(value = "/{id}/views/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}")
     @JsonView(JsonViews.SerieViewsView.class)
     @CrossOrigin(origins = "*")
     @Transactional
@@ -191,7 +191,7 @@ public class UserRestController {
     }
 
     // Get all chapters viewed for a given serie
-    @GetMapping(value = "/{id}/views/{idSerie}")
+    @GetMapping(value = "/{id}/views/serie/{idSerie}")
     @JsonView(JsonViews.SerieViewsView.class)
     @CrossOrigin(origins = "*")
     public ResponseEntity<Views> getViews(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {

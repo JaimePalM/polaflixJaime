@@ -1,0 +1,45 @@
+<h2 class="title">{{ serie.title }}</h2>
+<div class="card">
+    <div class="chapters-container">
+        <div *ngFor="let season of serie.seasons">
+            <div *ngIf="season.number == currentSeason">
+                <div class="card-header border-0">
+                    <div class="text-center">
+                        <a class="text-dark mr-2" *ngIf="season.number > 1" (click)="changeSeason(currentSeason - 1)">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h3 class="d-inline-block">{{ 'Temporada ' + season.number }} </h3>
+                        <a class="text-dark ml-2" *ngIf="season.number < serie.seasons.length"
+                            (click)="changeSeason(currentSeason + 1)">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <div class="float-right">
+                            <div class="category-name {{ serie.category.name.toLowerCase() }}">
+                                {{ serie.category.name }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let chapter of sortedChapters(season.chapters)">
+                            <a class="chapter-title" (click)="showDescription(chapter)">
+                                {{ "E" + chapter.number + " " + chapter.title }}
+                            </a>
+                            <span>
+                                <a href="javascript:void(0)" (click)="viewChapter(serie, season, chapter)">Ver</a>
+                                <span class="chapter-view"
+                                    *ngIf="views.serieSeasonViews[season.number - 1].chapters[chapter.number - 1]">Visto</span>
+                                <span class="chapter-view"
+                                    *ngIf="!views.serieSeasonViews[season.number - 1].chapters[chapter.number - 1]">Pendiente</span>
+                            </span>
+                            <div class="description" *ngIf="descriptionView[chapter.number - 1]">
+                                {{ chapter.description }}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -75,14 +75,28 @@ public class User {
     // Add serie to pending list
     public void addSerieToPending(Serie serie) {
         // Check if serie is already in any list
-        if (this.pendingSeries.contains(serie) || this.startedSeries.contains(serie) || this.finishedSeries.contains(serie)) {
+        if (this.pendingSeries.contains(serie)) {
             return;
+        }
+        // If serie is in started list, remove it
+        if (this.startedSeries.contains(serie)) {
+            this.startedSeries.remove(serie);
+        }
+        Views view = this.serieViews.get(serie);
+        if (view == null) {
+            view = new Views(serie);
+            this.serieViews.put(serie, view);
         }
         this.pendingSeries.add(serie);
     }
 
     // Add serie to started list
     public void addSerieToStarted(Serie serie) {
+        Views view = this.serieViews.get(serie);
+        if (view == null) {
+            view = new Views(serie);
+            this.serieViews.put(serie, view);
+        }
         this.startedSeries.add(serie);
     }
 

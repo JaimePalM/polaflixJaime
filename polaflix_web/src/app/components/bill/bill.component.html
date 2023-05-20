@@ -1,0 +1,41 @@
+<div class="bills-container">
+    <div class="card" *ngFor="let monthBill of bills" [hidden]="monthBill.monthBilled !== currentMonth">
+      <div class="text-center mb-4">
+        <a class="text-dark mr-2" *ngIf="previousMonthAvailable()" >
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="card-header">
+          <h3 class="d-inline-block">{{ currentMonth | date:'MMMM yyyy'}}</h3>
+        </div>
+        <a class="text-dark ml-2" *ngIf="nextMonthAvailable()" >
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-header">
+              <tr>
+                <th>Fecha</th>
+                <th>Serie</th>
+                <th>Episodio</th>
+                <th>Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view of monthBill.monthViews">
+                <td>{{ view.dateView | date:'dd/MM/yyyy'}}</td>
+                <td>{{ view.chapter.season.serie.title }}</td>
+                <td>{{ view.chapter.season.number + 'x' + view.chapter.number }}</td>
+                <td>{{ view.price + '€' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="total-amount">
+          <p>Total: {{ monthBill.totalAmount + '€' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+      
