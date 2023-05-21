@@ -1,1 +1,0 @@
-- Para el navbar me utiliza el codigo del script polaflix.js y no el de la carpeta navbar (navbar.component.js)

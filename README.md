@@ -1,6 +1,6 @@
 # Servidor Web
 Para arrancar el servidor web utilizar:
 ```console
-$ npm start
+$ ng serve
 ```
-Disponible en: http://localhost:8080
+Disponible en: http://localhost:4200
