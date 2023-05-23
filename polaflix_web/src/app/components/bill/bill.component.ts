@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SerieService } from 'src/app/services/serie.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,12 +12,17 @@ export class BillComponent implements OnInit {
   bills: any[] = [];
   currentMonth: string = '';
   currentBill: any = {};
+  userId: number = 1;
 
-  constructor(private serieService: SerieService, private userService: UserService, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
-    this.userService.getBills(1).subscribe(bills => {
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
+
+    this.userService.getBills(this.userId).subscribe(bills => {
       this.bills = bills;
       this.currentMonth = new Date().toISOString().slice(0, 8) + '01';
       this.currentBill = this.bills.find(bill => bill.date.slice(0, 7) == this.currentMonth);

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -7,11 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() {}
+  userId: number = 1;
+  username: string = "";
 
-  username: string = "Paco";
+  constructor(private userService: UserService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
+
+    this.userId = 1;
+
+    this.userService.getUserById(this.userId).subscribe(user => {
+      this.username = user.username;
+    })
+
   }
 
-}
+} 

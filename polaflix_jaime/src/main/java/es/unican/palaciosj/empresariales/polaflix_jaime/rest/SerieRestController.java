@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Category;
-import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Creator;
 import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Serie;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.CategoryRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -67,56 +64,5 @@ public class SerieRestController {
 
         return result;
     }
-
-    // NO SE UTILIZA
-    // Add serie to database by atributtes
-    @PostMapping(params = {"title", "description", "category", "creatorName", "creatorSurname"})
-    @JsonView(JsonViews.SerieView.class)
-    @CrossOrigin(origins = "*")
-    @Transactional
-    public ResponseEntity<?> addSerie(@RequestParam("title") String title, @RequestParam("description") String description, @RequestParam("category") String category, 
-                                        @RequestParam("creatorName") String creatorName, @RequestParam("creatorSurname") String creatorSurname) {
-        ResponseEntity<?> result;
-
-        if (!sr.findByTitle(title).isEmpty()) {
-            result = ResponseEntity.badRequest().body("Serie already exists");
-        } else {
-            Category c = cr.findByName(category);
-            if (c == null) {
-                result = ResponseEntity.badRequest().body("Category does not exist");
-            }
-            Serie serie = new Serie(title, description, c);
-            Creator cr = new Creator(creatorName, creatorSurname);
-            serie.addCreator(cr);
-            sr.save(serie);
-            result = ResponseEntity.ok(serie);
-        }
-
-        return result;
-    }
-
-    // NO SE UTILIZA
-    // Change serie category
-    @PostMapping(value = "/{id}/change-category/{newCategory}")
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<Serie> changeCategory(@PathVariable("id") long id, @PathVariable("newCategory") String newCategory) {
-        ResponseEntity<Serie> result;
-
-        Optional<Serie> s = sr.findById(id);
-        if (s.isPresent()) {
-            Category c = cr.findByName(newCategory);
-            if (c == null) {
-                result = ResponseEntity.notFound().build();
-            }
-            s.get().setCategory(c);
-            sr.save(s.get());
-            result = ResponseEntity.ok(s.get());
-        } else {
-            result = ResponseEntity.notFound().build();
-        }
-
-        return result;
-    }
-     
     
 }

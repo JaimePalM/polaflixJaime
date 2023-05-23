@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -11,17 +12,23 @@ export class HomeComponent implements OnInit {
   startedSeries: any = {};
   pendingSeries: any = {};
   finishedSeries: any = {};
+  userId: number = 1;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.userService.getStartedSeries(1).subscribe(startedSeries => {
+
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
+    
+    this.userService.getStartedSeries(this.userId).subscribe(startedSeries => {
       this.startedSeries = Object.values(startedSeries);
     })
-    this.userService.getPendingSeries(1).subscribe(pendingSeries => {
+    this.userService.getPendingSeries(this.userId).subscribe(pendingSeries => {
       this.pendingSeries = Object.values(pendingSeries);
     })
-    this.userService.getFinishedSeries(1).subscribe(finishedSeries => {
+    this.userService.getFinishedSeries(this.userId).subscribe(finishedSeries => {
       this.finishedSeries = Object.values(finishedSeries);
     })
   }

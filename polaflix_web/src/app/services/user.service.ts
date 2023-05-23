@@ -11,7 +11,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  public getUserByEmail(email: number): Observable<any> {
+  public getUserByEmail(email: string): Observable<any> {
     return this.http.get(this.endpoint + "?email=" + email)
   }
 

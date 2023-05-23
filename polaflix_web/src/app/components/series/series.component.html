@@ -32,9 +32,7 @@
                         [ngClass]="{ 'font-weight-bold': serie.exactMatch }">
                         {{ serie.title }}
                     </a>
-
-                    <a href="javascript:void(0)" class="add-button" (click)="addPending(serie)"
-                        *ngIf="!isSeriePending(serie)">
+                    <a href="javascript:void(0)" class="add-button" (click)="addPending(serie)">
                         Agregar
                     </a>
                     <div class="description" [hidden]="!descriptionView[serie.id]">

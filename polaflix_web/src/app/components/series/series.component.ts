@@ -16,17 +16,21 @@ export class SeriesComponent {
   selectedInitial: string = '';
   searchText: string = '';
   descriptionView: boolean[] = [];
+  userId: number = 1;
 
   constructor(private serieService: SerieService, private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
+
     this.serieService.getSeries().subscribe(series => {
       this.series = series;
       this.sortSeries();
-      this.userService.getPendingSeries(1).subscribe(pendingSeries => {
+      this.userService.getPendingSeries(this.userId).subscribe(pendingSeries => {
         this.pendingSeries = pendingSeries;
-        //this.series = this.series.filter(s => !this.pendingSeries.some(ps => ps.id == s.id));
       });
     });
   }
@@ -35,9 +39,8 @@ export class SeriesComponent {
     this.selectedInitial = initial;
     this.serieService.getSeriesByInitial(initial).subscribe(series => {
       this.series = series;
-      this.userService.getPendingSeries(1).subscribe(pendingSeries => {
+      this.userService.getPendingSeries(this.userId).subscribe(pendingSeries => {
         this.pendingSeries = pendingSeries;
-        //this.series = this.series.filter(s => !this.pendingSeries.some(ps => ps.id == s.id));
       })
     })
   }
@@ -47,9 +50,8 @@ export class SeriesComponent {
     this.serieService.getSeries().subscribe(response => {
       this.series = response;
       this.sortSeries();
-      this.userService.getPendingSeries(1).subscribe(response => {
+      this.userService.getPendingSeries(this.userId).subscribe(response => {
         this.pendingSeries = response;
-        //this.series = this.series.filter(s => !this.pendingSeries.some(ps => ps.id == s.id));
       });
     });
   }
@@ -65,24 +67,10 @@ export class SeriesComponent {
   
     });
   }
-  
-
-/*   search(searchText: string) {
-    console.log(searchText);
-    this.serieService.getSeriesByInitial(searchText.charAt(0)).subscribe(response => {
-      this.series = response;
-      console.log(this.series);
-      this.userService.getPendingSeries(1).subscribe(response => {
-        this.pendingSeries = response;
-        //this.series = this.series.filter(s => !this.pendingSeries.some(ps => ps.id == s.id));
-      });
-    });
-  } */
 
   addPending(serie: any) {
-    this.userService.addPendingSerie(1, serie.id).subscribe(response => {
+    this.userService.addPendingSerie(this.userId, serie.id).subscribe(response => {
       this.pendingSeries = response;
-      //this.series = this.series.filter(s => !this.pendingSeries.some(ps => ps.id == s.id));
     });
   }
 
@@ -107,6 +95,5 @@ export class SeriesComponent {
   isSeriePending(serie: any): boolean {
     return this.pendingSeries.some((ps: { id: any; }) => ps.id === serie.id);
   }
-  
 
 }

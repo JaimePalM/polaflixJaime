@@ -15,7 +15,6 @@ A continaución se definarán los diferentes recursos de la API REST de Polaflix
     - [GET /series](#get-series)
     - [GET /series/{id}](#get-seriesid)
     - [POST /series](#post-series)
-    - [POST /series/{id}/change-category/{newCategory}](#post-seriesidchange-categorynewcategory)
 
 ## **Usuarios**
 
@@ -138,7 +137,7 @@ Marca un capítulo como visto.
 
 Endpoint URL
 ```
-http://localhost:8000//users/{id}/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}/viewed
+http://localhost:8000//users/{id}/views/serie/{idSerie}/season/{numSeason}/chapter/{numChapter}
 ```
 
 Parametros de la URL
@@ -505,69 +504,13 @@ Modelo de respuesta
     "category": {
         "name": "Standard"
     },
-    "seasons": [],
-    "creators": [
-        {
-            "name": "Jeffrey Jacob",
-            "surname": "Abrams"
-        }
-    ],
-    "actors": []
-}
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| title | String | Titulo de la serie |
-| description | String | Descripción de la serie |
-| category | Object | Objeto de la categoría |
-| name | String | Nombre de la categoría |
-| seasons | Array | Array de temporadas de la serie |
-| creators | Array | Array de creadores de la serie |
-| name | String | Nombre del creador |
-| surname | String | Apellido del creador |
-| actors (optional) | Array | Array de actores de la serie |
-
-
-#### POST /series/{id}/change-category/{newCategory}
-Cambia la categoria de una serie.
-
-Endpoint URL
-```
-http://localhost:8000/series/{id}/change-category/{newCategory}
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| id | Long | Id de la serie |
-| newCategory | String | Nueva categoria de la serie |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
-
-Modelo de respuesta
-```json
-{
-    "title": "Lost",
-    "description": "Plane crashes on a dessert island",
-    "category": {
-        "name": "Silver"
-    },
     "seasons": [
         {
             "number": 1,
             "chapters": [
                 {
-                    "number": 2,
-                    "title": "Pilot"
-                },
-                {
                     "number": 1,
-                    "title": "Tabula Rasa"
+                    "title": "Pilot"
                 }
             ]
         }
@@ -602,4 +545,4 @@ Campos de respuesta
 | creators | Array | Array de creadores de la serie |
 | name | String | Nombre del creador |
 | surname | String | Apellido del creador |
-| actors | Array | Array de actores de la serie |
+| actors (optional) | Array | Array de actores de la serie |

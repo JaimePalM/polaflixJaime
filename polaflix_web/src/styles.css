@@ -167,11 +167,17 @@
         margin: 2em;
     }
 
+    body {
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+    }
+
     footer {
         background-color: #333;
         color: #fff;
         padding: 30px 0;
-        margin-top: 100px;
+        margin-top: auto;
     }
 
     footer h5 {

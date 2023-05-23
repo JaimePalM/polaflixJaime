@@ -14,23 +14,29 @@ export class SerieComponent implements OnInit {
   views: any = {};
   currentSeason: number = 1;
   descriptionView: boolean[] = [];
+  userId: number = 1;
+  serieId: number = 1;
 
   constructor(private serieService: SerieService, private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    const serieId = this.route.snapshot.paramMap.get('serieId');
+    
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+      this.serieId = params['serieId'];
+    });
 
-    this.serieService.getSerie(Number(serieId)).subscribe(serie => {
+    this.serieService.getSerie(this.serieId).subscribe(serie => {
       this.serie = serie;
       console.log(serie);
     })
 
-    this.userService.getViews(1, Number(serieId)).subscribe(views => {
+    this.userService.getViews(this.userId, this.serieId).subscribe(views => {
       this.views = views; 
       console.log(views);
     })
 
-    this.userService.getLastChapterViewed(1, Number(serieId)).subscribe(response => {
+    this.userService.getLastChapterViewed(this.userId, this.serieId).subscribe(response => {
       this.currentSeason = response.season.number;
     });
 
@@ -51,7 +57,7 @@ export class SerieComponent implements OnInit {
   }
 
   viewChapter(serie: any, season: any, chapter: any): void {
-    this.userService.viewChapter(1, serie.id, season.number, chapter.number).subscribe(response => {
+    this.userService.viewChapter(this.userId, serie.id, season.number, chapter.number).subscribe(response => {
       this.views = response;
     });
   }

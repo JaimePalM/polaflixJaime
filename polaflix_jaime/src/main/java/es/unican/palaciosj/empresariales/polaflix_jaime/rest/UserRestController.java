@@ -97,13 +97,19 @@ public class UserRestController {
     @PutMapping(value = "/{id}/pending-series/{serieId}")
     @JsonView(JsonViews.UserView.class)
     @CrossOrigin(origins = "*")
+    @Transactional
     public ResponseEntity<User> addPendingSerie(@PathVariable("id") long id, @PathVariable("serieId") long serieId) {
         ResponseEntity<User> result;
         Optional<User> u = ur.findById(id);
+
+        if (!u.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Optional<Serie> s = sr.findById(serieId);
 
-        if (u.isPresent() && s.isPresent()) {
-            u.get().addSerieToPending(s.orElseThrow());
+        if (s.isPresent()) {
+            u.get().addSerieToPending(s.get());
             ur.save(u.get());
             result = ResponseEntity.ok(u.get());
         } else {
@@ -158,13 +164,21 @@ public class UserRestController {
                                                   @PathVariable("numSeason") int numSeason, @PathVariable("numChapter") int numChapter) {
         ResponseEntity<Views> result;
         Optional<User> u = ur.findById(id);
+
+        if (!u.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Optional<Serie> s = sr.findById(idSerie);
 
-        if (u.isPresent() && s.isPresent()) {
-            Chapter c = s.orElseThrow().getSeason(numSeason).getChapter(numChapter);
-            u.get().markChapterViewed(s.orElseThrow(), c);
+        if (s.isPresent()) {
+            Chapter c = s.get().getSeason(numSeason).getChapter(numChapter);
+            if (c == null) {
+                return ResponseEntity.notFound().build();
+            }
+            u.get().markChapterViewed(s.get(), c);
             ur.save(u.get());
-            result = ResponseEntity.ok(u.get().getSerieViews(s.orElseThrow()));
+            result = ResponseEntity.ok(u.get().getSerieViews(s.get()));
         } else {
             result = ResponseEntity.notFound().build();
         }
@@ -179,10 +193,15 @@ public class UserRestController {
     public ResponseEntity<Chapter> getLastChapterViewed(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
         ResponseEntity<Chapter> result;
         Optional<User> u = ur.findById(id);
+
+        if (!u.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Optional<Serie> s = sr.findById(idSerie);
 
-        if (u.isPresent() && s.isPresent()) {
-            result = ResponseEntity.ok(u.get().getLastViewedChapter(s.orElseThrow()));
+        if (s.isPresent()) {
+            result = ResponseEntity.ok(u.get().getLastViewedChapter(s.get()));
         } else {
             result = ResponseEntity.notFound().build();
         }
@@ -197,10 +216,15 @@ public class UserRestController {
     public ResponseEntity<Views> getViews(@PathVariable("id") long id, @PathVariable("idSerie") long idSerie) {
         ResponseEntity<Views> result;
         Optional<User> u = ur.findById(id);
+
+        if (!u.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Optional<Serie> s = sr.findById(idSerie);
 
-        if (u.isPresent() && s.isPresent()) {
-            result = ResponseEntity.ok(u.get().getSerieViews(s.orElseThrow()));
+        if (s.isPresent()) {
+            result = ResponseEntity.ok(u.get().getSerieViews(s.get()));
         } else {
             result = ResponseEntity.notFound().build();
         }
