@@ -14,7 +14,6 @@ A continaución se definarán los diferentes recursos de la API REST de Polaflix
 - [**Series**](#series)
     - [GET /series](#get-series)
     - [GET /series/{id}](#get-seriesid)
-    - [POST /series](#post-series)
 
 ## **Usuarios**
 
@@ -35,6 +34,8 @@ Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | - | - | - |
+
+Estados de respuesta: 200 OK, 404 Not Found
 
 Modelo de respuesta
 ```json
@@ -90,6 +91,7 @@ Parametros de la petición
 | ------ | ------ | ------ |
 | - | - | - |
 
+Estados de respuesta: 200 OK, 404 Not Found
 
 Modelo de respuesta
 ```json
@@ -153,6 +155,8 @@ Parametros de la petición
 | ------ | ------ | ------ |
 | - | - | - |
 
+Estados de respuesta: 200 OK, 404 Not Found
+
 Modelo de respuesta
 ```json
 {
@@ -194,6 +198,8 @@ Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | - | - | - |
+
+Estados de respuesta: 200 OK, 404 Not Found
 
 Modelo de respuesta
 ```json
@@ -240,6 +246,8 @@ Parametros de la petición
 | ------ | ------ | ------ |
 | - | - | - |
 
+Estados de respuesta: 200 OK, 404 Not Found
+
 Modelo de respuesta
 ```json
 {
@@ -278,6 +286,8 @@ Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | - | - | - |
+
+Estados de respuesta: 200 OK, 404 Not Found
 
 Modelo de respuesta
 ```json
@@ -331,6 +341,8 @@ Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
 | initial (opcional) | String | Inicial de las series |
+
+Estados de respuesta: 200 OK
 
 Modelo de respuesta
 ```json
@@ -412,6 +424,8 @@ Parametros de la petición
 | ------ | ------ | ------ |
 | - | - | - |
 
+Estados de respuesta: 200 OK, 404 Not Found
+
 Modelo de respuesta
 ```json
 {
@@ -472,77 +486,3 @@ Campos de respuesta
 | actors | Array | Array de actores |
 | name | String | Nombre del actor |
 | surname | String | Apellido del actor |
-
-
-#### POST /series
-Crea una serie en la base de datos.
-
-Endpoint URL
-```
-http://localhost:8000/series
-```
-
-Parametros de la URL
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| - | - | - |
-
-Parametros de la petición
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| title | String | Titulo de la serie |
-| description | String | Descripción de la serie |
-| category | String | Categoria de la serie |
-| creatorName | String | Nombre del creador de la serie |
-| creatorSurname | String | Apellido del creador de la serie |
-
-Modelo de respuesta
-```json
-{
-    "title": "Lost",
-    "description": "Plane crashes on a dessert island",
-    "category": {
-        "name": "Standard"
-    },
-    "seasons": [
-        {
-            "number": 1,
-            "chapters": [
-                {
-                    "number": 1,
-                    "title": "Pilot"
-                }
-            ]
-        }
-    ],
-    "creators": [
-        {
-            "name": "Jeffrey Jacob",
-            "surname": "Abrams"
-        }
-    ],
-    "actors": [
-        {
-            "name": "Matthew",
-            "surname": "Fox"
-        },
-        {
-            "name": "Evangeline",
-            "surname": "Lilly"
-        }
-    ]
-}
-```
-
-Campos de respuesta
-| Campo | Tipo | Descripción |
-| ------ | ------ | ------ |
-| title | String | Titulo de la serie |
-| description | String | Descripción de la serie |
-| category | Object | Objeto de la categoría |
-| name | String | Nombre de la categoría |
-| seasons | Array | Array de temporadas de la serie |
-| creators | Array | Array de creadores de la serie |
-| name | String | Nombre del creador |
-| surname | String | Apellido del creador |
-| actors (optional) | Array | Array de actores de la serie |
