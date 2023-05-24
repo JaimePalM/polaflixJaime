@@ -1,4 +1,4 @@
-<div class="loginContainer">
+<body>
     <div class="container">
       <div class="row justify-content-center mt-5">
         <div class="col-md-6">
@@ -8,6 +8,9 @@
             </div>
             <div class="card-body">
               <form method="post">
+                <div *ngIf="errorMessage" class="alert alert-danger">
+                  {{ errorMessage }}
+                </div>
                 <div class="form-group">
                   <label for="email">Email de usuario</label>
                   <input type="text" class="form-control" id="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" required>
@@ -18,10 +21,10 @@
                 </div>
                 <button type="submit" class="btn btn-primary" (click)="login()">Ingresar</button>
               </form>
-            </div>
+            </div>            
           </div>
         </div>
       </div>
     </div>
-  </div>
+</body>
   

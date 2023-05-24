@@ -17,6 +17,7 @@ export class SeriesComponent {
   searchText: string = '';
   descriptionView: boolean[] = [];
   userId: number = 1;
+  errorMessage: string = "";
 
   constructor(private serieService: SerieService, private userService: UserService, private route: ActivatedRoute) { }
 
@@ -26,51 +27,92 @@ export class SeriesComponent {
       this.userId = params['userId'];
     });
 
-    this.serieService.getSeries().subscribe(series => {
-      this.series = series;
-      this.sortSeries();
-      this.userService.getPendingSeries(this.userId).subscribe(pendingSeries => {
-        this.pendingSeries = pendingSeries;
-      });
+    this.serieService.getSeries().subscribe({
+      next: series => {
+        this.series = series;
+        this.sortSeries();
+      }, 
+      error: error => {
+        if (error.status == 0) {
+          this.errorMessage = "El servidor no está disponible";
+        } else {
+          this.errorMessage = "Error al obtener las series";
+          console.log(error);
+        }
+      }
     });
   }
 
   changeInitial(initial: string): void {
     this.selectedInitial = initial;
-    this.serieService.getSeriesByInitial(initial).subscribe(series => {
-      this.series = series;
-      this.userService.getPendingSeries(this.userId).subscribe(pendingSeries => {
-        this.pendingSeries = pendingSeries;
-      })
+    this.serieService.getSeriesByInitial(initial).subscribe({ 
+      next: series => {
+        this.series = series;
+      },
+      error: error => {
+        if (error.status == 0) {
+          this.errorMessage = "El servidor no está disponible";
+        } else {
+          this.errorMessage = "Error al obtener las series";
+          console.log(error);
+        }
+      }
     })
   }
 
   clearFilter(): void {
     this.selectedInitial = '';
-    this.serieService.getSeries().subscribe(response => {
-      this.series = response;
-      this.sortSeries();
-      this.userService.getPendingSeries(this.userId).subscribe(response => {
-        this.pendingSeries = response;
-      });
+    this.serieService.getSeries().subscribe({
+      next: series => {
+        this.series = series;
+        this.sortSeries();
+      },
+      error: error => {
+        if (error.status == 0) {
+          this.errorMessage = "El servidor no está disponible";
+        } else {
+          this.errorMessage = "Error al obtener las series";
+          console.log(error);
+        }
+      }
     });
   }
 
   search(searchText: string) {
     console.log(searchText);
-    this.serieService.getSeriesByInitial(searchText.charAt(0)).subscribe(response => {
-      this.series = response; 
-      this.sortSeries(); 
-        this.series.forEach(serie => {
+    this.serieService.getSeriesByInitial(searchText.charAt(0)).subscribe({
+      next: series => {
+      this.series = series;
+      this.sortSeries();
+      this.series.forEach(serie => {
         serie.exactMatch = serie.title.toLowerCase() === this.searchText.toLowerCase();
       });
-  
-    });
+    },
+    error: error => {
+      if (error.status == 0) {
+        this.errorMessage = "El servidor no está disponible";
+      } else {
+        this.errorMessage = "Error al obtener las series";
+        console.log(error);
+      }
+    }});
   }
 
   addPending(serie: any) {
-    this.userService.addPendingSerie(this.userId, serie.id).subscribe(response => {
-      this.pendingSeries = response;
+    this.userService.addPendingSerie(this.userId, serie.id).subscribe({
+      next: pendingSeries => {
+        this.pendingSeries = pendingSeries;
+      },
+      error: error => {
+        if (error.status == 404) {
+          this.errorMessage = "La serie o el usuario no existen";
+        } else if (error.status == 0) {
+          this.errorMessage = "El servidor no está disponible";
+        } else {
+          this.errorMessage = "Error al añadir la serie a pendientes";
+          console.log(error);
+        }
+      }
     });
   }
 

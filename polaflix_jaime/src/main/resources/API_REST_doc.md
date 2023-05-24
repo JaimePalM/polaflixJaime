@@ -277,7 +277,7 @@ Parametros de la URL
 Parametros de la petición
 | Campo | Tipo | Descripción |
 | ------ | ------ | ------ |
-| date (opcional) | String | Fecha del mes de la factura |
+| - | - | - |
 
 Modelo de respuesta
 ```json

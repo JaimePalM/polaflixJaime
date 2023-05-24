@@ -248,30 +248,4 @@ public class UserRestController {
 
         return result;
     }
-
-    // NO SE UTILIZA (se utiliza getBills y luego se filtra en el frontend)
-    // Get bill by date (precondition: date is in format dd/MM/yy)
-    @GetMapping(value = "/{id}/bills", params = "date")
-    @JsonView(JsonViews.BillView.class)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<Bill> getBillByDate(@PathVariable("id") long id, @RequestParam("date") String date) {
-        ResponseEntity<Bill> result;
-        Optional<User> u = ur.findById(id);
-
-        if (u.isPresent()) {
-            // Convert date to Date
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-            Date dateConverted;
-            try {
-                dateConverted = new Date(formatter.parse(date).getTime());
-                result = ResponseEntity.ok(u.get().getBillByDate(dateConverted));
-            } catch (ParseException e) {
-                result = ResponseEntity.badRequest().build();
-            }
-        } else {
-            result = ResponseEntity.notFound().build();
-        }
-
-        return result;
-    }
 }

@@ -22,9 +22,18 @@ export class HeaderComponent implements OnInit {
 
     this.userId = 1;
 
-    this.userService.getUserById(this.userId).subscribe(user => {
-      this.username = user.username;
-    })
+    this.userService.getUserById(this.userId).subscribe({
+      next: response => {
+        this.username = response.username;
+      },
+      error: error => {
+        if (error.status == 404) {
+          console.log("User not found");
+        }
+        else
+          console.log(error);
+      }
+    });
 
   }
 

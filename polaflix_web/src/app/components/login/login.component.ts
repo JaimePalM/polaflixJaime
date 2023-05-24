@@ -11,6 +11,7 @@ export class LoginComponent {
 
   email: string = "";
   password: string = "";
+  errorMessage: string = "";
 
   constructor(private loginService: LoginService, private router: Router) { }
 
@@ -18,9 +19,18 @@ export class LoginComponent {
   }
 
   login() {
-    this.loginService.login(this.email, this.password).subscribe(response => {
-      if (response.length > 0) {
-        this.router.navigate(['/home']);
+    this.loginService.login(this.email, this.password).subscribe({
+      next: user => {
+        this.router.navigate(['/users/'+ user.id + '/home']);
+      },
+      error: error => {
+        if (error.status == 404) {
+          this.errorMessage = "Email o contraseña incorrectos";
+        }
+        else {
+          this.errorMessage = "Error al iniciar sesión";
+          console.log(error);
+        }
       }
     });
   }

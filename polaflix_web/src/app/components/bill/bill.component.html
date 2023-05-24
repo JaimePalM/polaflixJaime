@@ -1,14 +1,17 @@
 <body>
-<div class="bills-container">
+  <div class="bills-container">
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
     <div class="card" *ngFor="let monthBill of bills" [hidden]="monthBill.monthBilled !== currentMonth">
       <div class="text-center mb-4">
-        <a class="text-dark mr-2" *ngIf="previousMonthAvailable()" >
+        <a class="text-dark mr-2" *ngIf="previousMonthAvailable()">
           <i class="fas fa-arrow-left"></i>
         </a>
         <div class="card-header">
           <h3 class="d-inline-block">{{ currentMonth | date:'MMMM yyyy'}}</h3>
         </div>
-        <a class="text-dark ml-2" *ngIf="nextMonthAvailable()" >
+        <a class="text-dark ml-2" *ngIf="nextMonthAvailable()">
           <i class="fas fa-arrow-right"></i>
         </a>
       </div>
@@ -40,4 +43,3 @@
     </div>
   </div>
 </body>
-      

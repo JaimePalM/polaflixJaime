@@ -33,6 +33,7 @@ public class User {
     // Atributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(JsonViews.UserView.class)
     private long id;
     @Column(unique = true)
     @JsonView(JsonViews.UserView.class)
