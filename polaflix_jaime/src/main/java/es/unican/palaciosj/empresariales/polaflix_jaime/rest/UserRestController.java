@@ -1,8 +1,5 @@
 package es.unican.palaciosj.empresariales.polaflix_jaime.rest;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,6 @@ import es.unican.palaciosj.empresariales.polaflix_jaime.domain.Views;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.SerieRepository;
 import es.unican.palaciosj.empresariales.polaflix_jaime.repositories.UserRepository;
 
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,24 +71,6 @@ public class UserRestController {
         return result;
     }
 
-    // Get user pending series
-    @GetMapping(value ="/{id}/pending-series")
-    @JsonView(JsonViews.SerieListView.class)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<Iterable<Serie>> getPendingSeries(@PathVariable("id") long id) {
-        ResponseEntity<Iterable<Serie>> result;
-        Optional<User> u = ur.findById(id);
-
-        if (u.isPresent()) {
-            result = ResponseEntity.ok(u.get().getPendingSeries());
-        } else {
-            result = ResponseEntity.notFound().build();
-        }
-
-        return result;
-
-    }
-
     // Add serie to user pending list
     @PutMapping(value = "/{id}/pending-series/{serieId}")
     @JsonView(JsonViews.UserView.class)
@@ -117,42 +95,6 @@ public class UserRestController {
         }
 
         return result;
-    }
-
-    // Get user started series
-    @GetMapping(value ="/{id}/started-series")
-    @JsonView(JsonViews.SerieListView.class)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<Iterable<Serie>> getStartedSeries(@PathVariable("id") long id) {
-        ResponseEntity<Iterable<Serie>> result;
-        Optional<User> u = ur.findById(id);
-
-        if (u.isPresent()) {
-            result = ResponseEntity.ok(u.get().getStartedSeries());
-        } else {
-            result = ResponseEntity.notFound().build();
-        }
-
-        return result;
-
-    }
-    
-    // Get user finished series
-    @GetMapping(value ="/{id}/finished-series")
-    @JsonView(JsonViews.SerieListView.class)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<Iterable<Serie>> getFinishedSeries(@PathVariable("id") long id) {
-        ResponseEntity<Iterable<Serie>> result;
-        Optional<User> u = ur.findById(id);
-
-        if (u.isPresent()) {
-            result = ResponseEntity.ok(u.get().getFinishedSeries());
-        } else {
-            result = ResponseEntity.notFound().build();
-        }
-
-        return result;
-
     }
 
     // Mark chapter as viewed

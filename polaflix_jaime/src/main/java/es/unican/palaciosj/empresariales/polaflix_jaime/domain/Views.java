@@ -12,7 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Views implements Comparable<Views> {
@@ -24,7 +24,7 @@ public class Views implements Comparable<Views> {
     @ElementCollection
     @JsonView(JsonViews.SerieViewsView.class)
     private List<SeasonViews> serieSeasonViews;
-    @OneToOne
+    @ManyToOne
     private Serie serie;
 
     // Constructor

@@ -15,5 +15,4 @@ public interface SerieRepository extends JpaRepository<Serie, Long>{
     
     List<Serie> findByInitial(char initial);
 
-    List<Serie> findByTitle(String title);
 }

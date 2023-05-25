@@ -24,7 +24,6 @@ public class Chapter implements Comparable<Chapter> {
     private String description;
     private String url;
     @ManyToOne
-    //@JsonBackReference
     @JsonView({JsonViews.BillView.class, JsonViews.ChapterView.class})
     private Season season;
 

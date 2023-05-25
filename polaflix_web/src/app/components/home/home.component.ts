@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
   pendingSeries: any = {};
   finishedSeries: any = {};
   userId: number = 1;
+  errorMessage: string = "";
 
   constructor(private userService: UserService, private route: ActivatedRoute) { }
 
@@ -22,14 +23,22 @@ export class HomeComponent implements OnInit {
       this.userId = params['userId'];
     });
     
-    this.userService.getStartedSeries(this.userId).subscribe(startedSeries => {
-      this.startedSeries = Object.values(startedSeries);
-    })
-    this.userService.getPendingSeries(this.userId).subscribe(pendingSeries => {
-      this.pendingSeries = Object.values(pendingSeries);
-    })
-    this.userService.getFinishedSeries(this.userId).subscribe(finishedSeries => {
-      this.finishedSeries = Object.values(finishedSeries);
+    this.userService.getUserById(this.userId).subscribe({
+      next: user => {
+        this.startedSeries = Object.values(user.startedSeries);
+        this.pendingSeries = Object.values(user.pendingSeries);
+        this.finishedSeries = Object.values(user.finishedSeries);
+      },
+      error: error => {
+        if (error.status == 404) {
+          this.errorMessage = "El usuario no existe";
+        } else if (error.status == 0) {
+          this.errorMessage = "El servidor no está disponible";
+        } else {
+          this.errorMessage = "Error al obtener el usuario";
+          console.log(error);
+        }
+      }
     })
   }
 }

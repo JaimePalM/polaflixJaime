@@ -1,3 +1,6 @@
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+</div>
 <div class="card">
     <div class="card-header">
         <h5 class="card-title">Empezadas</h5>
@@ -8,9 +11,9 @@
                 <p>No hay series empezadas</p>
             </div>
             <div *ngIf="startedSeries.length > 0">
-            <li class="list-group-item" *ngFor="let serie of startedSeries">
-                <a href>{{serie.title}}</a>
-            </li>
+                <li class="list-group-item" *ngFor="let serie of startedSeries">
+                    <a href>{{serie.title}}</a>
+                </li>
             </div>
         </ul>
     </div>
@@ -25,9 +28,9 @@
                 <p>No hay series pendientes</p>
             </div>
             <div *ngIf="pendingSeries.length > 0">
-            <li class="list-group-item" *ngFor="let serie of pendingSeries">
-                <a href="/users/{{ userId }}/serie/{{ serie.id }}">{{serie.title}}</a>
-            </li>
+                <li class="list-group-item" *ngFor="let serie of pendingSeries">
+                    <a href="/users/{{ userId }}/serie/{{ serie.id }}">{{serie.title}}</a>
+                </li>
             </div>
         </ul>
     </div>
@@ -42,9 +45,9 @@
                 <p>No hay series finalizadas</p>
             </div>
             <div *ngIf="finishedSeries.length > 0">
-            <li class="list-group-item" *ngFor="let serie of finishedSeries">
-                <a href>{{serie.title}}</a>
-            </li>
+                <li class="list-group-item" *ngFor="let serie of finishedSeries">
+                    <a href>{{serie.title}}</a>
+                </li>
             </div>
         </ul>
     </div>
