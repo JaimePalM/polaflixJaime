@@ -82,6 +82,8 @@ public class User {
         // If serie is in started list, remove it
         if (this.startedSeries.contains(serie)) {
             this.startedSeries.remove(serie);
+        } else if (this.finishedSeries.contains(serie)) {
+            this.finishedSeries.remove(serie);
         }
         Views view = this.serieViews.get(serie);
         if (view == null) {

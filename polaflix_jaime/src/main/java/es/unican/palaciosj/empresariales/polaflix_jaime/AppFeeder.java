@@ -114,10 +114,12 @@ public class AppFeeder implements CommandLineRunner {
 		Season s3s2 = new Season(2, s3);
 		Season s3s3 = new Season(3, s3);
 		Season s4s1 = new Season(1, s4);
+		Season s7s1 = new Season(1, s7);
 		s1.addSeason(s1s1);
 		s2.addSeason(s2s1); s2.addSeason(s2s2); 
 		s3.addSeason(s3s1); s3.addSeason(s3s2); s3.addSeason(s3s3);
 		s4.addSeason(s4s1);
+		s7.addSeason(s7s1);
 
 		// Add chapters to seasons
 		Chapter s1s1c1 = new Chapter(1, "Pilot", "First chapter",
@@ -154,20 +156,26 @@ public class AppFeeder implements CommandLineRunner {
 		Chapter s4s1c1 = new Chapter(1, "Uno",
 				"Jimmy uses magic in the courtroom; then, after being unexpectedly inspired, Jimmy tries an unconventional method to find potential clients.",
 				"http://www.polaflix.com/better-call-saul/season-1/chapter-1", s4s1);
+		Chapter s7s1c1 = new Chapter(1, "Pilot",
+				"Michael Scofield is imprisoned in Fox River State Penitentiary. He finds his brother, Lincoln Burrows, who is a death row prisoner, and tells him that he is going to break them both out of the prison.",
+				"http://www.polaflix.com/prison-break/season-1/chapter-1", s7s1);
 		s1s1.addChapter(s1s1c1); s1s1.addChapter(s1s1c2);
 		s2s1.addChapter(s2s1c1); s2s1.addChapter(s2s1c2); s2s2.addChapter(s2s2c1);
 		s3s1.addChapter(s3s1c1); s3s1.addChapter(s3s1c2); s3s2.addChapter(s3s2c1); s3s2.addChapter(s3s2c2); s3s3.addChapter(s3s3c1); s3s3.addChapter(s3s3c2);
 		s4s1.addChapter(s4s1c1);
+		s7s1.addChapter(s7s1c1);
 
 		// Add creators to series
 		Creator c1s1 = new Creator("Vince", "Gilligan");
 		Creator c1s2 = new Creator("Baran", "Bo Odar");
 		Creator c1s3 = new Creator("David", "Benioff");
 		Creator c2s3 = new Creator("D.B.", "Weiss");
+		Creator c1s7 = new Creator("Paul", "Scheuring");
 		s1.addCreator(c1s1); 
 		s2.addCreator(c1s2); 
 		s3.addCreator(c1s3); s3.addCreator(c2s3);
 		s4.addCreator(c1s1);
+		s7.addCreator(c1s7);
 
 		// Add actors to series
 		Actor a1s1 = new Actor("Bryan", "Cranston");
@@ -180,10 +188,13 @@ public class AppFeeder implements CommandLineRunner {
 		Actor a4s3 = new Actor("Kit", "Harington");
 		Actor a1s4 = new Actor("Bob", "Odenkirk");
 		Actor a2s4 = new Actor("Rhea", "Seehorn");
+		Actor a1s7 = new Actor("Wentworth", "Miller");
+		Actor a2s7 = new Actor("Dominic", "Purcell");
 		s1.addActor(a1s1); s1.addActor(a2s1);
 		s2.addActor(a1s2); s2.addActor(a2s2);
 		s3.addActor(a1s3); s3.addActor(a2s3); s3.addActor(a3s3); s3.addActor(a4s3);
 		s4.addActor(a1s4); s4.addActor(a2s4);
+		s7.addActor(a1s7); s7.addActor(a2s7);
 
 		sr.save(s1);
 		sr.save(s2);
