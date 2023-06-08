@@ -12,6 +12,7 @@ export class SeriesComponent {
 
   alphabet: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   series: any[] = [];
+  allSeries: any[] = [];
   pendingSeries: any[] = [];
   selectedInitial: string = '';
   searchText: string = '';
@@ -30,6 +31,7 @@ export class SeriesComponent {
     this.serieService.getSeries().subscribe({
       next: series => {
         this.series = series;
+        this.allSeries = series;
         this.sortSeries();
       }, 
       error: error => {
@@ -45,57 +47,23 @@ export class SeriesComponent {
 
   changeInitial(initial: string): void {
     this.selectedInitial = initial;
-    this.serieService.getSeriesByInitial(initial).subscribe({ 
-      next: series => {
-        this.series = series;
-      },
-      error: error => {
-        if (error.status == 0) {
-          this.errorMessage = "El servidor no está disponible";
-        } else {
-          this.errorMessage = "Error al obtener las series";
-          console.log(error);
-        }
-      }
-    })
+    this.series = this.allSeries.filter(serie => serie.title.charAt(0) === initial);
   }
 
   clearFilter(): void {
     this.selectedInitial = '';
-    this.serieService.getSeries().subscribe({
-      next: series => {
-        this.series = series;
-        this.sortSeries();
-      },
-      error: error => {
-        if (error.status == 0) {
-          this.errorMessage = "El servidor no está disponible";
-        } else {
-          this.errorMessage = "Error al obtener las series";
-          console.log(error);
-        }
-      }
-    });
+    this.series = this.allSeries;
   }
 
   search(searchText: string) {
     console.log(searchText);
-    this.serieService.getSeriesByInitial(searchText.charAt(0)).subscribe({
-      next: series => {
-      this.series = series;
-      this.sortSeries();
-      this.series.forEach(serie => {
-        serie.exactMatch = serie.title.toLowerCase() === this.searchText.toLowerCase();
-      });
-    },
-    error: error => {
-      if (error.status == 0) {
-        this.errorMessage = "El servidor no está disponible";
-      } else {
-        this.errorMessage = "Error al obtener las series";
-        console.log(error);
-      }
-    }});
+    this.series = this.allSeries.filter(serie => 
+      serie.title.toLowerCase().includes(searchText.toLowerCase())
+    );
+    this.sortSeries();
+    this.series.forEach(serie => {
+      serie.exactMatch = serie.title.toLowerCase() === searchText.toLowerCase();
+    });
   }
 
   addPending(serie: any) {

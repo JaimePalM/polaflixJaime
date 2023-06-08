@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">{{ title }}</h5>
+    </div>
+    <div class="card-body">
+        <ul class="series-list">
+            <ng-container *ngIf="series.length === 0; else seriesItems">
+                <p>No hay series {{ title.toLowerCase() }}</p>
+            </ng-container>
+            <ng-template #seriesItems>
+                <li class="list-group-item" *ngFor="let serie of series">
+                    <a [routerLink]="['/users', userId, 'serie', serie.id]">{{ serie.title }}</a>
+                </li>
+            </ng-template>
+        </ul>
+    </div>
+</div>

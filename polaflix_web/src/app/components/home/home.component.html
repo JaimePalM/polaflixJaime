@@ -1,54 +1,8 @@
 <div *ngIf="errorMessage" class="alert alert-danger">
     {{ errorMessage }}
 </div>
-<div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Empezadas</h5>
-    </div>
-    <div class="card-body">
-        <ul class="started-series">
-            <div *ngIf="startedSeries.length == 0">
-                <p>No hay series empezadas</p>
-            </div>
-            <div *ngIf="startedSeries.length > 0">
-                <li class="list-group-item" *ngFor="let serie of startedSeries">
-                    <a href>{{serie.title}}</a>
-                </li>
-            </div>
-        </ul>
-    </div>
-</div>
-<div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Pendientes</h5>
-    </div>
-    <div class="card-body">
-        <ul class="pending-series">
-            <div *ngIf="pendingSeries.length == 0">
-                <p>No hay series pendientes</p>
-            </div>
-            <div *ngIf="pendingSeries.length > 0">
-                <li class="list-group-item" *ngFor="let serie of pendingSeries">
-                    <a href="/users/{{ userId }}/serie/{{ serie.id }}">{{serie.title}}</a>
-                </li>
-            </div>
-        </ul>
-    </div>
-</div>
-<div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Finalizadas</h5>
-    </div>
-    <div class="card-body">
-        <ul class="finished-series">
-            <div *ngIf="finishedSeries.length == 0">
-                <p>No hay series finalizadas</p>
-            </div>
-            <div *ngIf="finishedSeries.length > 0">
-                <li class="list-group-item" *ngFor="let serie of finishedSeries">
-                    <a href>{{serie.title}}</a>
-                </li>
-            </div>
-        </ul>
-    </div>
-</div>
+
+<app-home-series-section title="Empezadas" [series]="startedSeries" [userId]="userId"></app-home-series-section>
+<app-home-series-section title="Pendientes" [series]="pendingSeries" [userId]="userId"></app-home-series-section>
+<app-home-series-section title="Finalizadas" [series]="finishedSeries" [userId]="userId"></app-home-series-section>
+  

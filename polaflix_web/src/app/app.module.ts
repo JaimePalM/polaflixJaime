@@ -14,6 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FooterComponent } from './components/footer/footer.component';
+import { HomeSeriesSectionComponent } from './components/home-series-section/home-series-section.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FooterComponent } from './components/footer/footer.component';
     LoginComponent,
     SeriesComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    HomeSeriesSectionComponent
   ],
   imports: [
     BrowserModule,
