@@ -110,6 +110,11 @@ public class User {
 
     // Mark chapter as viewed for a serie (precondition: the serie is in any list)
     public void markChapterViewed(Serie serie, Chapter chapter) {
+        // Check if the serie is in any list
+        if (!this.pendingSeries.contains(serie) && !this.startedSeries.contains(serie) 
+            && !this.finishedSeries.contains(serie)) {
+            return;
+        }
         // Check if the chapter is later than the last chapter viewed
         Chapter lastChapter = this.lastChapterView.get(serie);
         if (lastChapter == null) {
